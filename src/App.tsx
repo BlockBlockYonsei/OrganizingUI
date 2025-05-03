@@ -6,14 +6,17 @@ import {
   useDisconnectWallet,
   useWallets,
 } from "@mysten/dapp-kit";
-import { useGetExecutiveMemberCap } from "./hooks/president";
+import { useGetExecutiveMemberCap, useGetMemberCap } from "./hooks/president";
 import Tae from "./Tae";
 
 function App() {
   const account = useCurrentAccount();
   const wallets = useWallets();
 
-  const { caps } = useGetExecutiveMemberCap({
+  const { caps: eMemberCap } = useGetExecutiveMemberCap({
+    owner: account ? account.address : "",
+  });
+  const { caps: memberCap } = useGetMemberCap({
     owner: account ? account.address : "",
   });
 
@@ -21,8 +24,12 @@ function App() {
   const { mutate: connect } = useConnectWallet();
 
   useEffect(() => {
-    console.log("caps", caps);
-  }, [caps]);
+    console.log("e caps", eMemberCap);
+  }, [eMemberCap]);
+
+  useEffect(() => {
+    console.log("normal caps", memberCap);
+  }, [memberCap]);
 
   return (
     <>

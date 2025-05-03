@@ -5,21 +5,24 @@ import {
   useCurrentAccount,
   useDisconnectWallet,
   useWallets,
-  useSignAndExecuteTransaction,
 } from "@mysten/dapp-kit";
+import { useGetExecutiveMemberCap } from "./hooks/president";
+import Tae from "./Tae";
 
 function App() {
   const account = useCurrentAccount();
   const wallets = useWallets();
 
+  const { caps } = useGetExecutiveMemberCap({
+    owner: account ? account.address : "",
+  });
+
   const { mutate: disconnect } = useDisconnectWallet();
   const { mutate: connect } = useConnectWallet();
-  const { mutate: signAndExecuteTransaction } = useSignAndExecuteTransaction();
 
   useEffect(() => {
-    // console.log("wallet", wallets);
-    console.log("account", account?.chains);
-  }, [wallets, account]);
+    console.log("caps", caps);
+  }, [caps]);
 
   return (
     <>
@@ -48,6 +51,7 @@ function App() {
         </nav>
       </div>
       {/* </div> */}
+      <Tae></Tae>
     </>
   );
 }

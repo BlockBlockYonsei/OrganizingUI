@@ -14,6 +14,8 @@ export default defineConfig({
     host: true, // 외부 접근 허용
     allowedHosts: [""], // <== 이 줄 추가
   },
+
+  server:{allowedHosts: ["https://5173-blockblocky-organizingu-42oc176f6d2.ws-us118.gitpod.io"]},
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

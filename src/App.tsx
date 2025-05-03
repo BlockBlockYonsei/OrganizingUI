@@ -7,6 +7,7 @@ import {
   useWallets,
   useSignAndExecuteTransaction,
 } from "@mysten/dapp-kit";
+import Bum from "./Bum";
 
 function App() {
   const account = useCurrentAccount();
@@ -48,6 +49,7 @@ function App() {
         </nav>
       </div>
       {/* </div> */}
+      <Bum></Bum>
     </>
   );
 }

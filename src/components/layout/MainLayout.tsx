@@ -2,8 +2,8 @@ import React, { ReactNode } from "react";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 import { Ticket, Users } from "lucide-react";
-import { useClubContext } from "../../context/ClubContext";
-import TabNav from "../ui/TabNav";
+// import { useClubContext } from "../../context/ClubContext";
+// import TabNav from "../ui/TabNav";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -14,7 +14,7 @@ const MainLayout = ({
   children,
   title = "Club President Dashboard",
 }: MainLayoutProps) => {
-  const { activeTab, setActiveTab } = useClubContext();
+  // const { activeTab, setActiveTab } = useClubContext();
 
   const tabs = [
     {
@@ -30,7 +30,7 @@ const MainLayout = ({
   ];
 
   const handleTabChange = (tabKey: string) => {
-    setActiveTab(tabKey as "members" | "tickets");
+    // setActiveTab(tabKey as "members" | "tickets");
   };
 
   return (
@@ -38,12 +38,13 @@ const MainLayout = ({
       <Sidebar />
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header title={title} />
-        <TabNav
+        {/* <TabNav
           tabs={tabs}
-          activeTab={activeTab}
+          // activeTab={activeTab}
+          activeTab={""}
           onChange={handleTabChange}
           className="px-6 bg-[#1e293b]"
-        />
+        /> */}
         <main className="flex-1 overflow-auto p-6 bg-[#0f172a]">
           {children}
         </main>

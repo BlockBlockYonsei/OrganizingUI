@@ -11,6 +11,7 @@ import {
   useGetMemberCap,
 } from "./hooks/executive-member";
 import Tae from "./Tae";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   const account = useCurrentAccount();
@@ -61,7 +62,8 @@ function App() {
         </nav>
       </div>
       {/* </div> */}
-      <Tae></Tae>
+      <Dashboard></Dashboard>
+      {/* <Tae></Tae> */}
     </>
   );
 }

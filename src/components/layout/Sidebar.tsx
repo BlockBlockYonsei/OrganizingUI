@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Code, Home, Menu, Settings, Ticket, Users } from "lucide-react";
-import { useClubContext } from "../../context/ClubContext";
+// import { useClubContext } from "../../context/ClubContext";
 import UserProfile from "./UserProfile";
 
 interface NavItem {
@@ -12,7 +12,7 @@ interface NavItem {
 
 const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const { activeTab, setActiveTab } = useClubContext();
+  // const { activeTab, setActiveTab } = useClubContext();
 
   const navItems: NavItem[] = [
     {
@@ -24,13 +24,13 @@ const Sidebar = () => {
       key: "members",
       label: "Members",
       icon: <Users className="h-5 w-5" />,
-      onClick: () => setActiveTab("members"),
+      // onClick: () => setActiveTab("members"),
     },
     {
       key: "tickets",
       label: "Tickets",
       icon: <Ticket className="h-5 w-5" />,
-      onClick: () => setActiveTab("tickets"),
+      // onClick: () => setActiveTab("tickets"),
     },
     {
       key: "settings",
@@ -66,11 +66,12 @@ const Sidebar = () => {
         {navItems.map((item) => (
           <button
             key={item.key}
-            className={`flex items-center w-full p-3 rounded-md ${
-              activeTab === item.key
-                ? "bg-[#334155] text-white"
-                : "text-gray-400 hover:bg-[#334155] hover:text-white"
-            }`}
+            // className={`flex items-center w-full p-3 rounded-md ${
+            //   activeTab === item.key
+            //     ? "bg-[#334155] text-white"
+            //     : "text-gray-400 hover:bg-[#334155] hover:text-white"
+            // }`}
+            className={`flex items-center w-full p-3 rounded-md`}
             onClick={item.onClick}
           >
             {item.icon}

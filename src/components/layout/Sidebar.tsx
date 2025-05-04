@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Code, Home, Menu, Settings, Ticket, Users } from "lucide-react";
-import { useClubContext } from "../../context/ClubContext";
+// import { useClubContext } from "../../context/ClubContext";
 import UserProfile from "./UserProfile";
 
 interface NavItem {
@@ -12,7 +12,7 @@ interface NavItem {
 
 const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const { activeTab, setActiveTab } = useClubContext();
+  // const { activeTab, setActiveTab } = useClubContext();
 
   const navItems: NavItem[] = [
     {
@@ -24,13 +24,13 @@ const Sidebar = () => {
       key: "members",
       label: "Members",
       icon: <Users className="h-5 w-5" />,
-      onClick: () => setActiveTab("members"),
+      // onClick: () => setActiveTab("members"),
     },
     {
       key: "tickets",
       label: "Tickets",
       icon: <Ticket className="h-5 w-5" />,
-      onClick: () => setActiveTab("tickets"),
+      // onClick: () => setActiveTab("tickets"),
     },
     {
       key: "settings",
@@ -46,19 +46,21 @@ const Sidebar = () => {
       } bg-[#1e293b] border-r border-[#334155] transition-all duration-300 flex flex-col`}
     >
       {/* Logo and Toggle */}
-      <div className="flex items-center justify-between p-4 border-b border-[#334155]">
-        {isSidebarOpen && (
-          <div className="flex items-center text-xl font-bold text-[#8b5cf6]">
-            <Code className="h-5 w-5 mr-2" />
-            ClubDAO
-          </div>
-        )}
+      <div className="flex items-center p-4 border-b border-[#334155]">
         <button
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className="p-2 rounded-md text-gray-400 hover:bg-[#334155] hover:text-white"
+          className="p-2 rounded-md text-gray-400 hover:bg-[#334155] cursor-pointer hover:text-white"
         >
           <Menu className="h-5 w-5" />
         </button>
+        <div
+          className={`${
+            !isSidebarOpen && "hidden"
+          } w-full flex items-center justify-center text-xl font-bold text-[#8b5cf6] cursor-pointer`}
+        >
+          <Code className="h-5 w-5 mr-2" />
+          ClubDAO
+        </div>
       </div>
 
       {/* Navigation */}
@@ -66,15 +68,19 @@ const Sidebar = () => {
         {navItems.map((item) => (
           <button
             key={item.key}
-            className={`flex items-center w-full p-3 rounded-md ${
-              activeTab === item.key
+            className={`flex items-center w-full p-3 rounded-md cursor-pointer ${
+              // activeTab === item.key
+              // true
+              false
                 ? "bg-[#334155] text-white"
                 : "text-gray-400 hover:bg-[#334155] hover:text-white"
             }`}
             onClick={item.onClick}
           >
             {item.icon}
-            {isSidebarOpen && <span className="ml-3">{item.label}</span>}
+            <span className={`${!isSidebarOpen && "hidden"} ml-3`}>
+              {item.label}
+            </span>
           </button>
         ))}
       </nav>

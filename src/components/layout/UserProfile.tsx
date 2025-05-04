@@ -1,14 +1,33 @@
-import React from "react";
-import { Crown, LogOut, User } from "lucide-react";
-import { useWalletContext } from "../../context/WalletContext";
-import Button from "../ui/Button";
+import { useEffect } from "react";
+import { Crown, User } from "lucide-react";
+import WalletButton from "./WalletButton";
+import {
+  useGetExecutiveMemberCap,
+  useGetMemberCap,
+} from "@/hooks/executive-member";
+import { useCurrentAccount } from "@mysten/dapp-kit";
 
 interface UserProfileProps {
   isSidebarOpen: boolean;
 }
 
 const UserProfile = ({ isSidebarOpen }: UserProfileProps) => {
-  const { account, disconnect } = useWalletContext();
+  const account = useCurrentAccount();
+
+  const { caps: eMemberCap } = useGetExecutiveMemberCap({
+    owner: account ? account.address : "",
+  });
+  const { caps: memberCap } = useGetMemberCap({
+    owner: account ? account.address : "",
+  });
+
+  useEffect(() => {
+    console.log("e caps", eMemberCap);
+  }, [eMemberCap]);
+
+  useEffect(() => {
+    console.log("normal caps", memberCap);
+  }, [memberCap]);
 
   return (
     <div className="p-4 border-t border-[#334155]">
@@ -21,7 +40,7 @@ const UserProfile = ({ isSidebarOpen }: UserProfileProps) => {
         {isSidebarOpen && (
           <div className="ml-3 max-w-[160px]">
             <p className="text-sm font-medium text-white truncate">
-              {account?.label || account?.address?.slice(0, 8) + "..."}
+              {account && account.address}
             </p>
             <div className="flex items-center text-xs text-[#a78bfa]">
               <Crown className="h-3 w-3 mr-1" />
@@ -30,17 +49,7 @@ const UserProfile = ({ isSidebarOpen }: UserProfileProps) => {
           </div>
         )}
       </div>
-      {isSidebarOpen && (
-        <Button
-          variant="secondary"
-          fullWidth
-          className="mt-4"
-          icon={<LogOut className="h-4 w-4" />}
-          onClick={() => disconnect()}
-        >
-          Disconnect
-        </Button>
-      )}
+      {isSidebarOpen && <WalletButton />}
     </div>
   );
 };

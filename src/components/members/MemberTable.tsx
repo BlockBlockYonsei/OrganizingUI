@@ -1,11 +1,11 @@
 import React from "react";
-import { useClubContext } from "../../context/ClubContext";
+// import { useClubContext } from "../../context/ClubContext";
 import RoleBadge from "./RoleBadge";
 import ActionDropdown from "./ActionDropdown";
 
 const MemberTable = () => {
-  const { filteredUsers, promoteToMember, designateStaff, appointPresident } =
-    useClubContext();
+  // const { filteredUsers, promoteToMember, designateStaff, appointPresident } =
+  //   useClubContext();
 
   return (
     <div className="bg-[#1e293b] rounded-lg border border-[#334155] overflow-hidden">
@@ -45,7 +45,7 @@ const MemberTable = () => {
           </tr>
         </thead>
         <tbody className="divide-y divide-[#334155]">
-          {filteredUsers.map((user) => (
+          {/* {filteredUsers.map((user) => (
             <tr key={user.id} className="hover:bg-[#272f3d]">
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="flex items-center">
@@ -85,7 +85,7 @@ const MemberTable = () => {
                 />
               </td>
             </tr>
-          ))}
+          ))} */}
         </tbody>
       </table>
     </div>

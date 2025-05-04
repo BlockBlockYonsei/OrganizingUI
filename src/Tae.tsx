@@ -2,7 +2,7 @@ import {
   useCurrentAccount,
   useSignAndExecuteTransaction,
 } from "@mysten/dapp-kit";
-import { Button } from "./components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Transaction } from "@mysten/sui/transactions";
 import { useGetExecutiveMemberCap } from "./hooks/executive-member";
 import { BLOCKBLOCK_YONSEI, CURRENT_CLUB_CLASS, PACKAGE_ID } from "./Constant";

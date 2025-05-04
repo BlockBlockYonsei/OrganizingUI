@@ -1,4 +1,3 @@
-import React from "react";
 import MemberSearch from "./MemberSearch";
 import MemberTable from "./MemberTable";
 

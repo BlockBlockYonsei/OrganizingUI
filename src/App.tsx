@@ -6,7 +6,10 @@ import {
   useDisconnectWallet,
   useWallets,
 } from "@mysten/dapp-kit";
-import { useGetExecutiveMemberCap, useGetMemberCap } from "./hooks/president";
+import {
+  useGetExecutiveMemberCap,
+  useGetMemberCap,
+} from "./hooks/executive-member";
 import Tae from "./Tae";
 
 function App() {

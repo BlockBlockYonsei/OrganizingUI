@@ -1,8 +1,6 @@
 import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
 import { useEffect, useState } from "react";
-
-const PACKAGE_ID =
-  "0x3a9281ad0f73fa12264c6516ace75b28a675920fa53d0b6d23322730e22b6a36";
+import { PACKAGE_ID } from "@/Constant";
 
 export const useGetExecutiveMemberCap = ({ owner }: { owner: string }) => {
   const [caps, setCaps] = useState<any>(null);
@@ -23,6 +21,7 @@ export const useGetExecutiveMemberCap = ({ owner }: { owner: string }) => {
         },
       })
       .then((data) => {
+        // CurrentClass 로 한 번 필터링 해주  면 좋겠 다
         setCaps(data);
         setIsPending(false);
       })

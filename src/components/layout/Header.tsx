@@ -1,4 +1,3 @@
-import React from "react";
 import { Crown, Moon } from "lucide-react";
 
 interface HeaderProps {

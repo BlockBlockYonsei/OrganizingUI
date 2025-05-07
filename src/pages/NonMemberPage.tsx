@@ -27,20 +27,5 @@ export default function NonMemberPage() {
         </CardContent>
       </Card>
     </div>
-
-    // <div className="flex justify-center items-center h-screen relative">
-    //   <div className="absolute top-5 left-5 text-2xl font-bold text-gray-200">
-    //     운영진 모집
-    //   </div>
-    //       <Card className="absolute top-[80px] left-[50px] w-[400px] h-[300px]">
-    //         <CardContent className="flex flex-col justify-center items-center h-full">
-    //           <div className="text-center mb-3">
-    //             Invited to {" "}
-    //             <span className="inline-block w-[150px] h-[30px] ml-2 border-2 border-white"></span>
-    //           </div>
-    //           <Button className="w-full">Accept</Button>
-    //         </CardContent>
-    //       </Card>
-    // </div>
   );
 }

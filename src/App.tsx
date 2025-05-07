@@ -4,7 +4,7 @@ import {
   useGetExecutiveMemberCap,
   useGetMemberCap,
 } from "./hooks/executive-member";
-import MemberManagement from "./components/members/MemberManagement";
+import MemberManagement from "./pages/MemberManagement";
 
 function App() {
   const account = useCurrentAccount();

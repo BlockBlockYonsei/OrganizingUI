@@ -9,7 +9,7 @@ export default function Bum() {
           style={{
             padding: "15px 30px",
             fontSize: "16px",
-            borderRadius: "8px",
+            borderRadius: "7px",
             backgroundColor: "#007BFF",
             color: "white",
             border: "none",

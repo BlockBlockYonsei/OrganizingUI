@@ -5,7 +5,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Transaction } from "@mysten/sui/transactions";
 import { useGetExecutiveMemberCap } from "./hooks/executive-member";
-import { BLOCKBLOCK_YONSEI, CURRENT_CLUB_CLASS, PACKAGE_ID } from "./Constant";
+import { BLOCKBLOCK_YONSEI, FIRST_CLUB_CLASS, PACKAGE_ID } from "./Constant";
 import { useEffect, useState } from "react";
 
 export default function Tae() {
@@ -42,7 +42,7 @@ export default function Tae() {
               typeArguments: [`${PACKAGE_ID}::executive_member::VicePresident`],
               arguments: [
                 tx.object(BLOCKBLOCK_YONSEI),
-                tx.object(CURRENT_CLUB_CLASS),
+                tx.object(FIRST_CLUB_CLASS),
                 tx.object(pCap),
                 tx.pure.address(account?.address),
               ],

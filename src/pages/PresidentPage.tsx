@@ -1,15 +1,16 @@
-"use client";
-
 import NextClubClass from "@/pages-component/NextClubClass";
-
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
+import { useGetCreateNewClassEvents } from "@/hooks/club";
 import { useGetExecutiveMemberCap } from "@/hooks/executive-member";
 import { useCurrentAccount } from "@mysten/dapp-kit";
 import { useEffect } from "react";
 
 export default function PresidentPage() {
   const account = useCurrentAccount();
+
+  const {} = useGetCreateNewClassEvents();
+
   const { caps } = useGetExecutiveMemberCap({
     owner: account ? account.address : "",
   });

@@ -1,10 +1,12 @@
 import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
 import { useEffect, useState } from "react";
 import { PACKAGE_ID } from "@/Constant";
-import { CreateNewClassEvent } from "@/types/club-class";
+import { CreateNewClassEvent, CurrentClass } from "@/types/club-class";
 
-export const useGetCreateNewClassEvents = () => {
-  const [createNewClassEvents, setCreateNewClassEvents] = useState<any>(null);
+export const useGetCurrentClass = () => {
+  const [createNewClassEvents, setCreateNewClassEvents] =
+    useState<CreateNewClassEvent[]>();
+  const [currentClass, setCurrentClass] = useState<CurrentClass>();
   const [isPending, setIsPending] = useState<boolean>(true);
   const [error, setError] = useState(null);
 
@@ -20,6 +22,7 @@ export const useGetCreateNewClassEvents = () => {
         try {
           const createNewClassEvents: CreateNewClassEvent[] = data.data.flatMap(
             (d) => {
+              // const content = data.data?.content;
               const parsedJson = d.parsedJson;
               if (
                 parsedJson &&
@@ -45,9 +48,50 @@ export const useGetCreateNewClassEvents = () => {
         }
       });
   }, []);
+  useEffect(() => {
+    if (createNewClassEvents) {
+      const sorted = createNewClassEvents.sort((a, b) => b.class - a.class);
+      client
+        .getObject({
+          id: sorted[0].class_id,
+          options: { showContent: true, showType: true },
+        })
+        .then((data) => {
+          const content = data.data?.content;
+          if (
+            content &&
+            "fields" in content &&
+            "blockblock_ys" in content.fields &&
+            typeof content.fields.blockblock_ys === "string" &&
+            "class" in content.fields &&
+            typeof content.fields.class === "string" &&
+            "id" in content.fields &&
+            typeof content.fields.id === "object" &&
+            content.fields.id !== null &&
+            "id" in content.fields.id &&
+            typeof content.fields.id.id === "string" &&
+            "is_open_for_new_members" in content.fields &&
+            typeof content.fields.is_open_for_new_members === "boolean"
+          ) {
+            const currentClass: CurrentClass = {
+              id: content.fields.id.id,
+              blockblock_ys: content.fields.blockblock_ys,
+              class: Number(content.fields.class),
+              is_open_for_new_members: content.fields.is_open_for_new_members,
+            };
+
+            setCurrentClass(currentClass);
+          }
+          console.log("sort current class", data.data?.content);
+        });
+      // setCurrentClass(sorted[0])
+      console.log("sorted", sorted);
+    }
+  }, [createNewClassEvents]);
 
   return {
     createNewClassEvents,
+    currentClass,
     isPending,
     error,
   };

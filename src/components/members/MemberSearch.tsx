@@ -1,6 +1,6 @@
 import React from "react";
 import { Search } from "lucide-react";
-import Input from "../ui/Input";
+import Input from "../ui/input";
 // import { useClubContext } from "../../context/ClubContext";
 
 const MemberSearch = () => {

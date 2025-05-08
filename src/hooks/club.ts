@@ -40,7 +40,6 @@ export const useGetCurrentClass = () => {
             }
           );
           setCreateNewClassEvents(createNewClassEvents);
-          console.log("create new class events", createNewClassEvents);
         } catch (e: any) {
           setError(e);
         } finally {
@@ -82,7 +81,6 @@ export const useGetCurrentClass = () => {
 
             setCurrentClass(currentClass);
           }
-          console.log("sort current class", data.data?.content);
         });
       // setCurrentClass(sorted[0])
       console.log("sorted", sorted);

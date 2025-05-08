@@ -1,10 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { usePresident } from "@/hooks/president";
+import { useCurrentAccount } from "@mysten/dapp-kit";
 import { useState } from "react";
 
 export default function ExecutiveMember() {
   const [vice, setVice] = useState("");
   const [treasurer, setTreasurer] = useState("");
+
+  const accout = useCurrentAccount();
+
+  const { sendExecutiveMemberTicket } = usePresident({
+    owner: accout ? accout.address : "",
+  });
 
   return (
     <div>
@@ -19,7 +27,17 @@ export default function ExecutiveMember() {
             className="col-span-4"
             placeholder="VicePresident"
           />
-          <Button className="col-span-1 cursor-pointer">Send</Button>
+          <Button
+            onClick={() => {
+              sendExecutiveMemberTicket({
+                recipient: vice,
+                excutiveMemberType: "VicePresident",
+              });
+            }}
+            className="col-span-1 cursor-pointer"
+          >
+            Send
+          </Button>
           <Button className="col-span-1 cursor-pointer">Confirm</Button>
         </div>
       </div>

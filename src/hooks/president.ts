@@ -7,17 +7,18 @@ import { useGetCurrentClass } from "./club";
 import { PACKAGE_ID } from "@/Constant";
 import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
 import { useEffect, useState } from "react";
+import { ExecutiveMember } from "@/types/executive-member";
 
 export function usePresident({ owner }: { owner: string }) {
-  const [presidentCap, setPresidentCap] = useState();
+  const [currentPresidentCap, setCurrentPresidentCap] =
+    useState<ExecutiveMember>();
   const [isPending, setIsPending] = useState<boolean>(true);
   const [error, setError] = useState(null);
   const account = useCurrentAccount();
   const { mutate: signAndExecuteTransaction } = useSignAndExecuteTransaction();
-  // const {
-  //   collection: { refetch },
-  // } = useContext(CollectionContext);
-  // const { setToastState } = useToast();
+
+  const { currentClass } = useGetCurrentClass();
+
   const CAP_TYPE = `${PACKAGE_ID}::executive_member::ExecutiveMemberCap`;
 
   const client = new SuiClient({ url: getFullnodeUrl("testnet") });
@@ -33,26 +34,68 @@ export function usePresident({ owner }: { owner: string }) {
       })
       .then((data) => {
         console.log("president", data);
+        try {
+          const excutiveMembers: ExecutiveMember[] = data.data.flatMap((d) => {
+            // const content = data.data?.content;
+            const content = d.data?.content;
+            if (
+              content &&
+              "fields" in content &&
+              "club_class" in content.fields &&
+              typeof content.fields.club_class === "string" &&
+              "member_type" in content.fields &&
+              typeof content.fields.member_type === "string" &&
+              "id" in content.fields &&
+              typeof content.fields.id === "object" &&
+              content.fields.id !== null &&
+              "id" in content.fields.id &&
+              typeof content.fields.id.id === "string"
+            ) {
+              const excutiveMember: ExecutiveMember = {
+                id: content.fields.id.id,
+                club_class: Number(content.fields.club_class),
+                member_type: content.fields.member_type,
+              };
+              return [excutiveMember as ExecutiveMember];
+            }
+            return [];
+          });
+
+          if (currentClass) {
+            const currentPresident = excutiveMembers
+              .filter((e) => e.club_class === currentClass.class)
+              .filter((e) => e.member_type === "President");
+
+            if (currentPresident) {
+              setCurrentPresidentCap(currentPresident[0]);
+            }
+          }
+        } catch (e: any) {
+          setError(e);
+        } finally {
+          setIsPending(false);
+        }
         // CurrentClass 로 한 번 필터링 해주  면 좋겠 다
         // setPresidentCap(data);
         setIsPending(false);
       })
       .catch((e) => setError(e))
       .finally();
-  }, [owner]);
-
-  const { currentClass } = useGetCurrentClass();
+  }, [owner, currentClass]);
 
   const sendExecutiveMemberTicket = ({
-    collectionName,
-    bannerImgURL,
-    description,
-    layers,
+    recipient,
+    excutiveMemberType,
   }: {
-    collectionName: string;
-    bannerImgURL: string;
-    description: string;
-    layers: string[];
+    recipient: string;
+    excutiveMemberType:
+      | "President"
+      | "VicePresident"
+      | "Treasurer"
+      | "PlanningTeamLeader"
+      | "PlanningTeamMember"
+      | "MarketingTeamLeader"
+      | "MarketingTeamMember";
   }) => {
     if (!account) return;
     // setToastState({
@@ -60,65 +103,25 @@ export function usePresident({ owner }: { owner: string }) {
     //   message: "Collection is being created...",
     // });
     if (!currentClass) return;
+    if (!currentPresidentCap) return;
+
+    console.log("ex typ", excutiveMemberType);
+    console.log("presidisisisisi", currentPresidentCap);
 
     const tx = new Transaction();
-    const [col, cap] = tx.moveCall({
+
+    tx.moveCall({
       package: PACKAGE_ID,
-      module: "collection",
+      module: "blockblock",
       function: "send_executive_member_ticket",
+      typeArguments: [`${PACKAGE_ID}::executive_member::${excutiveMemberType}`],
       arguments: [
         tx.object(currentClass.blockblock_ys),
         tx.object(currentClass.id),
-        tx.pure.string(collectionName),
+        tx.object(currentPresidentCap.id),
+        tx.pure.address(recipient),
       ],
     });
-
-    layers.forEach((layer) => {
-      tx.moveCall({
-        package: PACKAGE_ID,
-        module: "collection",
-        function: "add_layer_type",
-        arguments: [tx.object(col), tx.object(cap), tx.pure.string(layer)],
-      });
-    });
-
-    tx.moveCall({
-      package: PACKAGE_ID,
-      module: "collection",
-      function: "add_config_to_type",
-      typeArguments: [`${PACKAGE_ID}::collection::BaseType`],
-      arguments: [
-        tx.object(col),
-        tx.object(cap),
-        tx.pure.string(collectionName),
-        tx.pure.string("img_url"),
-        tx.pure.string(bannerImgURL),
-      ],
-    });
-
-    tx.moveCall({
-      package: PACKAGE_ID,
-      module: "collection",
-      function: "add_config_to_type",
-      typeArguments: [`${PACKAGE_ID}::collection::BaseType`],
-      arguments: [
-        tx.object(col),
-        tx.object(cap),
-        tx.pure.string(collectionName),
-        tx.pure.string("description"),
-        tx.pure.string(description),
-      ],
-    });
-
-    tx.moveCall({
-      package: "0x2",
-      module: "transfer",
-      function: "public_share_object",
-      typeArguments: [`${PACKAGE_ID}::collection::Collection`],
-      arguments: [tx.object(col)],
-    });
-
-    tx.transferObjects([cap], tx.pure.address(account.address));
 
     signAndExecuteTransaction(
       {
@@ -146,5 +149,9 @@ export function usePresident({ owner }: { owner: string }) {
   };
   return {
     // createCollection,
+    currentPresidentCap,
+    sendExecutiveMemberTicket,
+    isPending,
+    error,
   };
 }

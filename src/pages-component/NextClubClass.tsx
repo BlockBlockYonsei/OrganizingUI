@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 export default function NextClubClass() {
@@ -63,7 +62,7 @@ export default function NextClubClass() {
             onClick={() => {
               console.log("Arrow Clicked!");
             }}
-            className="w-14 h-14 bg-white z-10 ml-[-16px] focus:outline-none"
+            className="w-14 h-14 bg-white z-10 cursor-pointer active:bg-gray-300 focus:outline-none"
             style={{
               clipPath:
                 "polygon(0% 40%, 65% 40%, 65% 25%, 100% 50%, 65% 75%, 65% 60%, 0% 60%)",

@@ -4,7 +4,7 @@ import {
 } from "@mysten/dapp-kit";
 import { Button } from "@/components/ui/button";
 import { Transaction } from "@mysten/sui/transactions";
-import { useGetExecutiveMemberCap } from "./hooks/executive-member";
+import { useGetExecutiveMemberCap } from "./hooks/members";
 import { BLOCKBLOCK_YONSEI, FIRST_CLUB_CLASS, PACKAGE_ID } from "./Constant";
 import { useEffect, useState } from "react";
 

@@ -7,7 +7,7 @@ import { useGetCurrentClass } from "./club";
 import { PACKAGE_ID } from "@/Constant";
 import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
 import { useEffect, useState } from "react";
-import { ExecutiveMember, ExecutiveMemberType } from "@/types/executive-member";
+import { ExecutiveMember, ExecutiveMemberType } from "@/types/members";
 
 export function usePresident({ owner }: { owner: string }) {
   const [currentPresidentCap, setCurrentPresidentCap] =

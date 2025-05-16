@@ -1,7 +1,7 @@
 import CurrentClassRecruiting from "@/pages-component/CurrentClassRecruiting";
 import NextClubVoting from "@/pages-component/NextClubVoting";
 import ExecutiveMemberInvitation from "@/pages-component/ExecutiveMemberInvitation";
-import { useGetExecutiveMemberCap } from "@/hooks/executive-member";
+import { useGetExecutiveMemberCap } from "@/hooks/members";
 import { useCurrentAccount } from "@mysten/dapp-kit";
 import { useEffect } from "react";
 import PresidentInvitation from "@/pages-component/PresidentInvitation";

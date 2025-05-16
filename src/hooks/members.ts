@@ -2,7 +2,7 @@ import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
 import { useEffect, useState } from "react";
 import { PACKAGE_ID } from "@/Constant";
 import { useGetCurrentClass } from "./club";
-import { BlockblockMember, ExecutiveMember } from "@/types/executive-member";
+import { BlockblockMember, ExecutiveMember } from "@/types/members";
 
 export const useGetExecutiveMemberCap = ({ owner }: { owner: string }) => {
   const [caps, setCaps] = useState<ExecutiveMember[]>([]);

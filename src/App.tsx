@@ -1,9 +1,6 @@
 import { useEffect } from "react";
 import { useCurrentAccount } from "@mysten/dapp-kit";
-import {
-  useGetExecutiveMemberCap,
-  useGetMemberCap,
-} from "./hooks/executive-member";
+import { useGetExecutiveMemberCap, useGetMemberCap } from "./hooks/members";
 import MemberManagement from "./pages/MemberManagement";
 
 function App() {

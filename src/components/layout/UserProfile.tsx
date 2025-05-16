@@ -1,10 +1,7 @@
 import { useEffect } from "react";
 import { Crown, User } from "lucide-react";
 import WalletButton from "./WalletButton";
-import {
-  useGetExecutiveMemberCap,
-  useGetMemberCap,
-} from "@/hooks/executive-member";
+import { useGetExecutiveMemberCap, useGetMemberCap } from "@/hooks/members";
 import { useCurrentAccount } from "@mysten/dapp-kit";
 
 interface UserProfileProps {

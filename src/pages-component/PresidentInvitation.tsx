@@ -3,7 +3,7 @@ import { useCurrentAccount } from "@mysten/dapp-kit";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ExecutiveMemberType } from "@/types/executive-member";
+import { ExecutiveMemberType } from "@/types/members";
 import { usePresident } from "@/hooks/president";
 export default function PresidentInvitation() {
   const [memberAddress, setMemberAddress] = useState<Record<string, string>>(

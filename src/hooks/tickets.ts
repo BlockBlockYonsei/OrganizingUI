@@ -4,9 +4,13 @@ import { PACKAGE_ID } from "@/Constant";
 import { useGetCurrentClass } from "./club";
 import { ExecutiveMember } from "@/types/members";
 import { ExecutiveMemberTicket } from "@/types/tickets";
-import { useCurrentAccount } from "@mysten/dapp-kit";
+import {
+  useCurrentAccount,
+  useSignAndExecuteTransaction,
+} from "@mysten/dapp-kit";
+import { Transaction } from "@mysten/sui/transactions";
 
-export const useGetExecutiveMemberTicket = () => {
+export const useExecutiveMemberTicket = () => {
   const [tickets, setTickets] = useState<ExecutiveMemberTicket[]>([]);
   const [isPending, setIsPending] = useState<boolean>(true);
   const [error, setError] = useState(null);
@@ -15,6 +19,7 @@ export const useGetExecutiveMemberTicket = () => {
 
   const account = useCurrentAccount();
   const { currentClass } = useGetCurrentClass();
+  const { mutate: signAndExecuteTransaction } = useSignAndExecuteTransaction();
 
   const client = new SuiClient({ url: getFullnodeUrl("testnet") });
   useEffect(() => {
@@ -54,7 +59,11 @@ export const useGetExecutiveMemberTicket = () => {
               club_class: Number(content.fields.club_class),
               member_type: content.fields.member_type,
               president: content.fields.president,
-              member_address: content.fields.member_address,
+              member_address:
+                content.fields.member_address &&
+                typeof content.fields.member_address === "string"
+                  ? content.fields.member_address
+                  : null,
             };
 
             if (executiveMemberTicket.club_class === currentClass.class) {
@@ -74,9 +83,116 @@ export const useGetExecutiveMemberTicket = () => {
       .finally();
   }, [account, currentClass]);
 
+  const sendBackExecutiveMemberTicket = ({
+    ticket,
+  }: {
+    ticket: ExecutiveMemberTicket;
+  }) => {
+    if (!account) return;
+    // setToastState({
+    //   type: "loading",
+    //   message: "Collection is being created...",
+    // });
+    if (!currentClass) return;
+
+    const tx = new Transaction();
+
+    tx.moveCall({
+      package: PACKAGE_ID,
+      module: "blockblock",
+      function: "send_back_executive_member_ticket",
+      typeArguments: [`${PACKAGE_ID}::executive_member::${ticket.member_type}`],
+      arguments: [
+        tx.object(currentClass.blockblock_ys),
+        tx.object(currentClass.id),
+        tx.object(ticket.id),
+      ],
+    });
+
+    signAndExecuteTransaction(
+      {
+        transaction: tx,
+      },
+      {
+        onSuccess: (data) => {
+          console.log("Success! data:", data);
+          // refetch();
+          // setToastState({
+          //   type: "success",
+          //   message: "Creating collection succeeded.",
+          // });
+        },
+        onError: (err) => {
+          console.log("Error", err);
+          // setToastState({
+          //   type: "error",
+          //   message:
+          //     "Something went wrong while creating the collection. Please try again.",
+          // });
+        },
+      }
+    );
+  };
+
+  const confirmExecutiveMemberTicket = ({
+    ticket,
+    presidentCap,
+  }: {
+    ticket: ExecutiveMemberTicket;
+    presidentCap: ExecutiveMember;
+  }) => {
+    if (!account) return;
+    // setToastState({
+    //   type: "loading",
+    //   message: "Collection is being created...",
+    // });
+    if (!currentClass) return;
+
+    const tx = new Transaction();
+
+    tx.moveCall({
+      package: PACKAGE_ID,
+      module: "blockblock",
+      function: "confirm_executive_member_ticket",
+      typeArguments: [`${PACKAGE_ID}::executive_member::${ticket.member_type}`],
+      arguments: [
+        tx.object(currentClass.blockblock_ys),
+        tx.object(currentClass.id),
+        tx.object(presidentCap.id),
+        tx.object(ticket.id),
+      ],
+    });
+
+    signAndExecuteTransaction(
+      {
+        transaction: tx,
+      },
+      {
+        onSuccess: (data) => {
+          console.log("Success! data:", data);
+          // refetch();
+          // setToastState({
+          //   type: "success",
+          //   message: "Creating collection succeeded.",
+          // });
+        },
+        onError: (err) => {
+          console.log("Error", err);
+          // setToastState({
+          //   type: "error",
+          //   message:
+          //     "Something went wrong while creating the collection. Please try again.",
+          // });
+        },
+      }
+    );
+  };
+
   return {
     tickets,
     isPending,
     error,
+    sendBackExecutiveMemberTicket,
+    confirmExecutiveMemberTicket,
   };
 };

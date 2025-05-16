@@ -5,15 +5,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ExecutiveMemberType } from "@/types/members";
 import { usePresident } from "@/hooks/president";
+import { useExecutiveMemberTicket } from "@/hooks/tickets";
 export default function ExecutiveMemberInvitation() {
   const [memberAddress, setMemberAddress] = useState<Record<string, string>>(
     {}
   );
   const accout = useCurrentAccount();
 
-  const { inviteExecutiveMember } = usePresident({
+  const { currentPresidentCap, inviteExecutiveMember } = usePresident({
     owner: accout ? accout.address : "",
   });
+  const { tickets, confirmExecutiveMemberTicket } = useExecutiveMemberTicket();
   return (
     <div>
       <h2 className="text-2xl font-bold">Executive Member Invitation</h2>
@@ -32,7 +34,7 @@ export default function ExecutiveMemberInvitation() {
       ).map((member) => (
         <div>
           <h2>{member} Ticket</h2>
-          <div className="grid grid-cols-7 gap-4">
+          <div className="grid grid-cols-8 gap-4">
             <Input
               value={memberAddress[member]}
               onChange={(e) => {
@@ -59,9 +61,29 @@ export default function ExecutiveMemberInvitation() {
             >
               Send
             </Button>
-            <Button className="col-span-1 cursor-pointer border-2 rounded-md active:bg-gray-300">
-              Confirm
-            </Button>
+          </div>
+          <div className="grid grid-cols-5 gap-4">
+            {tickets &&
+              tickets
+                .filter(
+                  (ticket) =>
+                    ticket.member_address !== null &&
+                    (ticket.member_type as ExecutiveMemberType) === member
+                )
+                .map((ticket) => (
+                  <Button
+                    onClick={() => {
+                      if (!currentPresidentCap) return;
+                      confirmExecutiveMemberTicket({
+                        ticket,
+                        presidentCap: currentPresidentCap,
+                      });
+                    }}
+                    className="col-span-1 cursor-pointer border-2 rounded-md active:bg-gray-300 truncate "
+                  >
+                    Confirm {ticket.member_address?.slice(0, 10)}...
+                  </Button>
+                ))}
           </div>
         </div>
       ))}

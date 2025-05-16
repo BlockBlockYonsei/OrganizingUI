@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useGetExecutiveMemberTicket } from "@/hooks/tickets";
-import React from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { useExecutiveMemberTicket } from "@/hooks/tickets";
 
 export default function ExecutiveMemberTicketPage() {
-  const { tickets } = useGetExecutiveMemberTicket();
+  const { tickets, sendBackExecutiveMemberTicket } = useExecutiveMemberTicket();
+
   return (
     <div>
       <div className="text-3xl font-bold">Executive Member Ticket</div>
@@ -24,7 +24,12 @@ export default function ExecutiveMemberTicketPage() {
                     </span>
                   </div>
                 </div>
-                <Button className="text-2xl border-2 rounded-md py-5 active:bg-gray-700 cursor-pointer">
+                <Button
+                  onClick={() => {
+                    sendBackExecutiveMemberTicket({ ticket });
+                  }}
+                  className="text-2xl border-2 rounded-md py-5 active:bg-gray-700 cursor-pointer"
+                >
                   Accept
                 </Button>
               </CardContent>

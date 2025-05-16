@@ -26,8 +26,8 @@ const Sidebar = () => {
       icon: <Users className="h-5 w-5" />,
     },
     {
-      label: "RecieveMemberTicket",
-      path: "/non-member",
+      label: "ExecutiveMemberTicket",
+      path: "/exe-member-ticket",
       icon: <Ticket className="h-5 w-5" />,
     },
     {

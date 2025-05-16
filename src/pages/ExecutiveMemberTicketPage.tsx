@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
 
-export default function NonMemberPage() {
+export default function ExecutiveMemberTicketPage() {
   return (
     <div>
       <div className="text-3xl font-bold">Executive Member Ticket</div>

@@ -16,17 +16,17 @@ const Sidebar = () => {
 
   const navItems: NavItem[] = [
     {
-      label: "Dashboard",
+      label: "Home",
       path: "/",
       icon: <Home className="h-5 w-5" />,
     },
     {
-      label: "Members",
-      path: "/member",
+      label: "ExecutiveMembers",
+      path: "/exe-member",
       icon: <Users className="h-5 w-5" />,
     },
     {
-      label: "NonMembers",
+      label: "RecieveMemberTicket",
       path: "/non-member",
       icon: <Ticket className="h-5 w-5" />,
     },

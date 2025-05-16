@@ -23,7 +23,7 @@ export default function Routers() {
           }
         >
           <Route path="/" element={<LandingPage />}></Route>
-          <Route path="/member" element={<ExecutiveMemberPage />}></Route>
+          <Route path="/exe-member" element={<ExecutiveMemberPage />}></Route>
           <Route path="/non-member" element={<NonMemberPage />}></Route>
           <Route path="/test" element={<MemberManagement />}></Route>
         </Route>

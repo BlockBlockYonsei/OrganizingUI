@@ -13,13 +13,13 @@ function App() {
     owner: account ? account.address : "",
   });
 
-  useEffect(() => {
-    console.log("e caps", eMemberCap);
-  }, [eMemberCap]);
+  // useEffect(() => {
+  //   console.log("e caps", eMemberCap);
+  // }, [eMemberCap]);
 
-  useEffect(() => {
-    console.log("normal caps", memberCap);
-  }, [memberCap]);
+  // useEffect(() => {
+  //   console.log("normal caps", memberCap);
+  // }, [memberCap]);
 
   return (
     <>

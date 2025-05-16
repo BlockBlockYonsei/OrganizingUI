@@ -22,7 +22,6 @@ export const useGetCurrentClass = () => {
         try {
           const createNewClassEvents: CreateNewClassEvent[] = data.data.flatMap(
             (d) => {
-              // const content = data.data?.content;
               const parsedJson = d.parsedJson;
               if (
                 parsedJson &&
@@ -80,7 +79,6 @@ export const useGetCurrentClass = () => {
             // ) {
 
             // }
-            console.log("AAAAA", content);
             const currentClass: CurrentClass = {
               id: content.fields.id.id,
               blockblock_ys: content.fields.blockblock_ys,
@@ -92,7 +90,6 @@ export const useGetCurrentClass = () => {
             setCurrentClass(currentClass);
           }
         });
-      console.log("sorted", sorted);
     }
   }, [createNewClassEvents]);
 

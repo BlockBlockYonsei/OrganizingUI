@@ -41,7 +41,9 @@ const UserProfile = ({ isSidebarOpen }: UserProfileProps) => {
             </p>
             <div className="flex items-center text-xs text-[#a78bfa]">
               <Crown className="h-3 w-3 mr-1" />
-              <span>President</span>
+              <span>
+                {eMemberCap[0] ? eMemberCap[0].member_type : "Loading..."}
+              </span>
             </div>
           </div>
         )}

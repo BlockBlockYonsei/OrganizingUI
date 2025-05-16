@@ -55,7 +55,6 @@ export const useGetExecutiveMemberCap = ({ owner }: { owner: string }) => {
           }
           return [];
         });
-        console.log("FilteredData", currentClassExecutiveMemberCaps);
         setCaps(currentClassExecutiveMemberCaps);
         setIsPending(false);
       })

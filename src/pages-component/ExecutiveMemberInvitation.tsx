@@ -11,7 +11,7 @@ export default function ExecutiveMemberInvitation() {
   );
   const accout = useCurrentAccount();
 
-  const { sendExecutiveMemberTicket } = usePresident({
+  const { inviteExecutiveMember } = usePresident({
     owner: accout ? accout.address : "",
   });
   return (
@@ -46,7 +46,7 @@ export default function ExecutiveMemberInvitation() {
             />
             <Button
               onClick={() => {
-                sendExecutiveMemberTicket({
+                inviteExecutiveMember({
                   recipient: memberAddress[member],
                   excutiveMemberType: member,
                 });

@@ -33,7 +33,6 @@ export function usePresident({ owner }: { owner: string }) {
         },
       })
       .then((data) => {
-        console.log("president", data);
         try {
           const excutiveMembers: ExecutiveMember[] = data.data.flatMap((d) => {
             // const content = data.data?.content;
@@ -83,7 +82,7 @@ export function usePresident({ owner }: { owner: string }) {
       .finally();
   }, [owner, currentClass]);
 
-  const sendExecutiveMemberTicket = ({
+  const inviteExecutiveMember = ({
     recipient,
     excutiveMemberType,
   }: {
@@ -98,15 +97,12 @@ export function usePresident({ owner }: { owner: string }) {
     if (!currentClass) return;
     if (!currentPresidentCap) return;
 
-    console.log("ex typ", excutiveMemberType);
-    console.log("presidisisisisi", currentPresidentCap);
-
     const tx = new Transaction();
 
     tx.moveCall({
       package: PACKAGE_ID,
       module: "blockblock",
-      function: "send_executive_member_ticket",
+      function: "invite_executive_member",
       typeArguments: [`${PACKAGE_ID}::executive_member::${excutiveMemberType}`],
       arguments: [
         tx.object(currentClass.blockblock_ys),
@@ -142,7 +138,7 @@ export function usePresident({ owner }: { owner: string }) {
   };
   return {
     currentPresidentCap,
-    sendExecutiveMemberTicket,
+    inviteExecutiveMember,
     isPending,
     error,
   };

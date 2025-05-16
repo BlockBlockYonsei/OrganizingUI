@@ -11,7 +11,7 @@ export default function PresidentInvitation() {
   );
   const accout = useCurrentAccount();
 
-  const { sendExecutiveMemberTicket } = usePresident({
+  const { inviteExecutiveMember } = usePresident({
     owner: accout ? accout.address : "",
   });
   return (

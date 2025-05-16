@@ -12,3 +12,8 @@ export type ExecutiveMemberType =
   | "PlanningTeamMember"
   | "MarketingTeamLeader"
   | "MarketingTeamMember";
+
+export interface BlockblockMember {
+  id: string;
+  club_class: number;
+}

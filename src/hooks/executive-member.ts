@@ -2,7 +2,7 @@ import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
 import { useEffect, useState } from "react";
 import { PACKAGE_ID } from "@/Constant";
 import { useGetCurrentClass } from "./club";
-import { ExecutiveMember } from "@/types/executive-member";
+import { BlockblockMember, ExecutiveMember } from "@/types/executive-member";
 
 export const useGetExecutiveMemberCap = ({ owner }: { owner: string }) => {
   const [caps, setCaps] = useState<ExecutiveMember[]>([]);
@@ -77,8 +77,13 @@ export const useGetMemberCap = ({ owner }: { owner: string }) => {
 
   const CAP_TYPE = `${PACKAGE_ID}::blockblock_member::BlockblockMemberCap`;
 
+  const { currentClass } = useGetCurrentClass();
   const client = new SuiClient({ url: getFullnodeUrl("testnet") });
+
   useEffect(() => {
+    if (!owner) return;
+    if (!currentClass) return;
+
     client
       .getOwnedObjects({
         owner,
@@ -89,7 +94,31 @@ export const useGetMemberCap = ({ owner }: { owner: string }) => {
         },
       })
       .then((data) => {
-        setCaps(data);
+        // CurrentClass 로 한 번 필터링 해주  면 좋겠 다
+        // MemberCap은... 일단 다 가져와 되긴 할 듯?
+        const currentClassBlockblockMemberCaps = data.data.flatMap((d) => {
+          const content = d.data?.content;
+          if (
+            content &&
+            "fields" in content &&
+            "club_class" in content.fields &&
+            typeof content.fields.club_class === "string" &&
+            "id" in content.fields &&
+            typeof content.fields.id === "object" &&
+            content.fields.id !== null &&
+            "id" in content.fields.id &&
+            typeof content.fields.id.id === "string"
+          ) {
+            const blockblockMember: BlockblockMember = {
+              id: content.fields.id.id,
+              club_class: Number(content.fields.club_class),
+            };
+
+            return blockblockMember;
+          }
+          return [];
+        });
+        setCaps(currentClassBlockblockMemberCaps);
         setIsPending(false);
       })
       .catch((e) => setError(e))

@@ -9,7 +9,7 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 
-export default function NextRecuritingClass() {
+export default function CurrentClassRecruiting() {
   const [status, setStatus] = useState<"open" | "close">("close");
   const [selectedAddress, setSelectedAddress] = useState("");
 
@@ -28,9 +28,9 @@ export default function NextRecuritingClass() {
 
       <div className="flex items-center gap-4">
         <div className="min-w-lg">
-          <Select onValueChange={setSelectedAddress}>
+          <Select onValueChange={() => {}}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select address" />
+              <SelectValue placeholder="Registerd Member Address" />
             </SelectTrigger>
             <SelectContent className="text-white bg-gray-900">
               {memberAddresses.map((a) => (
@@ -59,12 +59,12 @@ export default function NextRecuritingClass() {
             </div>
 
             <div className="flex flex-col justify-center items-center">
-              <span>registration</span>
+              <span>Registration</span>
               <span className="text-sm">
                 {status === "open" ? (
-                  <span className="text-green-400">open</span>
+                  <span className="text-green-400">Open</span>
                 ) : (
-                  <span className="text-orange-400">close</span>
+                  <span className="text-orange-400">Close</span>
                 )}
               </span>
             </div>

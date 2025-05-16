@@ -1,4 +1,4 @@
-import NextRecuritingClass from "@/pages-component/NextRecruitingClass";
+import CurrentClassRecruiting from "@/pages-component/CurrentClassRecruiting";
 import NextClubClass from "@/pages-component/NextClubClass";
 import ExecutiveMemberTicketSender from "@/pages-component/ExecutiveMemberTicketSender";
 import { useGetExecutiveMemberCap } from "@/hooks/executive-member";
@@ -21,11 +21,13 @@ export default function ExecutiveMemberPage() {
         운영진 페이지 {`(${caps[0] ? caps[0].member_type : "Loading..."})`}
       </h1>
 
-      {caps && caps[0].member_type === "President" && (
+      {caps[0] && caps[0].member_type === "President" && (
         <ExecutiveMemberTicketSender />
       )}
       <br />
-      <NextRecuritingClass></NextRecuritingClass>
+      {caps[0] && caps[0].member_type === "President" && (
+        <CurrentClassRecruiting />
+      )}
       <br />
       <NextClubClass></NextClubClass>
     </section>

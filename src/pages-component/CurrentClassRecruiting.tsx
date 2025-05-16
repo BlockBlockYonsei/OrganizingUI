@@ -1,26 +1,15 @@
-"use client";
-
 import { useState } from "react";
+import { useGetCurrentClass } from "@/hooks/club";
 import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/select";
+  Accordion,
+  AccordionTrigger,
+  AccordionContent,
+  AccordionItem,
+} from "@/components/ui/accordion";
 
 export default function CurrentClassRecruiting() {
   const [status, setStatus] = useState<"open" | "close">("close");
-  // const [selectedAddress, setSelectedAddress] = useState("");
-
-  const memberAddresses = [
-    "0x00000address1",
-    "0x00000address2",
-    "0x00000address3",
-    "0x00000address4",
-    "0x00000address5",
-    "0x00000address6",
-  ];
+  const { currentClass } = useGetCurrentClass();
 
   return (
     <div className="space-y-6 text-white">
@@ -28,16 +17,20 @@ export default function CurrentClassRecruiting() {
 
       <div className="flex items-center gap-4">
         <div className="min-w-lg">
-          <Select onValueChange={() => {}}>
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Registerd Member Address" />
-            </SelectTrigger>
-            <SelectContent className="text-white bg-gray-900">
-              {memberAddresses.map((a) => (
-                <SelectItem value={a}>{a}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Accordion type="multiple">
+            <AccordionItem
+              value="item1"
+              className="border-2 last:border-b-2 rounded-lg px-2"
+            >
+              <AccordionTrigger className="text-md">
+                Member Addresses
+              </AccordionTrigger>
+              {currentClass &&
+                currentClass.members.map((address) => (
+                  <AccordionContent>{address}</AccordionContent>
+                ))}
+            </AccordionItem>
+          </Accordion>
         </div>
 
         <div>

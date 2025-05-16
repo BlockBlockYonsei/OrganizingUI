@@ -21,7 +21,9 @@ export default function ExecutiveMemberPage() {
         운영진 페이지 {`(${caps[0] ? caps[0].member_type : "Loading..."})`}
       </h1>
 
-      <ExecutiveMemberTicketSender />
+      {caps && caps[0].member_type === "President" && (
+        <ExecutiveMemberTicketSender />
+      )}
       <br />
       <NextRecuritingClass></NextRecuritingClass>
       <br />

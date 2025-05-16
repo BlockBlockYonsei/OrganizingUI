@@ -16,7 +16,7 @@ export default function ExecutiveMemberTicketSender() {
   });
   return (
     <div>
-      <h2 className="text-2xl font-bold">Recuriting</h2>
+      <h2 className="text-2xl font-bold">Executive Member Ticket</h2>
 
       <br />
 
@@ -31,8 +31,8 @@ export default function ExecutiveMemberTicketSender() {
         ] as ExecutiveMemberType[]
       ).map((member) => (
         <div>
-          <h2>{member}</h2>
-          <div className="grid grid-cols-6">
+          <h2>{member} Ticket</h2>
+          <div className="grid grid-cols-7 gap-4">
             <Input
               value={memberAddress[member]}
               onChange={(e) => {
@@ -42,7 +42,7 @@ export default function ExecutiveMemberTicketSender() {
                 }));
               }}
               className="col-span-4"
-              placeholder={member}
+              placeholder={`${member} Address`}
             />
             <Button
               onClick={() => {
@@ -55,11 +55,13 @@ export default function ExecutiveMemberTicketSender() {
                   [member]: "",
                 }));
               }}
-              className="col-span-1 cursor-pointer"
+              className="col-span-1 cursor-pointer border-2 rounded-md active:bg-gray-300"
             >
               Send
             </Button>
-            <Button className="col-span-1 cursor-pointer">Confirm</Button>
+            <Button className="col-span-1 cursor-pointer border-2 rounded-md active:bg-gray-300">
+              Confirm
+            </Button>
           </div>
         </div>
       ))}

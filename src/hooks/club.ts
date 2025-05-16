@@ -60,29 +60,38 @@ export const useGetCurrentClass = () => {
           if (
             content &&
             "fields" in content &&
-            "blockblock_ys" in content.fields &&
-            typeof content.fields.blockblock_ys === "string" &&
-            "class" in content.fields &&
-            typeof content.fields.class === "string" &&
             "id" in content.fields &&
             typeof content.fields.id === "object" &&
             content.fields.id !== null &&
             "id" in content.fields.id &&
             typeof content.fields.id.id === "string" &&
-            "is_open_for_new_members" in content.fields &&
-            typeof content.fields.is_open_for_new_members === "boolean"
+            "blockblock_ys" in content.fields &&
+            typeof content.fields.blockblock_ys === "string" &&
+            "class" in content.fields &&
+            typeof content.fields.class === "string" &&
+            "members" in content.fields &&
+            Array.isArray(content.fields.members) &&
+            "recruitment" in content.fields
           ) {
+            // if (
+            //   typeof content.fields.recruitment === "object" &&
+            //   content.fields.recruitment !== null &&
+            //   "vec" in content.fields.recruitment
+            // ) {
+
+            // }
+            console.log("AAAAA", content);
             const currentClass: CurrentClass = {
               id: content.fields.id.id,
               blockblock_ys: content.fields.blockblock_ys,
               class: Number(content.fields.class),
-              is_open_for_new_members: content.fields.is_open_for_new_members,
+              members: content.fields.members as string[],
+              recruitment: content.fields.recruitment,
             };
 
             setCurrentClass(currentClass);
           }
         });
-      // setCurrentClass(sorted[0])
       console.log("sorted", sorted);
     }
   }, [createNewClassEvents]);

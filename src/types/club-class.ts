@@ -8,7 +8,8 @@ export interface CurrentClass {
   id: string;
   blockblock_ys: string;
   class: number;
-  is_open_for_new_members: boolean;
+  members: string[];
+  recruitment: any | null;
 }
 
 export interface PastClass {

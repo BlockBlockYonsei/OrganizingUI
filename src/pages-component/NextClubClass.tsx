@@ -1,90 +1,77 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
-export default function NextClubClass(){
-    const [roles, setRoles] = useState({
-        president: false,
-        vpresident: false,
-        treasurer: false,
-      });
-    
-      const allDone = Object.values(roles).every(Boolean);
-    
-      const toggleRole = (key: keyof typeof roles) => {
-        setRoles((prev) => ({ ...prev, [key]: !prev[key] }));
-      };
-    
-      const handleArrowClick = () => {
-        console.log("화살표 클릭됨");
-      };
-    
-    return(<div>
-        <Card className="relative flex flex-row justify-between items-center p-10 border border-border rounded-3xl shadow-2xl bg-background min-h-[200px]">
+export default function NextClubClass() {
+  const [roles, setRoles] = useState({
+    president: false,
+    vpresident: false,
+    treasurer: false,
+  });
+
+  const allDone = Object.values(roles).every(Boolean);
+
+  const toggleRole = (key: keyof typeof roles) => {
+    setRoles((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  return (
+    <div className="space-6">
+      <h2 className="text-2xl font-bold">Next Club Voting</h2>
+
+      <div className="flex gap-10 items-center h-20">
         {/* 왼쪽: 배터리 버튼 */}
-        <div className="flex items-center overflow-hidden rounded-full border-2 border-white bg-gray-900">
-          <RoleButton
-            label="President"
-            active={roles.president}
+        <div className="">
+          <Button
             onClick={() => toggleRole("president")}
-            className="rounded-l-full"
-          />
-          <RoleButton
-            label="V. President"
-            active={roles.vpresident}
+            size={"lg"}
+            className={`${
+              roles.president
+                ? "bg-green-500 text-white hover:bg-green-600"
+                : "bg-gray-900 text-white hover:bg-gray-800"
+            } rounded-l-full border-l-2 border-y-2 cursor-pointer`}
+          >
+            President
+          </Button>
+          <Button
             onClick={() => toggleRole("vpresident")}
-            className="rounded-none"
-          />
-          <RoleButton
-            label="Treasurer"
-            active={roles.treasurer}
+            size={"lg"}
+            className={`${
+              roles.vpresident
+                ? "bg-green-500 text-white hover:bg-green-600"
+                : "bg-gray-900 text-white hover:bg-gray-800"
+            } rounded-none border-y-2 cursor-pointer`}
+          >
+            V. President
+          </Button>
+          <Button
             onClick={() => toggleRole("treasurer")}
-            className="rounded-r-full"
-          />
+            size={"lg"}
+            className={`${
+              roles.treasurer
+                ? "bg-green-500 text-white hover:bg-green-600"
+                : "bg-gray-900 text-white hover:bg-gray-800"
+            } rounded-r-full border-y-2 border-r-2 cursor-pointer`}
+          >
+            Treasurer
+          </Button>
         </div>
 
         {/* 오른쪽: 화살표 버튼 */}
         {allDone && (
           <button
-            onClick={handleArrowClick}
+            onClick={() => {
+              console.log("Arrow Clicked!");
+            }}
             className="w-14 h-14 bg-white z-10 ml-[-16px] focus:outline-none"
             style={{
-              clipPath: 'polygon(0% 40%, 65% 40%, 65% 25%, 100% 50%, 65% 75%, 65% 60%, 0% 60%)',
-              border: 'none'
+              clipPath:
+                "polygon(0% 40%, 65% 40%, 65% 25%, 100% 50%, 65% 75%, 65% 60%, 0% 60%)",
+              border: "none",
             }}
           />
         )}
-      </Card>
-
-
-    </div>)
+      </div>
+    </div>
+  );
 }
-
-function RoleButton({
-    label,
-    active,
-    onClick,
-    className = ""
-  }: {
-    label: string;
-    active: boolean;
-    onClick: () => void;
-    className?: string;
-  }) {
-    return (
-      <button
-        onClick={onClick}
-        className={`px-8 py-5 text-lg font-semibold tracking-wide focus:outline-none border-none ${
-          active ? "bg-green-500 text-white hover:bg-green-600" : "bg-gray-900 text-white hover:bg-gray-800"
-        } ${className}`}
-        style={{
-          margin: 0,
-          boxShadow: "none",
-          border: "none",
-        }}
-      >
-        {label}
-      </button>
-    );
-  }
-
-

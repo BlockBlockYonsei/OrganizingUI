@@ -57,7 +57,7 @@ const Sidebar = () => {
           } w-full flex items-center justify-center text-xl font-bold text-[#8b5cf6] cursor-pointer`}
         >
           <Code className="h-5 w-5 mr-2" />
-          ClubDAO
+          SuiCracy
         </div>
       </div>
 

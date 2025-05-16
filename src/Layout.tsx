@@ -24,7 +24,7 @@ export default function Layout({ children }: Props) {
     <div className="flex h-screen bg-[#0f172a] text-gray-100">
       <Sidebar />
       <div className="flex-1 flex flex-col overflow-hidden">
-        <Header title={"SOME DASHBOARD"} />
+        <Header title={"BlockBlock Yonsei"} />
         {/* <TabNav
           tabs={tabs}
           // activeTab={activeTab}

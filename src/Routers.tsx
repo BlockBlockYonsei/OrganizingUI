@@ -9,6 +9,7 @@ import Layout from "./Layout";
 import MemberManagement from "./pages/MemberManagement";
 import PresidentPage from "./pages/PresidentPage";
 import NonMemberPage from "./pages/NonMemberPage";
+import LandingPage from "./pages/LandingPage";
 
 export default function Routers() {
   return (
@@ -21,8 +22,9 @@ export default function Routers() {
             </Layout>
           }
         >
-          <Route path="/" element={<PresidentPage />}></Route>
-          <Route path="/non" element={<NonMemberPage />}></Route>
+          <Route path="/" element={<LandingPage />}></Route>
+          <Route path="/member" element={<PresidentPage />}></Route>
+          <Route path="/non-member" element={<NonMemberPage />}></Route>
           <Route path="/test" element={<MemberManagement />}></Route>
         </Route>
       </Routes>

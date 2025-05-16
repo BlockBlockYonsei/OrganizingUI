@@ -1,6 +1,6 @@
 import CurrentClassRecruiting from "@/pages-component/CurrentClassRecruiting";
 import NextClubVoting from "@/pages-component/NextClubVoting";
-import ExecutiveMemberTicketSender from "@/pages-component/ExecutiveMemberTicketSender";
+import ExecutiveMemberInvitation from "@/pages-component/ExecutiveMemberInvitation";
 import { useGetExecutiveMemberCap } from "@/hooks/executive-member";
 import { useCurrentAccount } from "@mysten/dapp-kit";
 import { useEffect } from "react";
@@ -22,7 +22,7 @@ export default function ExecutiveMemberPage() {
       </h1>
 
       {caps[0] && caps[0].member_type === "President" && (
-        <ExecutiveMemberTicketSender />
+        <ExecutiveMemberInvitation />
       )}
       <br />
       {caps[0] && caps[0].member_type === "President" && (

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ExecutiveMemberType } from "@/types/executive-member";
 import { usePresident } from "@/hooks/president";
-export default function ExecutiveMemberTicketSender() {
+export default function ExecutiveMemberInvitation() {
   const [memberAddress, setMemberAddress] = useState<Record<string, string>>(
     {}
   );
@@ -16,7 +16,7 @@ export default function ExecutiveMemberTicketSender() {
   });
   return (
     <div>
-      <h2 className="text-2xl font-bold">Executive Member Ticket</h2>
+      <h2 className="text-2xl font-bold">Executive Member Invitation</h2>
 
       <br />
 

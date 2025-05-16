@@ -11,7 +11,7 @@ import {
 
 export default function CurrentClassRecruiting() {
   const [status, setStatus] = useState<"open" | "close">("close");
-  const [selectedAddress, setSelectedAddress] = useState("");
+  // const [selectedAddress, setSelectedAddress] = useState("");
 
   const memberAddresses = [
     "0x00000address1",

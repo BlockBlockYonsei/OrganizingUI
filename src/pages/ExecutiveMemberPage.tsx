@@ -4,6 +4,7 @@ import ExecutiveMemberInvitation from "@/pages-component/ExecutiveMemberInvitati
 import { useGetExecutiveMemberCap } from "@/hooks/executive-member";
 import { useCurrentAccount } from "@mysten/dapp-kit";
 import { useEffect } from "react";
+import PresidentInvitation from "@/pages-component/PresidentInvitation";
 
 export default function ExecutiveMemberPage() {
   const account = useCurrentAccount();
@@ -33,6 +34,10 @@ export default function ExecutiveMemberPage() {
         ["President", "VicePresident", "Treasurer"].includes(
           caps[0].member_type
         ) && <NextClubVoting />}
+      <br />
+      {caps[0] && caps[0].member_type === "President" && (
+        <PresidentInvitation />
+      )}
     </section>
   );
 }

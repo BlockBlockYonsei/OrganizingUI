@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { Code, Home, Menu, Settings, Ticket, Users } from "lucide-react";
 // import { useClubContext } from "../../context/ClubContext";
 import UserProfile from "./UserProfile";
+import { Link } from "react-router-dom";
 
 interface NavItem {
-  key: string;
   label: string;
+  path: string;
   icon: React.ReactNode;
-  onClick?: () => void;
 }
 
 const Sidebar = () => {
@@ -16,25 +16,23 @@ const Sidebar = () => {
 
   const navItems: NavItem[] = [
     {
-      key: "dashboard",
       label: "Dashboard",
+      path: "/",
       icon: <Home className="h-5 w-5" />,
     },
     {
-      key: "members",
       label: "Members",
+      path: "/member",
       icon: <Users className="h-5 w-5" />,
-      // onClick: () => setActiveTab("members"),
     },
     {
-      key: "tickets",
-      label: "Tickets",
+      label: "NonMembers",
+      path: "/non-member",
       icon: <Ticket className="h-5 w-5" />,
-      // onClick: () => setActiveTab("tickets"),
     },
     {
-      key: "settings",
       label: "Settings",
+      path: "/",
       icon: <Settings className="h-5 w-5" />,
     },
   ];
@@ -66,22 +64,23 @@ const Sidebar = () => {
       {/* Navigation */}
       <nav className="flex-1 p-4 space-y-2">
         {navItems.map((item) => (
-          <button
-            key={item.key}
-            className={`flex items-center w-full p-3 rounded-md cursor-pointer ${
-              // activeTab === item.key
-              // true
-              false
-                ? "bg-[#334155] text-white"
-                : "text-gray-400 hover:bg-[#334155] hover:text-white"
-            }`}
-            onClick={item.onClick}
-          >
-            {item.icon}
-            <span className={`${!isSidebarOpen && "hidden"} ml-3`}>
-              {item.label}
-            </span>
-          </button>
+          <Link to={item.path}>
+            <button
+              key={item.label}
+              className={`flex items-center w-full p-3 rounded-md cursor-pointer ${
+                // activeTab === item.key
+                // true
+                false
+                  ? "bg-[#334155] text-white"
+                  : "text-gray-400 hover:bg-[#334155] hover:text-white"
+              }`}
+            >
+              {item.icon}
+              <span className={`${!isSidebarOpen && "hidden"} ml-3`}>
+                {item.label}
+              </span>
+            </button>
+          </Link>
         ))}
       </nav>
 

@@ -16,7 +16,10 @@ export default function ExecutiveMemberTicketSender() {
   });
   return (
     <div>
-      <h2 className="text-xl mb-5">운영진 티켓 전송</h2>
+      <h2 className="text-2xl font-bold">Recuriting</h2>
+
+      <br />
+
       {(
         [
           "VicePresident",

@@ -1,7 +1,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { ExecutiveMember } from "@/types/members";
 
-export default function NextClubVoting() {
+export default function NextClubVoting({
+  memberCap,
+}: {
+  memberCap: ExecutiveMember;
+}) {
   const [roles, setRoles] = useState({
     president: false,
     vpresident: false,
@@ -24,6 +29,7 @@ export default function NextClubVoting() {
           <Button
             onClick={() => toggleRole("president")}
             size={"lg"}
+            disabled={memberCap.member_type !== "President"}
             className={`${
               roles.president
                 ? "bg-green-500 text-white hover:bg-green-600"
@@ -35,6 +41,7 @@ export default function NextClubVoting() {
           <Button
             onClick={() => toggleRole("vpresident")}
             size={"lg"}
+            disabled={memberCap.member_type !== "VicePresident"}
             className={`${
               roles.vpresident
                 ? "bg-green-500 text-white hover:bg-green-600"
@@ -46,6 +53,7 @@ export default function NextClubVoting() {
           <Button
             onClick={() => toggleRole("treasurer")}
             size={"lg"}
+            disabled={memberCap.member_type !== "Treasurer"}
             className={`${
               roles.treasurer
                 ? "bg-green-500 text-white hover:bg-green-600"

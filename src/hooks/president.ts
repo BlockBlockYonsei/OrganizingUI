@@ -7,7 +7,7 @@ import { useGetCurrentClass } from "./club";
 import { PACKAGE_ID } from "@/Constant";
 import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
 import { useEffect, useState } from "react";
-import { ExecutiveMember } from "@/types/executive-member";
+import { ExecutiveMember, ExecutiveMemberType } from "@/types/executive-member";
 
 export function usePresident({ owner }: { owner: string }) {
   const [currentPresidentCap, setCurrentPresidentCap] =
@@ -88,14 +88,7 @@ export function usePresident({ owner }: { owner: string }) {
     excutiveMemberType,
   }: {
     recipient: string;
-    excutiveMemberType:
-      | "President"
-      | "VicePresident"
-      | "Treasurer"
-      | "PlanningTeamLeader"
-      | "PlanningTeamMember"
-      | "MarketingTeamLeader"
-      | "MarketingTeamMember";
+    excutiveMemberType: ExecutiveMemberType;
   }) => {
     if (!account) return;
     // setToastState({
@@ -148,7 +141,6 @@ export function usePresident({ owner }: { owner: string }) {
     );
   };
   return {
-    // createCollection,
     currentPresidentCap,
     sendExecutiveMemberTicket,
     isPending,

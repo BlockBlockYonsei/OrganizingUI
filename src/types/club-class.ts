@@ -9,7 +9,16 @@ export interface CurrentClass {
   blockblock_ys: string;
   class: number;
   members: string[];
-  recruitment: any | null;
+  recruitment: {
+    fields: {
+      blockblock_ys: string;
+      // class: number;
+      class: string;
+      class_id: string;
+      addresses: string[];
+    };
+    type: string;
+  } | null;
 }
 
 export interface PastClass {

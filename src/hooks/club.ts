@@ -2,6 +2,12 @@ import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
 import { useEffect, useState } from "react";
 import { PACKAGE_ID } from "@/Constant";
 import { CreateNewClassEvent, CurrentClass } from "@/types/club-class";
+import {
+  useCurrentAccount,
+  useSignAndExecuteTransaction,
+} from "@mysten/dapp-kit";
+import { usePresident } from "./president";
+import { Transaction } from "@mysten/sui/transactions";
 
 export const useGetCurrentClass = () => {
   const [createNewClassEvents, setCreateNewClassEvents] =
@@ -9,10 +15,16 @@ export const useGetCurrentClass = () => {
   const [currentClass, setCurrentClass] = useState<CurrentClass>();
   const [isPending, setIsPending] = useState<boolean>(true);
   const [error, setError] = useState(null);
+  const [refresh, setRefresh] = useState<boolean>(false);
+
+  const refetch = () => {
+    setRefresh((prev) => !prev);
+  };
 
   const TYPE = `${PACKAGE_ID}::club_class::CreateNewClass`;
 
   const client = new SuiClient({ url: getFullnodeUrl("testnet") });
+
   useEffect(() => {
     client
       .queryEvents({
@@ -45,7 +57,8 @@ export const useGetCurrentClass = () => {
           setIsPending(false);
         }
       });
-  }, []);
+  }, [refresh]);
+
   useEffect(() => {
     if (createNewClassEvents) {
       const sorted = createNewClassEvents.sort((a, b) => b.class - a.class);
@@ -79,15 +92,28 @@ export const useGetCurrentClass = () => {
             // ) {
 
             // }
-            const currentClass: CurrentClass = {
+            const newCurrentClass: CurrentClass = {
               id: content.fields.id.id,
               blockblock_ys: content.fields.blockblock_ys,
               class: Number(content.fields.class),
               members: content.fields.members as string[],
-              recruitment: content.fields.recruitment,
+              recruitment: content.fields.recruitment
+                ? {
+                    fields: {
+                      blockblock_ys:
+                        content.fields.recruitment.fields.blockblock_ys,
+                      // class: number;
+                      class: content.fields.recruitment.fields.class,
+                      class_id: content.fields.recruitment.fields.class_id,
+                      addresses: content.fields.recruitment.fields.addresses,
+                    },
+                    type: content.fields.recruitment.type,
+                  }
+                : null,
             };
 
-            setCurrentClass(currentClass);
+            setCurrentClass(newCurrentClass);
+            console.log("REFUERLKJELFIEJS???", newCurrentClass);
           }
         });
     }
@@ -98,5 +124,126 @@ export const useGetCurrentClass = () => {
     currentClass,
     isPending,
     error,
+    refetch,
   };
 };
+
+export function useCurrentClass() {
+  // const [isPending, setIsPending] = useState<boolean>(true);
+  // const [error, setError] = useState(null);
+  const account = useCurrentAccount();
+  const { mutate: signAndExecuteTransaction } = useSignAndExecuteTransaction();
+
+  const { currentClass, refetch } = useGetCurrentClass();
+  const { currentPresidentCap } = usePresident({
+    owner: account ? account.address : "",
+  });
+
+  const startClubRecruitment = () => {
+    if (!account) return;
+    // setToastState({
+    //   type: "loading",
+    //   message: "Collection is being created...",
+    // });
+    if (!currentClass) return;
+    if (!currentPresidentCap) return;
+
+    const tx = new Transaction();
+
+    tx.moveCall({
+      package: PACKAGE_ID,
+      module: "blockblock",
+      function: "start_club_recruitment",
+      arguments: [
+        tx.object(currentClass.blockblock_ys),
+        tx.object(currentClass.id),
+        tx.object(currentPresidentCap.id),
+      ],
+    });
+
+    signAndExecuteTransaction(
+      {
+        transaction: tx,
+      },
+      {
+        onSuccess: (data) => {
+          console.log("Success! data:", data);
+          refetch();
+          // setToastState({
+          //   type: "success",
+          //   message: "Creating collection succeeded.",
+          // });
+          // setTimeout(() => {
+          //   refetch();
+          //   console.log("HOOORAAY");
+          // }, 5000);
+        },
+        onError: (err) => {
+          console.log("Error", err);
+          // setToastState({
+          //   type: "error",
+          //   message:
+          //     "Something went wrong while creating the collection. Please try again.",
+          // });
+        },
+      }
+    );
+  };
+
+  const endClubRecruitmentAndGrantMemberCaps = () => {
+    if (!account) return;
+    // setToastState({
+    //   type: "loading",
+    //   message: "Collection is being created...",
+    // });
+    if (!currentClass) return;
+    if (!currentPresidentCap) return;
+
+    const tx = new Transaction();
+
+    tx.moveCall({
+      package: PACKAGE_ID,
+      module: "blockblock",
+      function: "end_club_recruitment_and_grant_member_caps",
+      arguments: [
+        tx.object(currentClass.blockblock_ys),
+        tx.object(currentClass.id),
+        tx.object(currentPresidentCap.id),
+      ],
+    });
+
+    signAndExecuteTransaction(
+      {
+        transaction: tx,
+      },
+      {
+        onSuccess: (data) => {
+          console.log("Success! data:", data);
+          refetch();
+          // setToastState({
+          //   type: "success",
+          //   message: "Creating collection succeeded.",
+          // });
+          // setTimeout(() => {
+          //   refetch();
+          //   console.log("HOOORAAY");
+          // }, 5000);
+        },
+        onError: (err) => {
+          console.log("Error", err);
+          // setToastState({
+          //   type: "error",
+          //   message:
+          //     "Something went wrong while creating the collection. Please try again.",
+          // });
+        },
+      }
+    );
+  };
+  return {
+    startClubRecruitment,
+    endClubRecruitmentAndGrantMemberCaps,
+    // isPending,
+    // error,
+  };
+}

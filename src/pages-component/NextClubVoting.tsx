@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
-export default function NextClubClass() {
+export default function NextClubVoting() {
   const [roles, setRoles] = useState({
     president: false,
     vpresident: false,

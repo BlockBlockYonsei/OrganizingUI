@@ -1,5 +1,5 @@
 import CurrentClassRecruiting from "@/pages-component/CurrentClassRecruiting";
-import NextClubClass from "@/pages-component/NextClubClass";
+import NextClubVoting from "@/pages-component/NextClubVoting";
 import ExecutiveMemberTicketSender from "@/pages-component/ExecutiveMemberTicketSender";
 import { useGetExecutiveMemberCap } from "@/hooks/executive-member";
 import { useCurrentAccount } from "@mysten/dapp-kit";
@@ -29,7 +29,10 @@ export default function ExecutiveMemberPage() {
         <CurrentClassRecruiting />
       )}
       <br />
-      <NextClubClass></NextClubClass>
+      {caps[0] &&
+        ["President", "VicePresident", "Treasurer"].includes(
+          caps[0].member_type
+        ) && <NextClubVoting />}
     </section>
   );
 }

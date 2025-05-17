@@ -30,6 +30,14 @@ export default function OverviewPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="border-2 rounded-md p-2">
+              <CardTitle>Blockblock Executive Members: </CardTitle>
+              {currentClub.executive_members.map((member) => (
+                <CardDescription className="truncate">
+                  {member.member_type}: {member.address}
+                </CardDescription>
+              ))}
+            </div>
+            <div className="border-2 rounded-md p-2">
               <CardTitle>Blockblock Members: </CardTitle>
               {currentClub.members.map((member) => (
                 <CardDescription className="truncate">{member}</CardDescription>
@@ -47,6 +55,20 @@ export default function OverviewPage() {
               ) : (
                 <CardTitle>Recruitment: Registration Closed</CardTitle>
               )}
+            </div>
+            <div className="border-2 rounded-md p-2">
+              {
+                <div>
+                  <CardTitle>Is Current Club Finalized?</CardTitle>
+                  {Object.entries(currentClub.is_finalized).map(
+                    ([type, isDone]) => (
+                      <CardDescription>
+                        {type}: {isDone ? "Finalized Done" : "Not Yet"}
+                      </CardDescription>
+                    )
+                  )}
+                </div>
+              }
             </div>
           </CardContent>
         </Card>

@@ -3,7 +3,7 @@ import {
   useSignAndExecuteTransaction,
 } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
-import { useCurrentClass } from "./club";
+import { useCurrentClub } from "./club";
 import { PACKAGE_ID } from "@/Constant";
 import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
 import { useEffect, useState } from "react";
@@ -18,7 +18,7 @@ export function usePresident({ owner }: { owner: string }) {
   const account = useCurrentAccount();
   const { mutate: signAndExecuteTransaction } = useSignAndExecuteTransaction();
 
-  const { currentClass } = useCurrentClass();
+  const { currentClub } = useCurrentClub();
 
   const CAP_TYPE = `${PACKAGE_ID}::executive_member::ExecutiveMemberCap`;
 
@@ -61,9 +61,9 @@ export function usePresident({ owner }: { owner: string }) {
             return [];
           });
 
-          if (currentClass) {
+          if (currentClub) {
             const currentPresident = excutiveMembers
-              .filter((e) => e.club_class === currentClass.class)
+              .filter((e) => e.club_class === currentClub.class)
               .filter((e) => e.member_type === "President");
 
             if (currentPresident) {
@@ -75,13 +75,13 @@ export function usePresident({ owner }: { owner: string }) {
         } finally {
           setIsPending(false);
         }
-        // CurrentClass 로 한 번 필터링 해주  면 좋겠 다
+        // CurrentClub 로 한 번 필터링 해주  면 좋겠 다
         // setPresidentCap(data);
         setIsPending(false);
       })
       .catch((e) => setError(e))
       .finally();
-  }, [owner, currentClass]);
+  }, [owner, currentClub]);
 
   const inviteExecutiveMember = ({
     recipient,
@@ -95,7 +95,7 @@ export function usePresident({ owner }: { owner: string }) {
     //   type: "loading",
     //   message: "Collection is being created...",
     // });
-    if (!currentClass) return;
+    if (!currentClub) return;
     if (!currentPresidentCap) return;
 
     const tx = new Transaction();
@@ -106,8 +106,8 @@ export function usePresident({ owner }: { owner: string }) {
       function: "invite_executive_member",
       typeArguments: [`${PACKAGE_ID}::executive_member::${excutiveMemberType}`],
       arguments: [
-        tx.object(currentClass.blockblock_ys),
-        tx.object(currentClass.id),
+        tx.object(currentClub.blockblock_ys),
+        tx.object(currentClub.id),
         tx.object(currentPresidentCap.id),
         tx.pure.address(recipient),
       ],
@@ -148,7 +148,7 @@ export function usePresident({ owner }: { owner: string }) {
     //   type: "loading",
     //   message: "Collection is being created...",
     // });
-    if (!currentClass) return;
+    if (!currentClub) return;
     if (!currentPresidentCap) return;
 
     const tx = new Transaction();
@@ -159,8 +159,8 @@ export function usePresident({ owner }: { owner: string }) {
       function: "confirm_executive_member_ticket",
       typeArguments: [`${PACKAGE_ID}::executive_member::${ticket.member_type}`],
       arguments: [
-        tx.object(currentClass.blockblock_ys),
-        tx.object(currentClass.id),
+        tx.object(currentClub.blockblock_ys),
+        tx.object(currentClub.id),
         tx.object(currentPresidentCap.id),
         tx.object(ticket.id),
       ],

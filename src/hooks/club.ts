@@ -1,7 +1,7 @@
 import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
 import { useEffect, useState } from "react";
 import { PACKAGE_ID } from "@/Constant";
-import { CreateNewClassEvent, CurrentClass } from "@/types/club-class";
+import { CreateNewClassEvent, CurrentClub } from "@/types/club-class";
 import {
   useCurrentAccount,
   useSignAndExecuteTransaction,
@@ -9,10 +9,10 @@ import {
 import { usePresident } from "./president";
 import { Transaction } from "@mysten/sui/transactions";
 
-export function useCurrentClass() {
+export function useCurrentClub() {
   const [createNewClassEvents, setCreateNewClassEvents] =
     useState<CreateNewClassEvent[]>();
-  const [currentClass, setCurrentClass] = useState<CurrentClass>();
+  const [currentClub, setCurrentClub] = useState<CurrentClub>();
   const [isPending, setIsPending] = useState<boolean>(true);
   const [error, setError] = useState(null);
   const [refresh, setRefresh] = useState<boolean>(false);
@@ -92,7 +92,7 @@ export function useCurrentClass() {
             // ) {
 
             // }
-            const newCurrentClass: CurrentClass = {
+            const newCurrentClub: CurrentClub = {
               id: content.fields.id.id,
               blockblock_ys: content.fields.blockblock_ys,
               class: Number(content.fields.class),
@@ -138,7 +138,7 @@ export function useCurrentClass() {
               // : null,
             };
 
-            setCurrentClass(newCurrentClass);
+            setCurrentClub(newCurrentClub);
           }
         });
     }
@@ -146,7 +146,7 @@ export function useCurrentClass() {
 
   return {
     createNewClassEvents,
-    currentClass,
+    currentClub,
     isPending,
     error,
     refetch,
@@ -159,7 +159,7 @@ export function useClubRecruiting() {
   const account = useCurrentAccount();
   const { mutate: signAndExecuteTransaction } = useSignAndExecuteTransaction();
 
-  const { currentClass, refetch } = useCurrentClass();
+  const { currentClub, refetch } = useCurrentClub();
   const { currentPresidentCap } = usePresident({
     owner: account ? account.address : "",
   });
@@ -170,7 +170,7 @@ export function useClubRecruiting() {
     //   type: "loading",
     //   message: "Collection is being created...",
     // });
-    if (!currentClass) return;
+    if (!currentClub) return;
     if (!currentPresidentCap) return;
 
     const tx = new Transaction();
@@ -180,8 +180,8 @@ export function useClubRecruiting() {
       module: "blockblock",
       function: "start_club_recruitment",
       arguments: [
-        tx.object(currentClass.blockblock_ys),
-        tx.object(currentClass.id),
+        tx.object(currentClub.blockblock_ys),
+        tx.object(currentClub.id),
         tx.object(currentPresidentCap.id),
       ],
     });
@@ -221,7 +221,7 @@ export function useClubRecruiting() {
     //   type: "loading",
     //   message: "Collection is being created...",
     // });
-    if (!currentClass) return;
+    if (!currentClub) return;
     if (!currentPresidentCap) return;
 
     const tx = new Transaction();
@@ -231,8 +231,8 @@ export function useClubRecruiting() {
       module: "blockblock",
       function: "end_club_recruitment_and_grant_member_caps",
       arguments: [
-        tx.object(currentClass.blockblock_ys),
-        tx.object(currentClass.id),
+        tx.object(currentClub.blockblock_ys),
+        tx.object(currentClub.id),
         tx.object(currentPresidentCap.id),
       ],
     });
@@ -272,7 +272,7 @@ export function useClubRecruiting() {
     //   type: "loading",
     //   message: "Collection is being created...",
     // });
-    if (!currentClass) return;
+    if (!currentClub) return;
 
     const tx = new Transaction();
 
@@ -281,8 +281,8 @@ export function useClubRecruiting() {
       module: "blockblock",
       function: "apply_to_join_club",
       arguments: [
-        tx.object(currentClass.blockblock_ys),
-        tx.object(currentClass.id),
+        tx.object(currentClub.blockblock_ys),
+        tx.object(currentClub.id),
       ],
     });
 

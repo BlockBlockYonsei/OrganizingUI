@@ -4,7 +4,7 @@ export interface CreateNewClassEvent {
   class: number;
 }
 
-export interface CurrentClass {
+export interface CurrentClub {
   id: string;
   blockblock_ys: string;
   class: number;

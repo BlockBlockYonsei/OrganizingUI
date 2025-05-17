@@ -1,4 +1,4 @@
-import CurrentClassRecruiting from "@/pages-component/CurrentClassRecruiting";
+import CurrentClubRecruiting from "@/pages-component/CurrentClubRecruiting";
 import NextClubVoting from "@/pages-component/NextClubVoting";
 import ExecutiveMemberInvitation from "@/pages-component/ExecutiveMemberInvitation";
 import { useGetExecutiveMemberCap } from "@/hooks/member-caps";
@@ -27,7 +27,7 @@ export default function ExecutiveMemberPage() {
               <div>
                 <ExecutiveMemberInvitation />
                 <br />
-                <CurrentClassRecruiting />
+                <CurrentClubRecruiting />
                 <br />
                 <NextClubVoting memberCap={cap} />
                 <br />

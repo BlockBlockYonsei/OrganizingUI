@@ -1,7 +1,7 @@
 import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
 import { useEffect, useState } from "react";
 import { PACKAGE_ID } from "@/Constant";
-import { useCurrentClass } from "./club";
+import { useCurrentClub } from "./club";
 import { ExecutiveMemberTicket } from "@/types/tickets";
 import {
   useCurrentAccount,
@@ -17,13 +17,13 @@ export const useExecutiveMemberTicket = () => {
   const CAP_TYPE = `${PACKAGE_ID}::executive_member::ExecutiveMemberTicket`;
 
   const account = useCurrentAccount();
-  const { currentClass } = useCurrentClass();
+  const { currentClub } = useCurrentClub();
   const { mutate: signAndExecuteTransaction } = useSignAndExecuteTransaction();
 
   const client = new SuiClient({ url: getFullnodeUrl("testnet") });
   useEffect(() => {
     if (!account) return;
-    if (!currentClass) return;
+    if (!currentClub) return;
 
     client
       .getOwnedObjects({
@@ -35,7 +35,7 @@ export const useExecutiveMemberTicket = () => {
         },
       })
       .then((data) => {
-        const currentClassExecutiveMemberTickets = data.data.flatMap((d) => {
+        const currentClubExecutiveMemberTickets = data.data.flatMap((d) => {
           const content = d.data?.content;
           if (
             content &&
@@ -65,22 +65,22 @@ export const useExecutiveMemberTicket = () => {
                   : null,
             };
 
-            if (executiveMemberTicket.club_class === currentClass.class) {
+            if (executiveMemberTicket.club_class === currentClub.class) {
               return executiveMemberTicket;
             }
           }
           return [];
         });
         console.log(
-          "currentClassExecutiveMemberTickets",
-          currentClassExecutiveMemberTickets
+          "currentClubExecutiveMemberTickets",
+          currentClubExecutiveMemberTickets
         );
-        setTickets(currentClassExecutiveMemberTickets);
+        setTickets(currentClubExecutiveMemberTickets);
         setIsPending(false);
       })
       .catch((e) => setError(e))
       .finally();
-  }, [account, currentClass]);
+  }, [account, currentClub]);
 
   const sendBackExecutiveMemberTicket = ({
     ticket,
@@ -92,7 +92,7 @@ export const useExecutiveMemberTicket = () => {
     //   type: "loading",
     //   message: "Collection is being created...",
     // });
-    if (!currentClass) return;
+    if (!currentClub) return;
 
     const tx = new Transaction();
 
@@ -102,8 +102,8 @@ export const useExecutiveMemberTicket = () => {
       function: "send_back_executive_member_ticket",
       typeArguments: [`${PACKAGE_ID}::executive_member::${ticket.member_type}`],
       arguments: [
-        tx.object(currentClass.blockblock_ys),
-        tx.object(currentClass.id),
+        tx.object(currentClub.blockblock_ys),
+        tx.object(currentClub.id),
         tx.object(ticket.id),
       ],
     });

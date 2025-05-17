@@ -7,43 +7,41 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useClubRecruiting, useCurrentClass } from "@/hooks/club";
+import { useClubRecruiting, useCurrentClub } from "@/hooks/club";
 import { useGetMemberCap } from "@/hooks/member-caps";
 import { useCurrentAccount } from "@mysten/dapp-kit";
 
 export default function OverviewPage() {
   const account = useCurrentAccount();
-  const { currentClass } = useCurrentClass();
-  const { currentClassMemberCap } = useGetMemberCap({
+  const { currentClub } = useCurrentClub();
+  const { currentMemberCap } = useGetMemberCap({
     owner: account ? account.address : "",
   });
   const { applyToJoinClub } = useClubRecruiting();
 
   return (
     <div>
-      {currentClass && (
+      {currentClub && (
         <Card className="w-150">
           <CardHeader>
-            <CardTitle>
-              Current Blockblock Class: {currentClass.class}
-            </CardTitle>
+            <CardTitle>Current Blockblock Class: {currentClub.class}</CardTitle>
             <CardDescription className="truncate">
-              ID: {currentClass.id}
+              ID: {currentClub.id}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="border-2 rounded-md p-2">
               <CardTitle>Blockblock Members: </CardTitle>
-              {currentClass.members.map((member) => (
+              {currentClub.members.map((member) => (
                 <CardDescription className="truncate">{member}</CardDescription>
               ))}
             </div>
             <div className="border-2 rounded-md p-2">
-              {currentClass.recruitment ? (
+              {currentClub.recruitment ? (
                 <div>
                   <CardTitle>Recruitment: Registration Open</CardTitle>
                   <h3>Applicant Addresses: </h3>
-                  {currentClass.recruitment.addresses.map((address) => (
+                  {currentClub.recruitment.addresses.map((address) => (
                     <CardDescription>{address}</CardDescription>
                   ))}
                 </div>
@@ -56,10 +54,10 @@ export default function OverviewPage() {
       )}
       <br />
 
-      {account && currentClass ? (
-        currentClassMemberCap ? (
+      {account && currentClub ? (
+        currentMemberCap ? (
           <div>You're Already Blockblock Member</div>
-        ) : currentClass.recruitment ? (
+        ) : currentClub.recruitment ? (
           <div className="">
             <div>Blockblock is recruiting now</div>
             <Button

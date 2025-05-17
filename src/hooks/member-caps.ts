@@ -1,7 +1,7 @@
 import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
 import { useEffect, useState } from "react";
 import { PACKAGE_ID } from "@/Constant";
-import { useCurrentClass } from "./club";
+import { useCurrentClub } from "./club";
 import { BlockblockMember, ExecutiveMember } from "@/types/members";
 
 export const useGetExecutiveMemberCap = ({ owner }: { owner: string }) => {
@@ -11,12 +11,12 @@ export const useGetExecutiveMemberCap = ({ owner }: { owner: string }) => {
 
   const CAP_TYPE = `${PACKAGE_ID}::executive_member::ExecutiveMemberCap`;
 
-  const { currentClass } = useCurrentClass();
+  const { currentClub } = useCurrentClub();
 
   const client = new SuiClient({ url: getFullnodeUrl("testnet") });
   useEffect(() => {
     if (!owner) return;
-    if (!currentClass) return;
+    if (!currentClub) return;
 
     client
       .getOwnedObjects({
@@ -28,7 +28,7 @@ export const useGetExecutiveMemberCap = ({ owner }: { owner: string }) => {
         },
       })
       .then((data) => {
-        const currentClassExecutiveMemberCaps = data.data.flatMap((d) => {
+        const currentClubExecutiveMemberCaps = data.data.flatMap((d) => {
           const content = d.data?.content;
           if (
             content &&
@@ -49,18 +49,18 @@ export const useGetExecutiveMemberCap = ({ owner }: { owner: string }) => {
               member_type: content.fields.member_type,
             };
 
-            if (executiveMember.club_class === currentClass.class) {
+            if (executiveMember.club_class === currentClub.class) {
               return executiveMember;
             }
           }
           return [];
         });
-        setCaps(currentClassExecutiveMemberCaps);
+        setCaps(currentClubExecutiveMemberCaps);
         setIsPending(false);
       })
       .catch((e) => setError(e))
       .finally();
-  }, [owner, currentClass]);
+  }, [owner, currentClub]);
 
   return {
     caps,
@@ -70,20 +70,19 @@ export const useGetExecutiveMemberCap = ({ owner }: { owner: string }) => {
 };
 
 export const useGetMemberCap = ({ owner }: { owner: string }) => {
-  const [currentClassMemberCap, setCurrentClassMemberCap] =
-    useState<BlockblockMember>();
+  const [currentMemberCap, setCurrentMemberCap] = useState<BlockblockMember>();
   const [caps, setCaps] = useState<BlockblockMember[]>();
   const [isPending, setIsPending] = useState<boolean>(true);
   const [error, setError] = useState(null);
 
   const CAP_TYPE = `${PACKAGE_ID}::blockblock_member::BlockblockMemberCap`;
 
-  const { currentClass } = useCurrentClass();
+  const { currentClub } = useCurrentClub();
   const client = new SuiClient({ url: getFullnodeUrl("testnet") });
 
   useEffect(() => {
     if (!owner) return;
-    if (!currentClass) return;
+    if (!currentClub) return;
 
     client
       .getOwnedObjects({
@@ -95,9 +94,9 @@ export const useGetMemberCap = ({ owner }: { owner: string }) => {
         },
       })
       .then((data) => {
-        // CurrentClass 로 한 번 필터링 해주  면 좋겠 다
+        // CurrentClub 로 한 번 필터링 해주  면 좋겠 다
         // MemberCap은... 일단 다 가져와 되긴 할 듯?
-        const currentClassBlockblockMemberCaps = data.data.flatMap((d) => {
+        const currentClubBlockblockMemberCaps = data.data.flatMap((d) => {
           const content = d.data?.content;
           if (
             content &&
@@ -119,23 +118,23 @@ export const useGetMemberCap = ({ owner }: { owner: string }) => {
           }
           return [];
         });
-        console.log("BLCOBLOCMAEM", currentClassBlockblockMemberCaps);
-        setCaps(currentClassBlockblockMemberCaps);
+        console.log("BLCOBLOCMAEM", currentClubBlockblockMemberCaps);
+        setCaps(currentClubBlockblockMemberCaps);
         setIsPending(false);
       })
       .catch((e) => setError(e))
       .finally();
-  }, [owner, currentClass]);
+  }, [owner, currentClub]);
 
   useEffect(() => {
     if (!caps) return;
 
     caps.sort((a, b) => b.club_class - a.club_class);
-    setCurrentClassMemberCap(caps[0]);
+    setCurrentMemberCap(caps[0]);
   }, [caps]);
 
   return {
-    currentClassMemberCap,
+    currentMemberCap,
     caps,
     isPending,
     error,

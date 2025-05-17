@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useClubRecruiting, useCurrentClass } from "@/hooks/club";
+import { useClubRecruiting, useCurrentClub } from "@/hooks/club";
 import {
   Accordion,
   AccordionTrigger,
@@ -7,16 +7,16 @@ import {
   AccordionItem,
 } from "@/components/ui/accordion";
 
-export default function CurrentClassRecruiting() {
+export default function CurrentClubRecruiting() {
   // const [status, setStatus] = useState<"open" | "close">("close");
   const [updateTrigger, setUpdateTrigger] = useState(false);
 
-  const { currentClass } = useCurrentClass();
+  const { currentClub } = useCurrentClub();
   const { startClubRecruitment, endClubRecruitmentAndGrantMemberCaps } =
     useClubRecruiting();
 
   useEffect(() => {
-    console.log("currenecltREFSLEFJ??", updateTrigger, currentClass);
+    console.log("currenecltREFSLEFJ??", updateTrigger, currentClub);
   }, [updateTrigger]);
 
   return (
@@ -34,23 +34,23 @@ export default function CurrentClassRecruiting() {
               <AccordionTrigger className="text-md">
                 Member Addresses
               </AccordionTrigger>
-              {currentClass &&
-                currentClass.members.map((address) => (
+              {currentClub &&
+                currentClub.members.map((address) => (
                   <AccordionContent>{address}</AccordionContent>
                 ))}
             </AccordionItem>
           </Accordion>
         </div>
 
-        {currentClass && (
+        {currentClub && (
           <div className="col-span-2 h-full flex items-start">
             <div className=" min-w-40 flex justify-center items-center gap-2">
               {/* 커스텀 스위치 버튼 */}
               <div
                 onClick={() => {
-                  if (!currentClass) return;
+                  if (!currentClub) return;
 
-                  if (currentClass.recruitment === null) {
+                  if (currentClub.recruitment === null) {
                     startClubRecruitment();
                   } else {
                     endClubRecruitmentAndGrantMemberCaps();
@@ -59,14 +59,14 @@ export default function CurrentClassRecruiting() {
                   setUpdateTrigger((prev) => !prev);
                 }}
                 className={`w-14 h-8 flex items-center rounded-full p-1 cursor-pointer transition-colors duration-300 ${
-                  currentClass.recruitment !== null
+                  currentClub.recruitment !== null
                     ? "bg-green-500"
                     : "bg-orange-500"
                 }`}
               >
                 <div
                   className={`bg-white w-6 h-6 rounded-full shadow-md transform transition-transform duration-300 ${
-                    currentClass.recruitment !== null
+                    currentClub.recruitment !== null
                       ? "translate-x-6"
                       : "translate-x-0"
                   }`}
@@ -76,7 +76,7 @@ export default function CurrentClassRecruiting() {
               <div className="flex flex-col justify-center items-center">
                 <span>Registration</span>
                 <span className="text-sm">
-                  {currentClass.recruitment !== null ? (
+                  {currentClub.recruitment !== null ? (
                     <span className="text-green-400">Open</span>
                   ) : (
                     <span className="text-orange-400">Close</span>

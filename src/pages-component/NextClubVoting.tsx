@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ExecutiveMember } from "@/types/members";
+import { useCurrentClub } from "@/hooks/club";
 
 export default function NextClubVoting({
   memberCap,
@@ -15,6 +16,8 @@ export default function NextClubVoting({
 
   const allDone = Object.values(roles).every(Boolean);
 
+  const { finalizeCurrentClass } = useCurrentClub();
+
   const toggleRole = (key: keyof typeof roles) => {
     setRoles((prev) => ({ ...prev, [key]: !prev[key] }));
   };
@@ -27,7 +30,9 @@ export default function NextClubVoting({
         {/* 왼쪽: 배터리 버튼 */}
         <div className="">
           <Button
-            onClick={() => toggleRole("president")}
+            onClick={() => {
+              finalizeCurrentClass({ cap: memberCap });
+            }}
             size={"lg"}
             disabled={memberCap.member_type !== "President"}
             className={`${

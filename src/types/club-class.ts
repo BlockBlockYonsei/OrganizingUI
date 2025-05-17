@@ -15,6 +15,7 @@ export interface CurrentClub {
     class_id: string;
     addresses: string[];
   } | null;
+  dynamicFieldData: DynamicFieldObjectData[]; // 실제 데이터 타입에 맞게 수정
 }
 
 export interface PastClass {
@@ -22,4 +23,30 @@ export interface PastClass {
   blockblock_ys: string;
   class: number;
   next_class_id: string;
+  dynamicFieldData: DynamicFieldObjectData[]; // 실제 데이터 타입에 맞게 수정
+}
+
+export interface DynamicFieldObjectData {
+  objectId: string;
+  version: string;
+  digest: string;
+  type: string;
+  content: {
+    dataType: string;
+    type: string;
+    hasPublicTransfer: boolean;
+    fields: {
+      id: {
+        id: string;
+      };
+      name: {
+        type: string;
+        fields: any;
+      };
+      value: {
+        type: string;
+        fields: any;
+      };
+    };
+  };
 }

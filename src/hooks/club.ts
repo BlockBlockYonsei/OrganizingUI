@@ -7,6 +7,8 @@ import {
   useSignAndExecuteTransaction,
 } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
+import { ExecutiveMember, ExecutiveMemberType } from "@/types/members";
+import { parseDynamicBaseTypeField } from "@/lib/sui-client";
 
 export function useCurrentClub() {
   const [createNewClassEvents, setCreateNewClassEvents] =
@@ -63,13 +65,51 @@ export function useCurrentClub() {
   useEffect(() => {
     if (createNewClassEvents) {
       const sorted = createNewClassEvents.sort((a, b) => b.class - a.class);
+
       client
         .getObject({
           id: sorted[0].class_id,
           options: { showContent: true, showType: true },
         })
-        .then((data) => {
+        .then(async (data) => {
           const content = data.data?.content;
+          if (
+            content &&
+            "fields" in content &&
+            "id" in content.fields &&
+            typeof content.fields.id === "object" &&
+            content.fields.id !== null &&
+            "id" in content.fields.id &&
+            typeof content.fields.id.id === "string"
+          ) {
+            const parsedDFData = await client
+              .getDynamicFields({ parentId: content.fields.id.id })
+              .then((data) => {
+                const dynamicFieldObjectIds = data.data.map((d) => {
+                  return d.objectId;
+                });
+
+                return client.multiGetObjects({
+                  ids: dynamicFieldObjectIds,
+                  options: { showContent: true, showType: true },
+                });
+              })
+              .then((data) => {
+                const parsedDynamicFieldDatas = data
+                  .map((d) => {
+                    if (!d.data) return null;
+                    return parseDynamicBaseTypeField(d.data);
+                  })
+                  .flatMap((d) => (d ? [d] : []));
+                return parsedDynamicFieldDatas;
+              });
+
+            return { content: content, parsedDFData };
+          }
+
+          return { content: content, parsedDFData: [] };
+        })
+        .then(({ content, parsedDFData }) => {
           if (
             content &&
             "fields" in content &&
@@ -98,6 +138,7 @@ export function useCurrentClub() {
               blockblock_ys: content.fields.blockblock_ys,
               class: Number(content.fields.class),
               members: content.fields.members as string[],
+              dynamicFieldData: parsedDFData,
               recruitment:
                 content.fields.recruitment &&
                 typeof content.fields.recruitment === "object" &&
@@ -138,6 +179,8 @@ export function useCurrentClub() {
               //   }
               // : null,
             };
+
+            console.log("new cururune", newCurrentClub);
 
             setCurrentClub(newCurrentClub);
           }
@@ -189,6 +232,60 @@ export function useCurrentClub() {
       }
     );
   };
+
+  const finalizeCurrentClass = ({ cap }: { cap: ExecutiveMember }) => {
+    if (!account) return;
+    // setToastState({
+    //   type: "loading",
+    //   message: "Collection is being created...",
+    // });
+    if (!currentClub) return;
+    if (
+      !(
+        ["President", "VicePresident", "Treasurer"] as ExecutiveMemberType[]
+      ).includes(cap.member_type as ExecutiveMemberType)
+    )
+      return;
+
+    const tx = new Transaction();
+
+    tx.moveCall({
+      package: PACKAGE_ID,
+      module: "blockblock",
+      function: "finalize_current_class",
+      typeArguments: [`${PACKAGE_ID}::executive_member::${cap.member_type}`],
+      arguments: [
+        tx.object(currentClub.blockblock_ys),
+        tx.object(currentClub.id),
+        tx.object(cap.id),
+      ],
+    });
+
+    signAndExecuteTransaction(
+      {
+        transaction: tx,
+      },
+      {
+        onSuccess: (data) => {
+          console.log("Success! data:", data);
+          refetch();
+          // setToastState({
+          //   type: "success",
+          //   message: "Creating collection succeeded.",
+          // });
+        },
+        onError: (err) => {
+          console.log("Error", err);
+          // setToastState({
+          //   type: "error",
+          //   message:
+          //     "Something went wrong while creating the collection. Please try again.",
+          // });
+        },
+      }
+    );
+  };
+
   return {
     createNewClassEvents,
     currentClub,
@@ -196,5 +293,6 @@ export function useCurrentClub() {
     error,
     refetch,
     applyToJoinClub,
+    finalizeCurrentClass,
   };
 }

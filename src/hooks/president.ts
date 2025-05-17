@@ -443,6 +443,59 @@ export function usePresident() {
       }
     );
   };
+
+  const confirmPresidentTicket = ({
+    ticket,
+  }: {
+    ticket: ExecutiveMemberTicket;
+  }) => {
+    if (!account) return;
+    // setToastState({
+    //   type: "loading",
+    //   message: "Collection is being created...",
+    // });
+    if (!currentClub) return;
+    if (!previousClub) return;
+    if (!previousPresidentCap) return;
+
+    const tx = new Transaction();
+
+    tx.moveCall({
+      package: UPGRADED_PACKAGE_ID,
+      module: "blockblock",
+      function: "confirm_president_ticket",
+      arguments: [
+        tx.object(previousClub.blockblock_ys),
+        tx.object(previousClub.id),
+        tx.object(currentClub.id),
+        tx.object(previousPresidentCap.id),
+        tx.object(ticket.id),
+      ],
+    });
+
+    signAndExecuteTransaction(
+      {
+        transaction: tx,
+      },
+      {
+        onSuccess: (data) => {
+          console.log("Success! data:", data);
+          // setToastState({
+          //   type: "success",
+          //   message: "Creating collection succeeded.",
+          // });
+        },
+        onError: (err) => {
+          console.log("Error", err);
+          // setToastState({
+          //   type: "error",
+          //   message:
+          //     "Something went wrong while creating the collection. Please try again.",
+          // });
+        },
+      }
+    );
+  };
   return {
     currentPresidentCap,
     previousPresidentCap,
@@ -452,6 +505,7 @@ export function usePresident() {
     endClubRecruitmentAndGrantMemberCaps,
     initiateClassTransition,
     appointPresident,
+    confirmPresidentTicket,
     isPending,
     error,
   };

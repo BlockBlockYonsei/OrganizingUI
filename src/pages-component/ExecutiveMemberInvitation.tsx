@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useCurrentAccount } from "@mysten/dapp-kit";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,11 +9,9 @@ export default function ExecutiveMemberInvitation() {
   const [memberAddress, setMemberAddress] = useState<Record<string, string>>(
     {}
   );
-  const accout = useCurrentAccount();
+  const { inviteExecutiveMember, confirmExecutiveMemberTicket } =
+    usePresident();
 
-  const { inviteExecutiveMember, confirmExecutiveMemberTicket } = usePresident({
-    owner: accout ? accout.address : "",
-  });
   const { tickets } = useExecutiveMemberTicket();
   return (
     <div>

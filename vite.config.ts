@@ -12,9 +12,13 @@ export default defineConfig({
   preview: {
     port: 4173, // 기본값
     host: true, // 외부 접근 허용
-    allowedHosts: [""], // <== 이 줄 추가
+    allowedHosts: ["organizingui.onrender.com"], // <== 이 줄 추가
   },
-  server: {allowedHosts: ["5173-blockblocky-organizingu-jebv23wrhdi.ws-us118.gitpod.io"]},
+  server: {
+    allowedHosts: [
+      "5173-blockblocky-organizingu-jebv23wrhdi.ws-us118.gitpod.io",
+    ],
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

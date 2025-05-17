@@ -31,7 +31,7 @@ export function useCurrentClub() {
   };
 
   const TYPE = `${ORIGINAL_PACKAGE_ID}::club_class::NewClassCreated`;
-  const client = new SuiClient({ url: getFullnodeUrl("testnet") });
+  const client = new SuiClient({ url: "https://rpc-testnet.suiscan.xyz:443" });
 
   useEffect(() => {
     client
@@ -334,7 +334,7 @@ export function usePastClub() {
   };
 
   const TYPE = `${ORIGINAL_PACKAGE_ID}::club_class::CurrentClassDeletedAndPastClassCreated`;
-  const client = new SuiClient({ url: getFullnodeUrl("testnet") });
+  const client = new SuiClient({ url: "https://rpc-testnet.suiscan.xyz:443" });
 
   useEffect(() => {
     client

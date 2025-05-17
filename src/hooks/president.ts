@@ -9,6 +9,7 @@ import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
 import { useEffect, useState } from "react";
 import { ExecutiveMember, ExecutiveMemberType } from "@/types/members";
 import { ExecutiveMemberTicket } from "@/types/tickets";
+import { useToast } from "./UI/useToast";
 
 export function usePresident() {
   const [currentPresidentCap, setCurrentPresidentCap] =
@@ -22,6 +23,8 @@ export function usePresident() {
 
   const { currentClub, refetch } = useCurrentClub();
   const { previousClub } = usePastClub();
+
+  const { setToastState } = useToast();
 
   const CAP_TYPE = `${ORIGINAL_PACKAGE_ID}::executive_member::ExecutiveMemberCap`;
   const client = new SuiClient({ url: getFullnodeUrl("testnet") });
@@ -256,12 +259,13 @@ export function usePresident() {
 
   const startClubRecruitment = () => {
     if (!account) return;
-    // setToastState({
-    //   type: "loading",
-    //   message: "Collection is being created...",
-    // });
     if (!currentClub) return;
     if (!currentPresidentCap) return;
+
+    setToastState({
+      type: "loading",
+      message: "Collection is being created...",
+    });
 
     const tx = new Transaction();
 
@@ -303,12 +307,12 @@ export function usePresident() {
 
   const endClubRecruitmentAndGrantMemberCaps = () => {
     if (!account) return;
-    // setToastState({
-    //   type: "loading",
-    //   message: "Collection is being created...",
-    // });
     if (!currentClub) return;
     if (!currentPresidentCap) return;
+    setToastState({
+      type: "loading",
+      message: "Collection is being created...",
+    });
 
     const tx = new Transaction();
 

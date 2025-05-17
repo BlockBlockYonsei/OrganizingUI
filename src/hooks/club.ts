@@ -126,19 +126,28 @@ export function useCurrentClub() {
             Array.isArray(content.fields.members) &&
             "recruitment" in content.fields
           ) {
-            // if (
-            //   typeof content.fields.recruitment === "object" &&
-            //   content.fields.recruitment !== null &&
-            //   "vec" in content.fields.recruitment
-            // ) {
+            const executiveMembers = parsedDFData
+              .filter((d) =>
+                d.content.fields.name.type.includes(
+                  `${PACKAGE_ID}::club_class::ExecutiveMemberKey<${PACKAGE_ID}::executive_member::`
+                )
+              )
+              .map((d) => {
+                const regex = /::executive_member::([^>]+)>/;
+                const match = d.content.fields.name.type.match(regex);
+                return {
+                  address: d.content.fields.value,
+                  member_type: match ? match[1] : "UnKnown",
+                };
+              });
 
-            // }
             const newCurrentClub: CurrentClub = {
               id: content.fields.id.id,
               blockblock_ys: content.fields.blockblock_ys,
               class: Number(content.fields.class),
               members: content.fields.members as string[],
               dynamicFieldData: parsedDFData,
+              executive_members: executiveMembers,
               recruitment:
                 content.fields.recruitment &&
                 typeof content.fields.recruitment === "object" &&

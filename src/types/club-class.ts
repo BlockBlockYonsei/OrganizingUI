@@ -1,9 +1,11 @@
+// Events
 export interface NewClassCreated {
   blockblock_ys: string;
   class_id: string;
   class: number;
 }
 
+//Object Data
 export interface CurrentClub {
   id: string;
   blockblock_ys: string;
@@ -16,6 +18,10 @@ export interface CurrentClub {
     addresses: string[];
   } | null;
   dynamicFieldData: DynamicFieldObjectData[]; // 실제 데이터 타입에 맞게 수정
+  executive_members: {
+    address: string;
+    member_type: string;
+  }[];
 }
 
 export interface PastClass {
@@ -43,10 +49,7 @@ export interface DynamicFieldObjectData {
         type: string;
         fields: any;
       };
-      value: {
-        type: string;
-        fields: any;
-      };
+      value: string;
     };
   };
 }

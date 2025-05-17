@@ -1,4 +1,4 @@
-import { useGetExecutiveMemberCap } from "@/hooks/members";
+import { useGetExecutiveMemberCap } from "@/hooks/member-caps";
 import { useCurrentAccount } from "@mysten/dapp-kit";
 import { Crown, Moon } from "lucide-react";
 

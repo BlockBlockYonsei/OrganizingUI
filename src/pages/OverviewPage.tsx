@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useClubRecruiting, useCurrentClass } from "@/hooks/club";
-import { useGetMemberCap } from "@/hooks/members";
+import { useGetMemberCap } from "@/hooks/member-caps";
 import { useCurrentAccount } from "@mysten/dapp-kit";
 
 export default function OverviewPage() {

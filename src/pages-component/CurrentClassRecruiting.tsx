@@ -23,8 +23,9 @@ export default function CurrentClassRecruiting() {
     <div className="space-y-6 text-white">
       <h2 className="text-2xl font-bold">Recuriting</h2>
 
-      <div className="flex items-center gap-4">
-        <div className="min-w-lg">
+      {/* <div className="flex items-center gap-4"> */}
+      <div className="grid grid-cols-6 gap-4">
+        <div className="col-span-4 min-w-lg">
           <Accordion type="multiple">
             <AccordionItem
               value="item1"
@@ -42,8 +43,8 @@ export default function CurrentClassRecruiting() {
         </div>
 
         {currentClass && (
-          <div>
-            <div className="flex justify-center items-center gap-4">
+          <div className="col-span-2 h-full flex items-start">
+            <div className=" min-w-40 flex justify-center items-center gap-2">
               {/* 커스텀 스위치 버튼 */}
               <div
                 onClick={() => {

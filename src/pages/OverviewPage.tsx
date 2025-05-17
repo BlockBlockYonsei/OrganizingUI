@@ -31,31 +31,16 @@ export default function OverviewPage() {
             <div>
               {currentClass.recruitment ? (
                 <div>
-                  <CardTitle>Recruitment: 현재 모집 중</CardTitle>
-                  <h3>Addresses: </h3>
+                  <CardTitle>Recruitment: Registration Open</CardTitle>
+                  <h3>Applicant Addresses: </h3>
                   {currentClass.recruitment.addresses.map((address) => (
                     <CardDescription>{address}</CardDescription>
                   ))}
                 </div>
               ) : (
-                <CardTitle>Recruitment: 현재 모집 안 함</CardTitle>
+                <CardTitle>Recruitment: Registration Closed</CardTitle>
               )}
             </div>
-          </CardContent>
-          <CardContent>
-            {/* {Object.entries(currentClass).map(([name, value]) => {
-              if (name === "recruitment")
-                return (
-                  <CardTitle className="truncate w-full">
-                    {name}: {JSON.stringify(value)}
-                  </CardTitle>
-                );
-              return (
-                <CardTitle className="">
-                  {name}: {value}
-                </CardTitle>
-              );
-            })} */}
           </CardContent>
         </Card>
       )}

@@ -11,9 +11,9 @@ export default function PresidentInvitation() {
   );
   const accout = useCurrentAccount();
 
-  const { inviteExecutiveMember } = usePresident({
-    owner: accout ? accout.address : "",
-  });
+  // const { inviteExecutiveMember } = usePresident({
+  //   owner: accout ? accout.address : "",
+  // });
   return (
     <div>
       <h2 className="text-2xl font-bold">President Invitation</h2>

@@ -5,6 +5,12 @@ export interface NewClassCreated {
   class: number;
 }
 
+export interface CurrentClassDeletedAndPastClassCreated {
+  blockblock_ys: string;
+  past_class_id: string;
+  class: number;
+}
+
 //Object Data
 export interface CurrentClub {
   id: string;
@@ -17,7 +23,6 @@ export interface CurrentClub {
     class_id: string;
     addresses: string[];
   } | null;
-  dynamicFieldData: DynamicFieldObjectData[]; // 실제 데이터 타입에 맞게 수정
   executive_members: {
     address: string;
     member_type: string;
@@ -27,13 +32,18 @@ export interface CurrentClub {
     vice_president: boolean;
     treasurer: boolean;
   };
+  dynamicFieldData: DynamicFieldObjectData[]; // 실제 데이터 타입에 맞게 수정
 }
 
-export interface PastClass {
+export interface PastClub {
   id: string;
   blockblock_ys: string;
   class: number;
-  next_class_id: string;
+  members: string[];
+  executive_members: {
+    address: string;
+    member_type: string;
+  }[];
   dynamicFieldData: DynamicFieldObjectData[]; // 실제 데이터 타입에 맞게 수정
 }
 

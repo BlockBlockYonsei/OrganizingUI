@@ -11,9 +11,10 @@ interface UserProfileProps {
 const UserProfile = ({ isSidebarOpen }: UserProfileProps) => {
   const account = useCurrentAccount();
 
-  const { caps: eMemberCap } = useGetExecutiveMemberCap({
-    owner: account ? account.address : "",
-  });
+  const { currentClubExecutiveMemberCaps: eMemberCap } =
+    useGetExecutiveMemberCap({
+      owner: account ? account.address : "",
+    });
   const { caps: memberCap } = useGetMemberCap({
     owner: account ? account.address : "",
   });

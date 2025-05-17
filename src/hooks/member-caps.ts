@@ -1,17 +1,23 @@
 import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
 import { useEffect, useState } from "react";
 import { ORIGINAL_PACKAGE_ID } from "@/Constant";
-import { useCurrentClub } from "./club";
+import { useCurrentClub, usePastClub } from "./club";
 import { BlockblockMember, ExecutiveMember } from "@/types/members";
 
 export const useGetExecutiveMemberCap = ({ owner }: { owner: string }) => {
-  const [caps, setCaps] = useState<ExecutiveMember[]>([]);
+  const [currentClubExecutiveMemberCaps, setCurrentClubExecutiveMemberCaps] =
+    useState<ExecutiveMember[]>([]);
+  const [
+    recentPastClubExecutiveMemberCaps,
+    setRecentPastClubExecutiveMemberCaps,
+  ] = useState<ExecutiveMember[]>([]);
   const [isPending, setIsPending] = useState<boolean>(true);
   const [error, setError] = useState(null);
 
   const CAP_TYPE = `${ORIGINAL_PACKAGE_ID}::executive_member::ExecutiveMemberCap`;
 
   const { currentClub } = useCurrentClub();
+  const { recentPastClub } = usePastClub();
 
   const client = new SuiClient({ url: getFullnodeUrl("testnet") });
   useEffect(() => {
@@ -55,15 +61,64 @@ export const useGetExecutiveMemberCap = ({ owner }: { owner: string }) => {
           }
           return [];
         });
-        setCaps(currentClubExecutiveMemberCaps);
+        setCurrentClubExecutiveMemberCaps(currentClubExecutiveMemberCaps);
         setIsPending(false);
       })
       .catch((e) => setError(e))
       .finally();
   }, [owner, currentClub]);
 
+  useEffect(() => {
+    if (!owner) return;
+    if (!recentPastClub) return;
+
+    client
+      .getOwnedObjects({
+        owner,
+        filter: { StructType: CAP_TYPE },
+        options: {
+          showType: true,
+          showContent: true,
+        },
+      })
+      .then((data) => {
+        const recentPastClubExecutiveMemberCaps = data.data.flatMap((d) => {
+          const content = d.data?.content;
+          if (
+            content &&
+            "fields" in content &&
+            "club_class" in content.fields &&
+            typeof content.fields.club_class === "string" &&
+            "id" in content.fields &&
+            typeof content.fields.id === "object" &&
+            content.fields.id !== null &&
+            "id" in content.fields.id &&
+            typeof content.fields.id.id === "string" &&
+            "member_type" in content.fields &&
+            typeof content.fields.member_type === "string"
+          ) {
+            const executiveMember: ExecutiveMember = {
+              id: content.fields.id.id,
+              club_class: Number(content.fields.club_class),
+              member_type: content.fields.member_type,
+            };
+
+            if (executiveMember.club_class === recentPastClub.class) {
+              return executiveMember;
+            }
+          }
+          return [];
+        });
+        setRecentPastClubExecutiveMemberCaps(recentPastClubExecutiveMemberCaps);
+        setIsPending(false);
+      })
+      .catch((e) => setError(e))
+      .finally();
+  }, [owner, recentPastClub]);
+
   return {
-    caps,
+    currentClubExecutiveMemberCaps,
+    recentPastClubExecutiveMemberCaps,
     isPending,
     error,
   };

@@ -5,12 +5,16 @@ import { useGetExecutiveMemberCap } from "@/hooks/member-caps";
 import { useCurrentAccount } from "@mysten/dapp-kit";
 import PresidentInvitation from "@/pages-component/PresidentInvitation";
 import WalletButton from "@/components/layout/WalletButton";
+import { usePastClub } from "@/hooks/club";
 
 export default function ExecutiveMemberPage() {
   const account = useCurrentAccount();
-  const { caps } = useGetExecutiveMemberCap({
-    owner: account ? account.address : "",
-  });
+  const { currentClubExecutiveMemberCaps, recentPastClubExecutiveMemberCaps } =
+    useGetExecutiveMemberCap({
+      owner: account ? account.address : "",
+    });
+
+  const { recentPastClub } = usePastClub();
 
   if (!account)
     return (
@@ -22,8 +26,8 @@ export default function ExecutiveMemberPage() {
 
   return (
     <section>
-      {caps &&
-        caps.map((cap) => (
+      {currentClubExecutiveMemberCaps &&
+        currentClubExecutiveMemberCaps.map((cap) => (
           <div>
             <h1 className="text-3xl font-bold text-white">
               운영진 페이지 {`(${cap ? cap.member_type : "Loading..."})`}
@@ -40,7 +44,6 @@ export default function ExecutiveMemberPage() {
                 <br />
                 <NextClubVoting memberCap={cap} />
                 <br />
-                <PresidentInvitation />
               </div>
             )}
 
@@ -49,6 +52,15 @@ export default function ExecutiveMemberPage() {
                 <NextClubVoting memberCap={cap} />
               )}
             <br />
+          </div>
+        ))}
+
+      {recentPastClubExecutiveMemberCaps &&
+        recentPastClubExecutiveMemberCaps.map((cap) => (
+          <div>
+            {cap && cap.member_type === "President" && recentPastClub && (
+              <PresidentInvitation />
+            )}
           </div>
         ))}
     </section>

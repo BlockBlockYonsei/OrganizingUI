@@ -9,7 +9,7 @@ interface HeaderProps {
 
 const Header = ({ title, role = "President" }: HeaderProps) => {
   const account = useCurrentAccount();
-  const { caps } = useGetExecutiveMemberCap({
+  const { currentClubExecutiveMemberCaps } = useGetExecutiveMemberCap({
     owner: account ? account.address : "",
   });
 
@@ -18,8 +18,8 @@ const Header = ({ title, role = "President" }: HeaderProps) => {
       <div className="flex items-center">
         <h1 className="text-xl font-semibold text-white">{title}</h1>
 
-        {caps &&
-          caps.map((cap) => (
+        {currentClubExecutiveMemberCaps &&
+          currentClubExecutiveMemberCaps.map((cap) => (
             <div className="ml-4 flex">
               <div className="flex items-center rounded-md bg-[#6d28d9] px-3 py-1 text-sm text-white">
                 <Crown className="h-4 w-4 mr-1" />

@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useGetCurrentClass } from "@/hooks/club";
+import { useClubRecruiting, useGetCurrentClass } from "@/hooks/club";
 import { useGetMemberCap } from "@/hooks/members";
 import { useCurrentAccount } from "@mysten/dapp-kit";
 
@@ -17,6 +17,7 @@ export default function OverviewPage() {
   const { currentClassMemberCap } = useGetMemberCap({
     owner: account ? account.address : "",
   });
+  const { applyToJoinClub } = useClubRecruiting();
 
   return (
     <div>
@@ -64,6 +65,9 @@ export default function OverviewPage() {
             <Button
               size={"lg"}
               className="w-45 border-2 cursor-pointer active:bg-gray-300"
+              onClick={() => {
+                applyToJoinClub();
+              }}
             >
               Apply To Join
             </Button>
@@ -76,6 +80,17 @@ export default function OverviewPage() {
           <WalletButton />
         </div>
       )}
+
+      <br />
+      <Button
+        size={"lg"}
+        className="p-2 border-2 cursor-pointer active:bg-gray-300"
+        onClick={() => {
+          applyToJoinClub();
+        }}
+      >
+        Apply To Join(Testing Button)
+      </Button>
     </div>
   );
 }

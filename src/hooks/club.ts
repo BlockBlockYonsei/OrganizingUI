@@ -265,9 +265,60 @@ export function useClubRecruiting() {
       }
     );
   };
+
+  const applyToJoinClub = () => {
+    if (!account) return;
+    // setToastState({
+    //   type: "loading",
+    //   message: "Collection is being created...",
+    // });
+    if (!currentClass) return;
+
+    const tx = new Transaction();
+
+    tx.moveCall({
+      package: PACKAGE_ID,
+      module: "blockblock",
+      function: "apply_to_join_club",
+      arguments: [
+        tx.object(currentClass.blockblock_ys),
+        tx.object(currentClass.id),
+      ],
+    });
+
+    signAndExecuteTransaction(
+      {
+        transaction: tx,
+      },
+      {
+        onSuccess: (data) => {
+          console.log("Success! data:", data);
+          refetch();
+          // setToastState({
+          //   type: "success",
+          //   message: "Creating collection succeeded.",
+          // });
+          // setTimeout(() => {
+          //   refetch();
+          //   console.log("HOOORAAY");
+          // }, 5000);
+        },
+        onError: (err) => {
+          console.log("Error", err);
+          // setToastState({
+          //   type: "error",
+          //   message:
+          //     "Something went wrong while creating the collection. Please try again.",
+          // });
+        },
+      }
+    );
+  };
+
   return {
     startClubRecruitment,
     endClubRecruitmentAndGrantMemberCaps,
+    applyToJoinClub,
     // isPending,
     // error,
   };

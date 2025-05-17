@@ -1,8 +1,8 @@
 export const PACKAGE_ID =
-  "0x656470ff460c45dc987a27fd585598260dcb03da182a20ed070ce4339dd14c18";
+  "0xaa5d6f72a94bb53a5e5f9cb0ea2f089cdea8d4fc3d92350f24710abd4aee8ec9";
 
 export const BLOCKBLOCK_YONSEI =
-  "0x969e6878448fd8b2a034aa95e81e6da6695be30faddad73dacc1568a08d371a0";
+  "0x4ae9a735ae560a5c348b63d5cfa7c8e50d165739a17f64ae9fdd9e3c0b955c39";
 
 export const FIRST_CLUB_CLASS =
-  "0x96551c6111dcfbbb73a2f98aecbd804451e693d283e02f30c4badec0348aa4e6";
+  "0xd2b0c83e437ae65f6aa6ee66fdc1c1b0952c5ec7a92716c7a1eba70be1ddc0c1";

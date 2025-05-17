@@ -139,7 +139,6 @@ export const useGetCurrentClass = () => {
             };
 
             setCurrentClass(newCurrentClass);
-            console.log("REFUERLKJELFIEJS???", newCurrentClass);
           }
         });
     }

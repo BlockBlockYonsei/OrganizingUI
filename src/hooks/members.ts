@@ -70,7 +70,9 @@ export const useGetExecutiveMemberCap = ({ owner }: { owner: string }) => {
 };
 
 export const useGetMemberCap = ({ owner }: { owner: string }) => {
-  const [caps, setCaps] = useState<any>(null);
+  const [currentClassMemberCap, setCurrentClassMemberCap] =
+    useState<BlockblockMember>();
+  const [caps, setCaps] = useState<BlockblockMember[]>();
   const [isPending, setIsPending] = useState<boolean>(true);
   const [error, setError] = useState(null);
 
@@ -117,14 +119,23 @@ export const useGetMemberCap = ({ owner }: { owner: string }) => {
           }
           return [];
         });
+        console.log("BLCOBLOCMAEM", currentClassBlockblockMemberCaps);
         setCaps(currentClassBlockblockMemberCaps);
         setIsPending(false);
       })
       .catch((e) => setError(e))
       .finally();
-  }, [owner]);
+  }, [owner, currentClass]);
+
+  useEffect(() => {
+    if (!caps) return;
+
+    caps.sort((a, b) => b.club_class - a.club_class);
+    setCurrentClassMemberCap(caps[0]);
+  }, [caps]);
 
   return {
+    currentClassMemberCap,
     caps,
     isPending,
     error,

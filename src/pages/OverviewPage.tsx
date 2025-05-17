@@ -1,3 +1,5 @@
+import WalletButton from "@/components/layout/WalletButton";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -6,9 +8,16 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useGetCurrentClass } from "@/hooks/club";
+import { useGetMemberCap } from "@/hooks/members";
+import { useCurrentAccount } from "@mysten/dapp-kit";
 
 export default function OverviewPage() {
+  const account = useCurrentAccount();
   const { currentClass } = useGetCurrentClass();
+  const { currentClassMemberCap } = useGetMemberCap({
+    owner: account ? account.address : "",
+  });
+
   return (
     <div>
       {currentClass && (
@@ -46,27 +55,24 @@ export default function OverviewPage() {
       )}
       <br />
 
-      {/* {account ? (
-        <div className="flex gap-4">
-          <Link to="/non-member">
-            <button className="border px-4 py-2 cursor-pointer active:bg-gray-700">
-              비동아리원 페이지
-            </button>
-          </Link>
-          <Link to="member">
-            <button className="border px-4 py-2 cursor-pointer active:bg-gray-700">
-              동아리원 페이지
-            </button>
-          </Link>
-        </div>
-      ) : (
-        <div>
-          <h1>지갑 연결 페이지</h1>
-          <div className="w-45">
-            <WalletButton />
+      {account ? (
+        currentClassMemberCap ? (
+          <div>You're Already Blockblock Member</div>
+        ) : (
+          <div className="">
+            <Button
+              size={"lg"}
+              className="w-45 border-2 cursor-pointer active:bg-gray-300"
+            >
+              Apply To Join
+            </Button>
           </div>
+        )
+      ) : (
+        <div className="w-45">
+          <WalletButton />
         </div>
-      )} */}
+      )}
     </div>
   );
 }

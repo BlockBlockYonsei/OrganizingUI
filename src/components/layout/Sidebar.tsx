@@ -35,11 +35,11 @@ const Sidebar = () => {
     //   path: "/apply",
     //   icon: <Users className="h-5 w-5" />,
     // },
-    {
-      label: "Settings",
-      path: "/",
-      icon: <Settings className="h-5 w-5" />,
-    },
+    // {
+    //   label: "Settings",
+    //   path: "/",
+    //   icon: <Settings className="h-5 w-5" />,
+    // },
   ];
 
   return (

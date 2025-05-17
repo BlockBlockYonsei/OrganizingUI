@@ -96,12 +96,13 @@ export default function OverviewPage() {
         )
       ) : (
         <div className="w-45">
+          <p>Please Connect Wallet</p>
           <WalletButton />
         </div>
       )}
 
       <br />
-      <Button
+      {/* <Button
         size={"lg"}
         className="p-2 border-2 cursor-pointer active:bg-gray-300"
         onClick={() => {
@@ -109,7 +110,7 @@ export default function OverviewPage() {
         }}
       >
         Apply To Join(Testing Button)
-      </Button>
+      </Button> */}
     </div>
   );
 }

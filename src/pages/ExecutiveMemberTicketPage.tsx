@@ -1,9 +1,20 @@
+import WalletButton from "@/components/layout/WalletButton";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useExecutiveMemberTicket } from "@/hooks/tickets";
+import { useCurrentAccount } from "@mysten/dapp-kit";
 
 export default function ExecutiveMemberTicketPage() {
   const { tickets, sendBackExecutiveMemberTicket } = useExecutiveMemberTicket();
+  const account = useCurrentAccount();
+
+  if (!account)
+    return (
+      <div className="w-45">
+        <p>Please Connect Wallet</p>
+        <WalletButton />
+      </div>
+    );
 
   return (
     <div>

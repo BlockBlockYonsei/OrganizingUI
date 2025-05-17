@@ -4,12 +4,21 @@ import ExecutiveMemberInvitation from "@/pages-component/ExecutiveMemberInvitati
 import { useGetExecutiveMemberCap } from "@/hooks/member-caps";
 import { useCurrentAccount } from "@mysten/dapp-kit";
 import PresidentInvitation from "@/pages-component/PresidentInvitation";
+import WalletButton from "@/components/layout/WalletButton";
 
 export default function ExecutiveMemberPage() {
   const account = useCurrentAccount();
   const { caps } = useGetExecutiveMemberCap({
     owner: account ? account.address : "",
   });
+
+  if (!account)
+    return (
+      <div className="w-45">
+        <p>Please Connect Wallet</p>
+        <WalletButton />
+      </div>
+    );
 
   return (
     <section>

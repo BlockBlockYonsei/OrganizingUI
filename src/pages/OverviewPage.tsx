@@ -102,7 +102,7 @@ export default function OverviewPage() {
       )}
 
       <br />
-      {/* <Button
+      <Button
         size={"lg"}
         className="p-2 border-2 cursor-pointer active:bg-gray-300"
         onClick={() => {
@@ -110,7 +110,7 @@ export default function OverviewPage() {
         }}
       >
         Apply To Join(Testing Button)
-      </Button> */}
+      </Button>
     </div>
   );
 }

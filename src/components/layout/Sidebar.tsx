@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Code, Home, Menu, Settings, Ticket, Users } from "lucide-react";
+import { Code, Home, Menu, Ticket, Users } from "lucide-react";
 // import { useClubContext } from "../../context/ClubContext";
 import UserProfile from "./UserProfile";
 import { Link } from "react-router-dom";

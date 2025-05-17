@@ -7,7 +7,7 @@ interface HeaderProps {
   role?: string;
 }
 
-const Header = ({ title, role = "President" }: HeaderProps) => {
+const Header = ({ title }: HeaderProps) => {
   const account = useCurrentAccount();
   const { currentClubExecutiveMemberCaps } = useGetExecutiveMemberCap({
     owner: account ? account.address : "",

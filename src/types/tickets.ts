@@ -4,5 +4,4 @@ export interface ExecutiveMemberTicket {
   member_type: string;
   president: string;
   member_address: string | null;
-  // member_address: any;
 }

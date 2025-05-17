@@ -4,7 +4,7 @@ import {
 } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
 import { useCurrentClub } from "./club";
-import { PACKAGE_ID } from "@/Constant";
+import { ORIGINAL_PACKAGE_ID, UPGRADED_PACKAGE_ID } from "@/Constant";
 import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
 import { useEffect, useState } from "react";
 import { ExecutiveMember, ExecutiveMemberType } from "@/types/members";
@@ -20,7 +20,7 @@ export function usePresident() {
 
   const { currentClub, refetch } = useCurrentClub();
 
-  const CAP_TYPE = `${PACKAGE_ID}::executive_member::ExecutiveMemberCap`;
+  const CAP_TYPE = `${ORIGINAL_PACKAGE_ID}::executive_member::ExecutiveMemberCap`;
 
   const client = new SuiClient({ url: getFullnodeUrl("testnet") });
   useEffect(() => {
@@ -101,10 +101,12 @@ export function usePresident() {
     const tx = new Transaction();
 
     tx.moveCall({
-      package: PACKAGE_ID,
+      package: UPGRADED_PACKAGE_ID,
       module: "blockblock",
       function: "invite_executive_member",
-      typeArguments: [`${PACKAGE_ID}::executive_member::${excutiveMemberType}`],
+      typeArguments: [
+        `${ORIGINAL_PACKAGE_ID}::executive_member::${excutiveMemberType}`,
+      ],
       arguments: [
         tx.object(currentClub.blockblock_ys),
         tx.object(currentClub.id),
@@ -154,10 +156,12 @@ export function usePresident() {
     const tx = new Transaction();
 
     tx.moveCall({
-      package: PACKAGE_ID,
+      package: UPGRADED_PACKAGE_ID,
       module: "blockblock",
       function: "confirm_executive_member_ticket",
-      typeArguments: [`${PACKAGE_ID}::executive_member::${ticket.member_type}`],
+      typeArguments: [
+        `${ORIGINAL_PACKAGE_ID}::executive_member::${ticket.member_type}`,
+      ],
       arguments: [
         tx.object(currentClub.blockblock_ys),
         tx.object(currentClub.id),
@@ -203,7 +207,7 @@ export function usePresident() {
     const tx = new Transaction();
 
     tx.moveCall({
-      package: PACKAGE_ID,
+      package: UPGRADED_PACKAGE_ID,
       module: "blockblock",
       function: "start_club_recruitment",
       arguments: [
@@ -250,9 +254,56 @@ export function usePresident() {
     const tx = new Transaction();
 
     tx.moveCall({
-      package: PACKAGE_ID,
+      package: UPGRADED_PACKAGE_ID,
       module: "blockblock",
       function: "end_club_recruitment_and_grant_member_caps",
+      arguments: [
+        tx.object(currentClub.blockblock_ys),
+        tx.object(currentClub.id),
+        tx.object(currentPresidentCap.id),
+      ],
+    });
+
+    signAndExecuteTransaction(
+      {
+        transaction: tx,
+      },
+      {
+        onSuccess: (data) => {
+          console.log("Success! data:", data);
+          refetch();
+          // setToastState({
+          //   type: "success",
+          //   message: "Creating collection succeeded.",
+          // });
+        },
+        onError: (err) => {
+          console.log("Error", err);
+          // setToastState({
+          //   type: "error",
+          //   message:
+          //     "Something went wrong while creating the collection. Please try again.",
+          // });
+        },
+      }
+    );
+  };
+
+  const initiateClassTransition = () => {
+    if (!account) return;
+    // setToastState({
+    //   type: "loading",
+    //   message: "Collection is being created...",
+    // });
+    if (!currentClub) return;
+    if (!currentPresidentCap) return;
+
+    const tx = new Transaction();
+
+    tx.moveCall({
+      package: UPGRADED_PACKAGE_ID,
+      module: "blockblock",
+      function: "initiate_class_transition",
       arguments: [
         tx.object(currentClub.blockblock_ys),
         tx.object(currentClub.id),
@@ -290,6 +341,7 @@ export function usePresident() {
     confirmExecutiveMemberTicket,
     startClubRecruitment,
     endClubRecruitmentAndGrantMemberCaps,
+    initiateClassTransition,
     isPending,
     error,
   };

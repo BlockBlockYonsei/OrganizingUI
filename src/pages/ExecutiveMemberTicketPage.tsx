@@ -3,10 +3,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useExecutiveMemberTicket } from "@/hooks/tickets";
 import { useCurrentAccount } from "@mysten/dapp-kit";
+import { useEffect } from "react";
 
 export default function ExecutiveMemberTicketPage() {
   const { tickets, sendBackExecutiveMemberTicket } = useExecutiveMemberTicket();
   const account = useCurrentAccount();
+
+  useEffect(() => {
+    console.log("myticket", tickets);
+  }, [tickets]);
 
   if (!account)
     return (
@@ -40,9 +45,13 @@ export default function ExecutiveMemberTicketPage() {
                   onClick={() => {
                     sendBackExecutiveMemberTicket({ ticket });
                   }}
-                  className="text-2xl border-2 rounded-md py-5 active:bg-gray-700 cursor-pointer"
+                  className={`text-2xl border-2 rounded-md py-5 active:bg-gray-700  ${
+                    ticket.member_address
+                      ? "pointer-events-none border-red-300"
+                      : "cursor-pointer"
+                  }`}
                 >
-                  Accept
+                  {ticket.member_address ? "Sent Back" : "Accept"}
                 </Button>
               </CardContent>
             </Card>

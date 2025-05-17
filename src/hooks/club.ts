@@ -1,6 +1,6 @@
 import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
 import { useEffect, useState } from "react";
-import { PACKAGE_ID } from "@/Constant";
+import { ORIGINAL_PACKAGE_ID, UPGRADED_PACKAGE_ID } from "@/Constant";
 import { NewClassCreated, CurrentClub } from "@/types/club";
 import {
   useCurrentAccount,
@@ -25,7 +25,7 @@ export function useCurrentClub() {
     setRefresh((prev) => !prev);
   };
 
-  const TYPE = `${PACKAGE_ID}::club_class::NewClassCreated`;
+  const TYPE = `${ORIGINAL_PACKAGE_ID}::club_class::NewClassCreated`;
   const client = new SuiClient({ url: getFullnodeUrl("testnet") });
 
   useEffect(() => {
@@ -129,7 +129,7 @@ export function useCurrentClub() {
             const executiveMembers = parsedDFData
               .filter((d) =>
                 d.content.fields.name.type.includes(
-                  `${PACKAGE_ID}::club_class::ExecutiveMemberKey<${PACKAGE_ID}::executive_member::`
+                  `${ORIGINAL_PACKAGE_ID}::club_class::ExecutiveMemberKey<${ORIGINAL_PACKAGE_ID}::executive_member::`
                 )
               )
               .map((d) => {
@@ -144,7 +144,7 @@ export function useCurrentClub() {
             const finalizer = parsedDFData
               .filter((d) =>
                 d.content.fields.name.type.includes(
-                  `${PACKAGE_ID}::club_class::FinalizingCurrentClubKey<${PACKAGE_ID}::executive_member::`
+                  `${ORIGINAL_PACKAGE_ID}::club_class::FinalizingCurrentClubKey<${ORIGINAL_PACKAGE_ID}::executive_member::`
                 )
               )
               .flatMap((d) => {
@@ -195,18 +195,6 @@ export function useCurrentClub() {
                         .addresses as string[],
                     }
                   : null,
-              // ? {
-              //     fields: {
-              //       blockblock_ys:
-              //         content.fields.recruitment.fields.blockblock_ys,
-              //       // class: number;
-              //       class: content.fields.recruitment.fields.class,
-              //       class_id: content.fields.recruitment.fields.class_id,
-              //       addresses: content.fields.recruitment.fields.addresses,
-              //     },
-              //     type: content.fields.recruitment.type,
-              //   }
-              // : null,
             };
 
             console.log("new cururune", newCurrentClub);
@@ -228,7 +216,7 @@ export function useCurrentClub() {
     const tx = new Transaction();
 
     tx.moveCall({
-      package: PACKAGE_ID,
+      package: UPGRADED_PACKAGE_ID,
       module: "blockblock",
       function: "apply_to_join_club",
       arguments: [
@@ -279,10 +267,12 @@ export function useCurrentClub() {
     const tx = new Transaction();
 
     tx.moveCall({
-      package: PACKAGE_ID,
+      package: UPGRADED_PACKAGE_ID,
       module: "blockblock",
       function: "finalize_current_class",
-      typeArguments: [`${PACKAGE_ID}::executive_member::${cap.member_type}`],
+      typeArguments: [
+        `${ORIGINAL_PACKAGE_ID}::executive_member::${cap.member_type}`,
+      ],
       arguments: [
         tx.object(currentClub.blockblock_ys),
         tx.object(currentClub.id),

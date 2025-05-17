@@ -1,13 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { ExecutiveMember } from "@/types/members";
 import { useCurrentClub } from "@/hooks/club";
+import { usePresident } from "@/hooks/president";
 
 export default function NextClubVoting({
   memberCap,
 }: {
   memberCap: ExecutiveMember;
 }) {
-  const { finalizeCurrentClass, currentClub } = useCurrentClub();
+  const { currentClub, finalizeCurrentClass } = useCurrentClub();
+  const { initiateClassTransition } = usePresident();
 
   return (
     <div className="space-6">
@@ -69,7 +71,7 @@ export default function NextClubVoting({
             memberCap.member_type === "President" && (
               <button
                 onClick={() => {
-                  console.log("Arrow Clicked!");
+                  initiateClassTransition();
                 }}
                 className="w-14 h-14 bg-white z-10 cursor-pointer active:bg-gray-300 focus:outline-none"
                 style={{

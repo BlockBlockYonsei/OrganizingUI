@@ -1,6 +1,6 @@
 import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
 import { useEffect, useState } from "react";
-import { PACKAGE_ID } from "@/Constant";
+import { ORIGINAL_PACKAGE_ID, UPGRADED_PACKAGE_ID } from "@/Constant";
 import { useCurrentClub } from "./club";
 import { ExecutiveMemberTicket } from "@/types/tickets";
 import {
@@ -14,7 +14,7 @@ export const useExecutiveMemberTicket = () => {
   const [isPending, setIsPending] = useState<boolean>(true);
   const [error, setError] = useState(null);
 
-  const CAP_TYPE = `${PACKAGE_ID}::executive_member::ExecutiveMemberTicket`;
+  const CAP_TYPE = `${ORIGINAL_PACKAGE_ID}::executive_member::ExecutiveMemberTicket`;
 
   const account = useCurrentAccount();
   const { currentClub } = useCurrentClub();
@@ -93,10 +93,12 @@ export const useExecutiveMemberTicket = () => {
     const tx = new Transaction();
 
     tx.moveCall({
-      package: PACKAGE_ID,
+      package: UPGRADED_PACKAGE_ID,
       module: "blockblock",
       function: "send_back_executive_member_ticket",
-      typeArguments: [`${PACKAGE_ID}::executive_member::${ticket.member_type}`],
+      typeArguments: [
+        `${ORIGINAL_PACKAGE_ID}::executive_member::${ticket.member_type}`,
+      ],
       arguments: [
         tx.object(currentClub.blockblock_ys),
         tx.object(currentClub.id),

@@ -1,6 +1,6 @@
 import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
 import { useEffect, useState } from "react";
-import { PACKAGE_ID } from "@/Constant";
+import { ORIGINAL_PACKAGE_ID } from "@/Constant";
 import { useCurrentClub } from "./club";
 import { BlockblockMember, ExecutiveMember } from "@/types/members";
 
@@ -9,7 +9,7 @@ export const useGetExecutiveMemberCap = ({ owner }: { owner: string }) => {
   const [isPending, setIsPending] = useState<boolean>(true);
   const [error, setError] = useState(null);
 
-  const CAP_TYPE = `${PACKAGE_ID}::executive_member::ExecutiveMemberCap`;
+  const CAP_TYPE = `${ORIGINAL_PACKAGE_ID}::executive_member::ExecutiveMemberCap`;
 
   const { currentClub } = useCurrentClub();
 
@@ -75,7 +75,7 @@ export const useGetMemberCap = ({ owner }: { owner: string }) => {
   const [isPending, setIsPending] = useState<boolean>(true);
   const [error, setError] = useState(null);
 
-  const CAP_TYPE = `${PACKAGE_ID}::blockblock_member::BlockblockMemberCap`;
+  const CAP_TYPE = `${ORIGINAL_PACKAGE_ID}::blockblock_member::BlockblockMemberCap`;
 
   const { currentClub } = useCurrentClub();
   const client = new SuiClient({ url: getFullnodeUrl("testnet") });

@@ -6,7 +6,8 @@ import { useCurrentAccount } from "@mysten/dapp-kit";
 import { useEffect } from "react";
 
 export default function ExecutiveMemberTicketPage() {
-  const { tickets, sendBackExecutiveMemberTicket } = useExecutiveMemberTicket();
+  const { tickets, sendBackExecutiveMemberTicket, sendBackPresidentTicket } =
+    useExecutiveMemberTicket();
   const account = useCurrentAccount();
 
   useEffect(() => {
@@ -43,7 +44,11 @@ export default function ExecutiveMemberTicketPage() {
                 </div>
                 <Button
                   onClick={() => {
-                    sendBackExecutiveMemberTicket({ ticket });
+                    if (ticket.member_type === "President") {
+                      sendBackPresidentTicket({ ticket });
+                    } else {
+                      sendBackExecutiveMemberTicket({ ticket });
+                    }
                   }}
                   className={`text-2xl border-2 rounded-md py-5 active:bg-gray-700  ${
                     ticket.member_address

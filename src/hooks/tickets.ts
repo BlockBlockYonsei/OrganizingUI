@@ -1,7 +1,7 @@
 import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
 import { useEffect, useState } from "react";
 import { ORIGINAL_PACKAGE_ID, UPGRADED_PACKAGE_ID } from "@/Constant";
-import { useCurrentClub } from "./club";
+import { useCurrentClub, usePastClub } from "./club";
 import { ExecutiveMemberTicket } from "@/types/tickets";
 import {
   useCurrentAccount,
@@ -18,6 +18,7 @@ export const useExecutiveMemberTicket = () => {
 
   const account = useCurrentAccount();
   const { currentClub } = useCurrentClub();
+  const { previousClub } = usePastClub();
   const { mutate: signAndExecuteTransaction } = useSignAndExecuteTransaction();
 
   const client = new SuiClient({ url: getFullnodeUrl("testnet") });
@@ -131,10 +132,63 @@ export const useExecutiveMemberTicket = () => {
     );
   };
 
+  const sendBackPresidentTicket = ({
+    ticket,
+  }: {
+    ticket: ExecutiveMemberTicket;
+  }) => {
+    if (!account) return;
+    // setToastState({
+    //   type: "loading",
+    //   message: "Collection is being created...",
+    // });
+    if (!currentClub) return;
+    if (!previousClub) return;
+
+    const tx = new Transaction();
+
+    tx.moveCall({
+      package: UPGRADED_PACKAGE_ID,
+      module: "blockblock",
+      function: "send_back_president_ticket",
+      arguments: [
+        tx.object(currentClub.blockblock_ys),
+        tx.object(previousClub.id),
+        tx.object(currentClub.id),
+        tx.object(ticket.id),
+      ],
+    });
+
+    signAndExecuteTransaction(
+      {
+        transaction: tx,
+      },
+      {
+        onSuccess: (data) => {
+          console.log("Success! data:", data);
+          // refetch();
+          // setToastState({
+          //   type: "success",
+          //   message: "Creating collection succeeded.",
+          // });
+        },
+        onError: (err) => {
+          console.log("Error", err);
+          // setToastState({
+          //   type: "error",
+          //   message:
+          //     "Something went wrong while creating the collection. Please try again.",
+          // });
+        },
+      }
+    );
+  };
+
   return {
     tickets,
     isPending,
     error,
     sendBackExecutiveMemberTicket,
+    sendBackPresidentTicket,
   };
 };

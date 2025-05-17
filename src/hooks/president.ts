@@ -152,12 +152,11 @@ export function usePresident() {
     excutiveMemberType: ExecutiveMemberType;
   }) => {
     if (!account) return;
-    // setToastState({
-    //   type: "loading",
-    //   message: "Collection is being created...",
-    // });
     if (!currentClub) return;
     if (!currentPresidentCap) return;
+
+    toast.dismiss();
+    toast.loading("Loading...");
 
     const tx = new Transaction();
 
@@ -182,20 +181,13 @@ export function usePresident() {
       },
       {
         onSuccess: (data) => {
-          console.log("Success! data:", data);
-          // refetch();
-          // setToastState({
-          //   type: "success",
-          //   message: "Creating collection succeeded.",
-          // });
+          toast.dismiss();
+          toast.success(`Success! digest: ${data.digest}`);
+          refetch();
         },
         onError: (err) => {
-          console.log("Error", err);
-          // setToastState({
-          //   type: "error",
-          //   message:
-          //     "Something went wrong while creating the collection. Please try again.",
-          // });
+          toast.dismiss();
+          toast.error(`Error: ${err}`);
         },
       }
     );
@@ -207,12 +199,11 @@ export function usePresident() {
     ticket: ExecutiveMemberTicket;
   }) => {
     if (!account) return;
-    // setToastState({
-    //   type: "loading",
-    //   message: "Collection is being created...",
-    // });
     if (!currentClub) return;
     if (!currentPresidentCap) return;
+
+    toast.dismiss();
+    toast.loading("Loading...");
 
     const tx = new Transaction();
 
@@ -237,20 +228,13 @@ export function usePresident() {
       },
       {
         onSuccess: (data) => {
-          console.log("Success! data:", data);
-          // refetch();
-          // setToastState({
-          //   type: "success",
-          //   message: "Creating collection succeeded.",
-          // });
+          toast.dismiss();
+          toast.success(`Success! digest: ${data.digest}`);
+          refetch();
         },
         onError: (err) => {
-          console.log("Error", err);
-          // setToastState({
-          //   type: "error",
-          //   message:
-          //     "Something went wrong while creating the collection. Please try again.",
-          // });
+          toast.dismiss();
+          toast.error(`Error: ${err}`);
         },
       }
     );
@@ -260,6 +244,9 @@ export function usePresident() {
     if (!account) return;
     if (!currentClub) return;
     if (!currentPresidentCap) return;
+
+    toast.dismiss();
+    toast.loading("Loading...");
 
     const tx = new Transaction();
 
@@ -280,20 +267,13 @@ export function usePresident() {
       },
       {
         onSuccess: (data) => {
-          console.log("Success! data:", data);
+          toast.dismiss();
+          toast.success(`Success! digest: ${data.digest}`);
           refetch();
-          // setToastState({
-          //   type: "success",
-          //   message: "Creating collection succeeded.",
-          // });
         },
         onError: (err) => {
-          console.log("Error", err);
-          // setToastState({
-          //   type: "error",
-          //   message:
-          //     "Something went wrong while creating the collection. Please try again.",
-          // });
+          toast.dismiss();
+          toast.error(`Error: ${err}`);
         },
       }
     );
@@ -304,7 +284,8 @@ export function usePresident() {
     if (!currentClub) return;
     if (!currentPresidentCap) return;
 
-    toast.loading("Loading.........");
+    toast.dismiss();
+    toast.loading("Loading...");
 
     const tx = new Transaction();
 
@@ -326,14 +307,12 @@ export function usePresident() {
       {
         onSuccess: (data) => {
           toast.dismiss();
-          console.log("Success! data:", data);
+          toast.success(`Success! digest: ${data.digest}`);
           refetch();
-          toast.success("Success!");
         },
         onError: (err) => {
-          console.log("Error", err);
           toast.dismiss();
-          toast.error("Error");
+          toast.error(`Error: ${err}`);
         },
       }
     );
@@ -341,12 +320,11 @@ export function usePresident() {
 
   const initiateClassTransition = () => {
     if (!account) return;
-    // setToastState({
-    //   type: "loading",
-    //   message: "Collection is being created...",
-    // });
     if (!currentClub) return;
     if (!currentPresidentCap) return;
+
+    toast.dismiss();
+    toast.loading("Loading...");
 
     const tx = new Transaction();
 
@@ -367,20 +345,13 @@ export function usePresident() {
       },
       {
         onSuccess: (data) => {
-          console.log("Success! data:", data);
+          toast.dismiss();
+          toast.success(`Success! digest: ${data.digest}`);
           refetch();
-          // setToastState({
-          //   type: "success",
-          //   message: "Creating collection succeeded.",
-          // });
         },
         onError: (err) => {
-          console.log("Error", err);
-          // setToastState({
-          //   type: "error",
-          //   message:
-          //     "Something went wrong while creating the collection. Please try again.",
-          // });
+          toast.dismiss();
+          toast.error(`Error: ${err}`);
         },
       }
     );
@@ -388,13 +359,12 @@ export function usePresident() {
 
   const appointPresident = ({ recipient }: { recipient: string }) => {
     if (!account) return;
-    // setToastState({
-    //   type: "loading",
-    //   message: "Collection is being created...",
-    // });
     if (!currentClub) return;
     if (!previousClub) return;
     if (!previousPresidentCap) return;
+
+    toast.dismiss();
+    toast.loading("Loading...");
 
     const tx = new Transaction();
 
@@ -417,19 +387,13 @@ export function usePresident() {
       },
       {
         onSuccess: (data) => {
-          console.log("Success! data:", data);
-          // setToastState({
-          //   type: "success",
-          //   message: "Creating collection succeeded.",
-          // });
+          toast.dismiss();
+          toast.success(`Success! digest: ${data.digest}`);
+          refetch();
         },
         onError: (err) => {
-          console.log("Error", err);
-          // setToastState({
-          //   type: "error",
-          //   message:
-          //     "Something went wrong while creating the collection. Please try again.",
-          // });
+          toast.dismiss();
+          toast.error(`Error: ${err}`);
         },
       }
     );
@@ -441,13 +405,12 @@ export function usePresident() {
     ticket: ExecutiveMemberTicket;
   }) => {
     if (!account) return;
-    // setToastState({
-    //   type: "loading",
-    //   message: "Collection is being created...",
-    // });
     if (!currentClub) return;
     if (!previousClub) return;
     if (!previousPresidentCap) return;
+
+    toast.dismiss();
+    toast.loading("Loading...");
 
     const tx = new Transaction();
 
@@ -470,19 +433,13 @@ export function usePresident() {
       },
       {
         onSuccess: (data) => {
-          console.log("Success! data:", data);
-          // setToastState({
-          //   type: "success",
-          //   message: "Creating collection succeeded.",
-          // });
+          toast.dismiss();
+          toast.success(`Success! digest: ${data.digest}`);
+          refetch();
         },
         onError: (err) => {
-          console.log("Error", err);
-          // setToastState({
-          //   type: "error",
-          //   message:
-          //     "Something went wrong while creating the collection. Please try again.",
-          // });
+          toast.dismiss();
+          toast.error(`Error: ${err}`);
         },
       }
     );

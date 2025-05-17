@@ -14,6 +14,7 @@ import {
 import { Transaction } from "@mysten/sui/transactions";
 import { ExecutiveMember, ExecutiveMemberType } from "@/types/members";
 import { parseDynamicBaseTypeField } from "@/lib/sui-client";
+import { toast } from "sonner";
 
 export function useCurrentClub() {
   const [NewClassCreatedEvents, setNewClassCreatedEvents] =
@@ -212,11 +213,10 @@ export function useCurrentClub() {
 
   const applyToJoinClub = () => {
     if (!account) return;
-    // setToastState({
-    //   type: "loading",
-    //   message: "Collection is being created...",
-    // });
     if (!currentClub) return;
+
+    toast.dismiss();
+    toast.loading("Loading...");
 
     const tx = new Transaction();
 
@@ -236,20 +236,13 @@ export function useCurrentClub() {
       },
       {
         onSuccess: (data) => {
-          console.log("Success! data:", data);
+          toast.dismiss();
+          toast.success(`Success! digest: ${data.digest}`);
           refetch();
-          // setToastState({
-          //   type: "success",
-          //   message: "Creating collection succeeded.",
-          // });
         },
         onError: (err) => {
-          console.log("Error", err);
-          // setToastState({
-          //   type: "error",
-          //   message:
-          //     "Something went wrong while creating the collection. Please try again.",
-          // });
+          toast.dismiss();
+          toast.error(`Error: ${err}`);
         },
       }
     );
@@ -257,17 +250,17 @@ export function useCurrentClub() {
 
   const finalizeCurrentClass = ({ cap }: { cap: ExecutiveMember }) => {
     if (!account) return;
-    // setToastState({
-    //   type: "loading",
-    //   message: "Collection is being created...",
-    // });
     if (!currentClub) return;
+
     if (
       !(
         ["President", "VicePresident", "Treasurer"] as ExecutiveMemberType[]
       ).includes(cap.member_type as ExecutiveMemberType)
     )
       return;
+
+    toast.dismiss();
+    toast.loading("Loading...");
 
     const tx = new Transaction();
 
@@ -291,20 +284,13 @@ export function useCurrentClub() {
       },
       {
         onSuccess: (data) => {
-          console.log("Success! data:", data);
+          toast.dismiss();
+          toast.success(`Success! digest: ${data.digest}`);
           refetch();
-          // setToastState({
-          //   type: "success",
-          //   message: "Creating collection succeeded.",
-          // });
         },
         onError: (err) => {
-          console.log("Error", err);
-          // setToastState({
-          //   type: "error",
-          //   message:
-          //     "Something went wrong while creating the collection. Please try again.",
-          // });
+          toast.dismiss();
+          toast.error(`Error: ${err}`);
         },
       }
     );

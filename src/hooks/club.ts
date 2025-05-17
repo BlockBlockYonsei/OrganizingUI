@@ -153,7 +153,7 @@ export const useGetCurrentClass = () => {
   };
 };
 
-export function useCurrentClass() {
+export function useClubRecruiting() {
   // const [isPending, setIsPending] = useState<boolean>(true);
   // const [error, setError] = useState(null);
   const account = useCurrentAccount();

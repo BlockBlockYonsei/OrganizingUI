@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useCurrentClass, useGetCurrentClass } from "@/hooks/club";
+import { useClubRecruiting, useGetCurrentClass } from "@/hooks/club";
 import {
   Accordion,
   AccordionTrigger,
@@ -13,7 +13,7 @@ export default function CurrentClassRecruiting() {
 
   const { currentClass } = useGetCurrentClass();
   const { startClubRecruitment, endClubRecruitmentAndGrantMemberCaps } =
-    useCurrentClass();
+    useClubRecruiting();
 
   useEffect(() => {
     console.log("currenecltREFSLEFJ??", updateTrigger, currentClass);

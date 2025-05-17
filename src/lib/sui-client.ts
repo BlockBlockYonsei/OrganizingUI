@@ -1,4 +1,4 @@
-import { DynamicFieldObjectData } from "@/types/club-class";
+import { DynamicFieldObjectData } from "@/types/club";
 import { SuiObjectData } from "@mysten/sui/client";
 
 export const parseDynamicBaseTypeField = (

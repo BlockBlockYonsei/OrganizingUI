@@ -1,7 +1,7 @@
 import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
 import { useEffect, useState } from "react";
 import { PACKAGE_ID } from "@/Constant";
-import { NewClassCreated, CurrentClub } from "@/types/club-class";
+import { NewClassCreated, CurrentClub } from "@/types/club";
 import {
   useCurrentAccount,
   useSignAndExecuteTransaction,

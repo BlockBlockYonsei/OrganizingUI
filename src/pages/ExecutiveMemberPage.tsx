@@ -21,24 +21,30 @@ export default function ExecutiveMemberPage() {
       {caps &&
         caps.map((cap) => (
           <div>
-            <h1 className="text-3xl font-bold mb-10 text-white">
+            <h1 className="text-3xl font-bold text-white">
               운영진 페이지 {`(${cap ? cap.member_type : "Loading..."})`}
             </h1>
 
-            {cap && cap.member_type === "President" && (
-              <ExecutiveMemberInvitation />
-            )}
+            <hr className="my-2" />
             <br />
+
             {cap && cap.member_type === "President" && (
-              <CurrentClassRecruiting />
+              <div>
+                <ExecutiveMemberInvitation />
+                <br />
+                <CurrentClassRecruiting />
+                <br />
+                <NextClubVoting memberCap={cap} />
+                <br />
+                <PresidentInvitation />
+              </div>
             )}
-            <br />
+
             {cap &&
-              ["President", "VicePresident", "Treasurer"].includes(
-                cap.member_type
-              ) && <NextClubVoting memberCap={cap} />}
+              ["VicePresident", "Treasurer"].includes(cap.member_type) && (
+                <NextClubVoting memberCap={cap} />
+              )}
             <br />
-            {cap && cap.member_type === "President" && <PresidentInvitation />}
           </div>
         ))}
     </section>

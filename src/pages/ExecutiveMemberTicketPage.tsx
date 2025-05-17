@@ -12,16 +12,17 @@ export default function ExecutiveMemberTicketPage() {
       <br />
 
       {tickets ? (
-        <div className="grid grid-cols-2">
+        <div className="grid grid-cols-2 gap-4 min-w-200 w-full">
           {tickets.map((ticket) => (
-            <Card className="w-120 py-15">
+            <Card className="col-span-1 py-15">
               <CardContent className="flex justify-center items-center flex-col space-y-10">
                 <div>
-                  <div className="flex justify-center items-center gap-4">
-                    <span className="text-2xl">Invited as </span>
-                    <span className="p-2 text-2xl border-2 rounded-md text-center">
-                      {`Blockblock ${ticket.member_type}`}
-                    </span>
+                  <div className="flex flex-col justify-center items-center gap-4">
+                    <div className="text-2xl">Invited as </div>
+                    <div className="p-2 text-2xl border-2 rounded-md text-center">
+                      <p>BlockBlock</p>
+                      <p>{ticket.member_type}</p>
+                    </div>
                   </div>
                 </div>
                 <Button

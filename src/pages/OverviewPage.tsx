@@ -7,13 +7,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useClubRecruiting, useGetCurrentClass } from "@/hooks/club";
+import { useClubRecruiting, useCurrentClass } from "@/hooks/club";
 import { useGetMemberCap } from "@/hooks/members";
 import { useCurrentAccount } from "@mysten/dapp-kit";
 
 export default function OverviewPage() {
   const account = useCurrentAccount();
-  const { currentClass } = useGetCurrentClass();
+  const { currentClass } = useCurrentClass();
   const { currentClassMemberCap } = useGetMemberCap({
     owner: account ? account.address : "",
   });

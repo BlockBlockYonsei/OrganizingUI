@@ -3,7 +3,7 @@ import {
   useSignAndExecuteTransaction,
 } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
-import { useGetCurrentClass } from "./club";
+import { useCurrentClass } from "./club";
 import { PACKAGE_ID } from "@/Constant";
 import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
 import { useEffect, useState } from "react";
@@ -18,7 +18,7 @@ export function usePresident({ owner }: { owner: string }) {
   const account = useCurrentAccount();
   const { mutate: signAndExecuteTransaction } = useSignAndExecuteTransaction();
 
-  const { currentClass } = useGetCurrentClass();
+  const { currentClass } = useCurrentClass();
 
   const CAP_TYPE = `${PACKAGE_ID}::executive_member::ExecutiveMemberCap`;
 

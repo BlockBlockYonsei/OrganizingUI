@@ -9,7 +9,7 @@ import {
 import { usePresident } from "./president";
 import { Transaction } from "@mysten/sui/transactions";
 
-export const useGetCurrentClass = () => {
+export function useCurrentClass() {
   const [createNewClassEvents, setCreateNewClassEvents] =
     useState<CreateNewClassEvent[]>();
   const [currentClass, setCurrentClass] = useState<CurrentClass>();
@@ -151,7 +151,7 @@ export const useGetCurrentClass = () => {
     error,
     refetch,
   };
-};
+}
 
 export function useClubRecruiting() {
   // const [isPending, setIsPending] = useState<boolean>(true);
@@ -159,7 +159,7 @@ export function useClubRecruiting() {
   const account = useCurrentAccount();
   const { mutate: signAndExecuteTransaction } = useSignAndExecuteTransaction();
 
-  const { currentClass, refetch } = useGetCurrentClass();
+  const { currentClass, refetch } = useCurrentClass();
   const { currentPresidentCap } = usePresident({
     owner: account ? account.address : "",
   });

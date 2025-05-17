@@ -1,7 +1,7 @@
 import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
 import { useEffect, useState } from "react";
 import { PACKAGE_ID } from "@/Constant";
-import { useGetCurrentClass } from "./club";
+import { useCurrentClass } from "./club";
 import { ExecutiveMemberTicket } from "@/types/tickets";
 import {
   useCurrentAccount,
@@ -17,7 +17,7 @@ export const useExecutiveMemberTicket = () => {
   const CAP_TYPE = `${PACKAGE_ID}::executive_member::ExecutiveMemberTicket`;
 
   const account = useCurrentAccount();
-  const { currentClass } = useGetCurrentClass();
+  const { currentClass } = useCurrentClass();
   const { mutate: signAndExecuteTransaction } = useSignAndExecuteTransaction();
 
   const client = new SuiClient({ url: getFullnodeUrl("testnet") });

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useClubRecruiting, useGetCurrentClass } from "@/hooks/club";
+import { useClubRecruiting, useCurrentClass } from "@/hooks/club";
 import {
   Accordion,
   AccordionTrigger,
@@ -11,7 +11,7 @@ export default function CurrentClassRecruiting() {
   // const [status, setStatus] = useState<"open" | "close">("close");
   const [updateTrigger, setUpdateTrigger] = useState(false);
 
-  const { currentClass } = useGetCurrentClass();
+  const { currentClass } = useCurrentClass();
   const { startClubRecruitment, endClubRecruitmentAndGrantMemberCaps } =
     useClubRecruiting();
 

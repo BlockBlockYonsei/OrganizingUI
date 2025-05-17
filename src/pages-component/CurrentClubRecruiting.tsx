@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
-import { useClubRecruiting, useCurrentClub } from "@/hooks/club";
+import { useCurrentClub } from "@/hooks/club";
 import {
   Accordion,
   AccordionTrigger,
   AccordionContent,
   AccordionItem,
 } from "@/components/ui/accordion";
+import { usePresident } from "@/hooks/president";
 
 export default function CurrentClubRecruiting() {
-  // const [status, setStatus] = useState<"open" | "close">("close");
   const [updateTrigger, setUpdateTrigger] = useState(false);
 
   const { currentClub } = useCurrentClub();
   const { startClubRecruitment, endClubRecruitmentAndGrantMemberCaps } =
-    useClubRecruiting();
+    usePresident();
 
   useEffect(() => {
     console.log("currenecltREFSLEFJ??", updateTrigger, currentClub);

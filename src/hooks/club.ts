@@ -6,7 +6,6 @@ import {
   useCurrentAccount,
   useSignAndExecuteTransaction,
 } from "@mysten/dapp-kit";
-import { usePresident } from "./president";
 import { Transaction } from "@mysten/sui/transactions";
 
 export function useCurrentClub() {
@@ -17,12 +16,14 @@ export function useCurrentClub() {
   const [error, setError] = useState(null);
   const [refresh, setRefresh] = useState<boolean>(false);
 
+  const account = useCurrentAccount();
+  const { mutate: signAndExecuteTransaction } = useSignAndExecuteTransaction();
+
   const refetch = () => {
     setRefresh((prev) => !prev);
   };
 
   const TYPE = `${PACKAGE_ID}::club_class::CreateNewClass`;
-
   const client = new SuiClient({ url: getFullnodeUrl("testnet") });
 
   useEffect(() => {
@@ -144,128 +145,6 @@ export function useCurrentClub() {
     }
   }, [createNewClassEvents]);
 
-  return {
-    createNewClassEvents,
-    currentClub,
-    isPending,
-    error,
-    refetch,
-  };
-}
-
-export function useClubRecruiting() {
-  // const [isPending, setIsPending] = useState<boolean>(true);
-  // const [error, setError] = useState(null);
-  const account = useCurrentAccount();
-  const { mutate: signAndExecuteTransaction } = useSignAndExecuteTransaction();
-
-  const { currentClub, refetch } = useCurrentClub();
-  const { currentPresidentCap } = usePresident({
-    owner: account ? account.address : "",
-  });
-
-  const startClubRecruitment = () => {
-    if (!account) return;
-    // setToastState({
-    //   type: "loading",
-    //   message: "Collection is being created...",
-    // });
-    if (!currentClub) return;
-    if (!currentPresidentCap) return;
-
-    const tx = new Transaction();
-
-    tx.moveCall({
-      package: PACKAGE_ID,
-      module: "blockblock",
-      function: "start_club_recruitment",
-      arguments: [
-        tx.object(currentClub.blockblock_ys),
-        tx.object(currentClub.id),
-        tx.object(currentPresidentCap.id),
-      ],
-    });
-
-    signAndExecuteTransaction(
-      {
-        transaction: tx,
-      },
-      {
-        onSuccess: (data) => {
-          console.log("Success! data:", data);
-          refetch();
-          // setToastState({
-          //   type: "success",
-          //   message: "Creating collection succeeded.",
-          // });
-          // setTimeout(() => {
-          //   refetch();
-          //   console.log("HOOORAAY");
-          // }, 5000);
-        },
-        onError: (err) => {
-          console.log("Error", err);
-          // setToastState({
-          //   type: "error",
-          //   message:
-          //     "Something went wrong while creating the collection. Please try again.",
-          // });
-        },
-      }
-    );
-  };
-
-  const endClubRecruitmentAndGrantMemberCaps = () => {
-    if (!account) return;
-    // setToastState({
-    //   type: "loading",
-    //   message: "Collection is being created...",
-    // });
-    if (!currentClub) return;
-    if (!currentPresidentCap) return;
-
-    const tx = new Transaction();
-
-    tx.moveCall({
-      package: PACKAGE_ID,
-      module: "blockblock",
-      function: "end_club_recruitment_and_grant_member_caps",
-      arguments: [
-        tx.object(currentClub.blockblock_ys),
-        tx.object(currentClub.id),
-        tx.object(currentPresidentCap.id),
-      ],
-    });
-
-    signAndExecuteTransaction(
-      {
-        transaction: tx,
-      },
-      {
-        onSuccess: (data) => {
-          console.log("Success! data:", data);
-          refetch();
-          // setToastState({
-          //   type: "success",
-          //   message: "Creating collection succeeded.",
-          // });
-          // setTimeout(() => {
-          //   refetch();
-          //   console.log("HOOORAAY");
-          // }, 5000);
-        },
-        onError: (err) => {
-          console.log("Error", err);
-          // setToastState({
-          //   type: "error",
-          //   message:
-          //     "Something went wrong while creating the collection. Please try again.",
-          // });
-        },
-      }
-    );
-  };
-
   const applyToJoinClub = () => {
     if (!account) return;
     // setToastState({
@@ -298,10 +177,6 @@ export function useClubRecruiting() {
           //   type: "success",
           //   message: "Creating collection succeeded.",
           // });
-          // setTimeout(() => {
-          //   refetch();
-          //   console.log("HOOORAAY");
-          // }, 5000);
         },
         onError: (err) => {
           console.log("Error", err);
@@ -314,12 +189,12 @@ export function useClubRecruiting() {
       }
     );
   };
-
   return {
-    startClubRecruitment,
-    endClubRecruitmentAndGrantMemberCaps,
+    createNewClassEvents,
+    currentClub,
+    isPending,
+    error,
+    refetch,
     applyToJoinClub,
-    // isPending,
-    // error,
   };
 }

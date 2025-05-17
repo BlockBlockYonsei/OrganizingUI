@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { ExecutiveMember, ExecutiveMemberType } from "@/types/members";
 import { ExecutiveMemberTicket } from "@/types/tickets";
 
-export function usePresident({ owner }: { owner: string }) {
+export function usePresident() {
   const [currentPresidentCap, setCurrentPresidentCap] =
     useState<ExecutiveMember>();
   const [isPending, setIsPending] = useState<boolean>(true);
@@ -18,7 +18,7 @@ export function usePresident({ owner }: { owner: string }) {
   const account = useCurrentAccount();
   const { mutate: signAndExecuteTransaction } = useSignAndExecuteTransaction();
 
-  const { currentClub } = useCurrentClub();
+  const { currentClub, refetch } = useCurrentClub();
 
   const CAP_TYPE = `${PACKAGE_ID}::executive_member::ExecutiveMemberCap`;
 
@@ -26,7 +26,7 @@ export function usePresident({ owner }: { owner: string }) {
   useEffect(() => {
     client
       .getOwnedObjects({
-        owner,
+        owner: account ? account.address : "",
         filter: { StructType: CAP_TYPE },
         options: {
           showType: true,
@@ -81,7 +81,7 @@ export function usePresident({ owner }: { owner: string }) {
       })
       .catch((e) => setError(e))
       .finally();
-  }, [owner, currentClub]);
+  }, [currentClub]);
 
   const inviteExecutiveMember = ({
     recipient,
@@ -190,10 +190,106 @@ export function usePresident({ owner }: { owner: string }) {
       }
     );
   };
+
+  const startClubRecruitment = () => {
+    if (!account) return;
+    // setToastState({
+    //   type: "loading",
+    //   message: "Collection is being created...",
+    // });
+    if (!currentClub) return;
+    if (!currentPresidentCap) return;
+
+    const tx = new Transaction();
+
+    tx.moveCall({
+      package: PACKAGE_ID,
+      module: "blockblock",
+      function: "start_club_recruitment",
+      arguments: [
+        tx.object(currentClub.blockblock_ys),
+        tx.object(currentClub.id),
+        tx.object(currentPresidentCap.id),
+      ],
+    });
+
+    signAndExecuteTransaction(
+      {
+        transaction: tx,
+      },
+      {
+        onSuccess: (data) => {
+          console.log("Success! data:", data);
+          refetch();
+          // setToastState({
+          //   type: "success",
+          //   message: "Creating collection succeeded.",
+          // });
+        },
+        onError: (err) => {
+          console.log("Error", err);
+          // setToastState({
+          //   type: "error",
+          //   message:
+          //     "Something went wrong while creating the collection. Please try again.",
+          // });
+        },
+      }
+    );
+  };
+
+  const endClubRecruitmentAndGrantMemberCaps = () => {
+    if (!account) return;
+    // setToastState({
+    //   type: "loading",
+    //   message: "Collection is being created...",
+    // });
+    if (!currentClub) return;
+    if (!currentPresidentCap) return;
+
+    const tx = new Transaction();
+
+    tx.moveCall({
+      package: PACKAGE_ID,
+      module: "blockblock",
+      function: "end_club_recruitment_and_grant_member_caps",
+      arguments: [
+        tx.object(currentClub.blockblock_ys),
+        tx.object(currentClub.id),
+        tx.object(currentPresidentCap.id),
+      ],
+    });
+
+    signAndExecuteTransaction(
+      {
+        transaction: tx,
+      },
+      {
+        onSuccess: (data) => {
+          console.log("Success! data:", data);
+          refetch();
+          // setToastState({
+          //   type: "success",
+          //   message: "Creating collection succeeded.",
+          // });
+        },
+        onError: (err) => {
+          console.log("Error", err);
+          // setToastState({
+          //   type: "error",
+          //   message:
+          //     "Something went wrong while creating the collection. Please try again.",
+          // });
+        },
+      }
+    );
+  };
   return {
     currentPresidentCap,
     inviteExecutiveMember,
     confirmExecutiveMemberTicket,
+    startClubRecruitment,
+    endClubRecruitmentAndGrantMemberCaps,
     isPending,
     error,
   };

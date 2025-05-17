@@ -22,13 +22,13 @@ export default function OverviewPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div>
+            <div className="border-2 rounded-md p-2">
               <CardTitle>Blockblock Members: </CardTitle>
               {currentClass.members.map((member) => (
                 <CardDescription className="truncate">{member}</CardDescription>
               ))}
             </div>
-            <div>
+            <div className="border-2 rounded-md p-2">
               {currentClass.recruitment ? (
                 <div>
                   <CardTitle>Recruitment: Registration Open</CardTitle>

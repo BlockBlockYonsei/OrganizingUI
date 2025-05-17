@@ -3,7 +3,6 @@ import NextClubVoting from "@/pages-component/NextClubVoting";
 import ExecutiveMemberInvitation from "@/pages-component/ExecutiveMemberInvitation";
 import { useGetExecutiveMemberCap } from "@/hooks/members";
 import { useCurrentAccount } from "@mysten/dapp-kit";
-import { useEffect } from "react";
 import PresidentInvitation from "@/pages-component/PresidentInvitation";
 
 export default function ExecutiveMemberPage() {
@@ -11,10 +10,6 @@ export default function ExecutiveMemberPage() {
   const { caps } = useGetExecutiveMemberCap({
     owner: account ? account.address : "",
   });
-
-  useEffect(() => {
-    // console.log("coapapapa", caps);
-  }, [caps]);
 
   return (
     <section>

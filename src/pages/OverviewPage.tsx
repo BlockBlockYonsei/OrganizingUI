@@ -55,11 +55,12 @@ export default function OverviewPage() {
       )}
       <br />
 
-      {account ? (
+      {account && currentClass ? (
         currentClassMemberCap ? (
           <div>You're Already Blockblock Member</div>
-        ) : (
+        ) : currentClass.recruitment ? (
           <div className="">
+            <div>Blockblock is recruiting now</div>
             <Button
               size={"lg"}
               className="w-45 border-2 cursor-pointer active:bg-gray-300"
@@ -67,6 +68,8 @@ export default function OverviewPage() {
               Apply To Join
             </Button>
           </div>
+        ) : (
+          <div>Blockblock is not recruiting now</div>
         )
       ) : (
         <div className="w-45">

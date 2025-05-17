@@ -1,7 +1,7 @@
 import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
 import { useEffect, useState } from "react";
 import { PACKAGE_ID } from "@/Constant";
-import { CreateNewClassEvent, CurrentClub } from "@/types/club-class";
+import { NewClassCreated, CurrentClub } from "@/types/club-class";
 import {
   useCurrentAccount,
   useSignAndExecuteTransaction,
@@ -11,8 +11,8 @@ import { ExecutiveMember, ExecutiveMemberType } from "@/types/members";
 import { parseDynamicBaseTypeField } from "@/lib/sui-client";
 
 export function useCurrentClub() {
-  const [createNewClassEvents, setCreateNewClassEvents] =
-    useState<CreateNewClassEvent[]>();
+  const [NewClassCreatedEvents, setNewClassCreatedEvents] =
+    useState<NewClassCreated[]>();
   const [currentClub, setCurrentClub] = useState<CurrentClub>();
   const [isPending, setIsPending] = useState<boolean>(true);
   const [error, setError] = useState(null);
@@ -25,7 +25,7 @@ export function useCurrentClub() {
     setRefresh((prev) => !prev);
   };
 
-  const TYPE = `${PACKAGE_ID}::club_class::CreateNewClass`;
+  const TYPE = `${PACKAGE_ID}::club_class::NewClassCreated`;
   const client = new SuiClient({ url: getFullnodeUrl("testnet") });
 
   useEffect(() => {
@@ -35,7 +35,7 @@ export function useCurrentClub() {
       })
       .then((data) => {
         try {
-          const createNewClassEvents: CreateNewClassEvent[] = data.data.flatMap(
+          const NewClassCreatedEvents: NewClassCreated[] = data.data.flatMap(
             (d) => {
               const parsedJson = d.parsedJson;
               if (
@@ -48,12 +48,12 @@ export function useCurrentClub() {
                 "class" in parsedJson &&
                 parsedJson.class !== null
               ) {
-                return [parsedJson as CreateNewClassEvent];
+                return [parsedJson as NewClassCreated];
               }
               return [];
             }
           );
-          setCreateNewClassEvents(createNewClassEvents);
+          setNewClassCreatedEvents(NewClassCreatedEvents);
         } catch (e: any) {
           setError(e);
         } finally {
@@ -63,8 +63,8 @@ export function useCurrentClub() {
   }, [refresh]);
 
   useEffect(() => {
-    if (createNewClassEvents) {
-      const sorted = createNewClassEvents.sort((a, b) => b.class - a.class);
+    if (NewClassCreatedEvents) {
+      const sorted = NewClassCreatedEvents.sort((a, b) => b.class - a.class);
 
       client
         .getObject({
@@ -186,7 +186,7 @@ export function useCurrentClub() {
           }
         });
     }
-  }, [createNewClassEvents]);
+  }, [NewClassCreatedEvents]);
 
   const applyToJoinClub = () => {
     if (!account) return;
@@ -287,7 +287,7 @@ export function useCurrentClub() {
   };
 
   return {
-    createNewClassEvents,
+    NewClassCreatedEvents,
     currentClub,
     isPending,
     error,

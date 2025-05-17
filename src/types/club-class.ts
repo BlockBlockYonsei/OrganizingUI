@@ -1,4 +1,4 @@
-export interface CreateNewClassEvent {
+export interface NewClassCreated {
   blockblock_ys: string;
   class_id: string;
   class: number;

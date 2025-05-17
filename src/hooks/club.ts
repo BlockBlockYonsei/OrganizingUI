@@ -141,6 +141,25 @@ export function useCurrentClub() {
                 };
               });
 
+            const finalizer = parsedDFData
+              .filter((d) =>
+                d.content.fields.name.type.includes(
+                  `${PACKAGE_ID}::club_class::FinalizingCurrentClubKey<${PACKAGE_ID}::executive_member::`
+                )
+              )
+              .flatMap((d) => {
+                const regex = /::executive_member::([^>]+)>/;
+                const match = d.content.fields.name.type.match(regex);
+                if (!match) return [];
+                return [match[1]];
+              });
+
+            const isFinalized = {
+              president: finalizer.includes("President"),
+              vice_president: finalizer.includes("VicePresident"),
+              treasurer: finalizer.includes("Treasurer"),
+            };
+
             const newCurrentClub: CurrentClub = {
               id: content.fields.id.id,
               blockblock_ys: content.fields.blockblock_ys,
@@ -148,6 +167,7 @@ export function useCurrentClub() {
               members: content.fields.members as string[],
               dynamicFieldData: parsedDFData,
               executive_members: executiveMembers,
+              is_finalized: isFinalized,
               recruitment:
                 content.fields.recruitment &&
                 typeof content.fields.recruitment === "object" &&

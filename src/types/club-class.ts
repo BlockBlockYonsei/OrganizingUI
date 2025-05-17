@@ -22,6 +22,11 @@ export interface CurrentClub {
     address: string;
     member_type: string;
   }[];
+  is_finalized: {
+    president: boolean;
+    vice_president: boolean;
+    treasurer: boolean;
+  };
 }
 
 export interface PastClass {

@@ -9,7 +9,7 @@ import Layout from "./Layout";
 import MemberManagement from "./pages/MemberManagement";
 import ExecutiveMemberPage from "./pages/ExecutiveMemberPage";
 import ExecutiveMemberTicketPage from "./pages/ExecutiveMemberTicketPage";
-import LandingPage from "./pages/LandingPage";
+import OverviewPage from "./pages/OverviewPage";
 
 export default function Routers() {
   return (
@@ -22,12 +22,13 @@ export default function Routers() {
             </Layout>
           }
         >
-          <Route path="/" element={<LandingPage />}></Route>
+          <Route path="/" element={<OverviewPage />}></Route>
           <Route path="/exe-member" element={<ExecutiveMemberPage />}></Route>
           <Route
             path="/exe-member-ticket"
             element={<ExecutiveMemberTicketPage />}
           ></Route>
+          <Route path="/apply" element={<ExecutiveMemberPage />}></Route>
           <Route path="/test" element={<MemberManagement />}></Route>
         </Route>
       </Routes>

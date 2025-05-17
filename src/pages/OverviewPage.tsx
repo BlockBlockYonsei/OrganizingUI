@@ -2,7 +2,7 @@ import WalletButton from "@/components/layout/WalletButton";
 import { useCurrentAccount } from "@mysten/dapp-kit";
 import { Link } from "react-router-dom";
 
-export default function LandingPage() {
+export default function OverviewPage() {
   const account = useCurrentAccount();
   return (
     <div>

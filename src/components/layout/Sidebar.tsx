@@ -16,7 +16,7 @@ const Sidebar = () => {
 
   const navItems: NavItem[] = [
     {
-      label: "Home",
+      label: "Overview",
       path: "/",
       icon: <Home className="h-5 w-5" />,
     },
@@ -29,6 +29,11 @@ const Sidebar = () => {
       label: "ExecutiveMemberTicket",
       path: "/exe-member-ticket",
       icon: <Ticket className="h-5 w-5" />,
+    },
+    {
+      label: "ApplyToJoin",
+      path: "/apply",
+      icon: <Users className="h-5 w-5" />,
     },
     {
       label: "Settings",

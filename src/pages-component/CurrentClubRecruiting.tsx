@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useCurrentClub } from "@/hooks/club";
 import {
   Accordion,
@@ -9,15 +8,9 @@ import {
 import { usePresident } from "@/hooks/president";
 
 export default function CurrentClubRecruiting() {
-  const [updateTrigger, setUpdateTrigger] = useState(false);
-
   const { currentClub } = useCurrentClub();
   const { startClubRecruitment, endClubRecruitmentAndGrantMemberCaps } =
     usePresident();
-
-  useEffect(() => {
-    console.log("currenecltREFSLEFJ??", updateTrigger, currentClub);
-  }, [updateTrigger]);
 
   return (
     <div className="space-y-6 text-white">
@@ -55,8 +48,6 @@ export default function CurrentClubRecruiting() {
                   } else {
                     endClubRecruitmentAndGrantMemberCaps();
                   }
-
-                  setUpdateTrigger((prev) => !prev);
                 }}
                 className={`w-14 h-8 flex items-center rounded-full p-1 cursor-pointer transition-colors duration-300 ${
                   currentClub.recruitment !== null

@@ -11,7 +11,7 @@ export default function ExecutiveMemberTicketPage() {
 
       <br />
 
-      {tickets ? (
+      {tickets && tickets.length > 0 ? (
         <div className="grid grid-cols-2 gap-4 min-w-200 w-full">
           {tickets.map((ticket) => (
             <Card className="col-span-1 py-15">

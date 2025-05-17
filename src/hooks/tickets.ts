@@ -71,10 +71,6 @@ export const useExecutiveMemberTicket = () => {
           }
           return [];
         });
-        console.log(
-          "currentClubExecutiveMemberTickets",
-          currentClubExecutiveMemberTickets
-        );
         setTickets(currentClubExecutiveMemberTickets);
         setIsPending(false);
       })

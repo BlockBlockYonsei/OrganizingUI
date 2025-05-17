@@ -118,7 +118,6 @@ export const useGetMemberCap = ({ owner }: { owner: string }) => {
           }
           return [];
         });
-        console.log("BLCOBLOCMAEM", currentClubBlockblockMemberCaps);
         setCaps(currentClubBlockblockMemberCaps);
         setIsPending(false);
       })

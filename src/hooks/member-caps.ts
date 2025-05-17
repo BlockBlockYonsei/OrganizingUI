@@ -8,7 +8,7 @@ export const useGetExecutiveMemberCap = ({ owner }: { owner: string }) => {
   const [currentClubExecutiveMemberCaps, setCurrentClubExecutiveMemberCaps] =
     useState<ExecutiveMember[]>([]);
   const [
-    recentPastClubExecutiveMemberCaps,
+    previousClubExecutiveMemberCaps,
     setRecentPastClubExecutiveMemberCaps,
   ] = useState<ExecutiveMember[]>([]);
   const [isPending, setIsPending] = useState<boolean>(true);
@@ -17,7 +17,7 @@ export const useGetExecutiveMemberCap = ({ owner }: { owner: string }) => {
   const CAP_TYPE = `${ORIGINAL_PACKAGE_ID}::executive_member::ExecutiveMemberCap`;
 
   const { currentClub } = useCurrentClub();
-  const { recentPastClub } = usePastClub();
+  const { previousClub } = usePastClub();
 
   const client = new SuiClient({ url: getFullnodeUrl("testnet") });
   useEffect(() => {
@@ -70,7 +70,7 @@ export const useGetExecutiveMemberCap = ({ owner }: { owner: string }) => {
 
   useEffect(() => {
     if (!owner) return;
-    if (!recentPastClub) return;
+    if (!previousClub) return;
 
     client
       .getOwnedObjects({
@@ -82,7 +82,7 @@ export const useGetExecutiveMemberCap = ({ owner }: { owner: string }) => {
         },
       })
       .then((data) => {
-        const recentPastClubExecutiveMemberCaps = data.data.flatMap((d) => {
+        const previousClubExecutiveMemberCaps = data.data.flatMap((d) => {
           const content = d.data?.content;
           if (
             content &&
@@ -103,22 +103,22 @@ export const useGetExecutiveMemberCap = ({ owner }: { owner: string }) => {
               member_type: content.fields.member_type,
             };
 
-            if (executiveMember.club_class === recentPastClub.class) {
+            if (executiveMember.club_class === previousClub.class) {
               return executiveMember;
             }
           }
           return [];
         });
-        setRecentPastClubExecutiveMemberCaps(recentPastClubExecutiveMemberCaps);
+        setRecentPastClubExecutiveMemberCaps(previousClubExecutiveMemberCaps);
         setIsPending(false);
       })
       .catch((e) => setError(e))
       .finally();
-  }, [owner, recentPastClub]);
+  }, [owner, previousClub]);
 
   return {
     currentClubExecutiveMemberCaps,
-    recentPastClubExecutiveMemberCaps,
+    previousClubExecutiveMemberCaps,
     isPending,
     error,
   };

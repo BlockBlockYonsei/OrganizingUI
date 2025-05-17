@@ -324,7 +324,7 @@ export function useCurrentClub() {
 export function usePastClub() {
   const [pastClassCreatedEvents, setPastClassCreatedEvents] =
     useState<CurrentClassDeletedAndPastClassCreated[]>();
-  const [recentPastClub, setRecentPastClub] = useState<PastClub>();
+  const [previousClub, setRecentPastClub] = useState<PastClub>();
   const [isPending, setIsPending] = useState<boolean>(true);
   const [error, setError] = useState(null);
   const [refresh, setRefresh] = useState<boolean>(false);
@@ -456,7 +456,7 @@ export function usePastClub() {
               executive_members: executiveMembers,
             };
 
-            console.log("new recentPastClub", pastClub);
+            console.log("new previousClub", pastClub);
 
             setRecentPastClub(pastClub);
           }
@@ -466,7 +466,7 @@ export function usePastClub() {
 
   return {
     pastClassCreatedEvents,
-    recentPastClub,
+    previousClub,
     isPending,
     error,
     refetch,

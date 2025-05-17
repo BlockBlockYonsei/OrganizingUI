@@ -9,12 +9,12 @@ import { usePastClub } from "@/hooks/club";
 
 export default function ExecutiveMemberPage() {
   const account = useCurrentAccount();
-  const { currentClubExecutiveMemberCaps, recentPastClubExecutiveMemberCaps } =
+  const { currentClubExecutiveMemberCaps, previousClubExecutiveMemberCaps } =
     useGetExecutiveMemberCap({
       owner: account ? account.address : "",
     });
 
-  const { recentPastClub } = usePastClub();
+  const { previousClub } = usePastClub();
 
   if (!account)
     return (
@@ -55,10 +55,10 @@ export default function ExecutiveMemberPage() {
           </div>
         ))}
 
-      {recentPastClubExecutiveMemberCaps &&
-        recentPastClubExecutiveMemberCaps.map((cap) => (
+      {previousClubExecutiveMemberCaps &&
+        previousClubExecutiveMemberCaps.map((cap) => (
           <div>
-            {cap && cap.member_type === "President" && recentPastClub && (
+            {cap && cap.member_type === "President" && previousClub && (
               <PresidentInvitation />
             )}
           </div>

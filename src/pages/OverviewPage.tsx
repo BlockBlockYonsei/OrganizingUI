@@ -1,21 +1,49 @@
-import WalletButton from "@/components/layout/WalletButton";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useCurrentClass, useGetCurrentClass } from "@/hooks/club";
-import { useCurrentAccount } from "@mysten/dapp-kit";
-import { Link } from "react-router-dom";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { useGetCurrentClass } from "@/hooks/club";
 
 export default function OverviewPage() {
-  const account = useCurrentAccount();
   const { currentClass } = useGetCurrentClass();
   return (
     <div>
       {currentClass && (
-        <Card className="w-90">
+        <Card className="w-150">
           <CardHeader>
-            <CardTitle>Current Club Class: {currentClass.class}</CardTitle>
+            <CardTitle>
+              Current Blockblock Class: {currentClass.class}
+            </CardTitle>
+            <CardDescription className="truncate">
+              ID: {currentClass.id}
+            </CardDescription>
           </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <CardTitle>Blockblock Members: </CardTitle>
+              {currentClass.members.map((member) => (
+                <CardDescription className="truncate">{member}</CardDescription>
+              ))}
+            </div>
+            <div>
+              {currentClass.recruitment ? (
+                <div>
+                  <CardTitle>Recruitment: 현재 모집 중</CardTitle>
+                  <h3>Addresses: </h3>
+                  {currentClass.recruitment.addresses.map((address) => (
+                    <CardDescription>{address}</CardDescription>
+                  ))}
+                </div>
+              ) : (
+                <CardTitle>Recruitment: 현재 모집 안 함</CardTitle>
+              )}
+            </div>
+          </CardContent>
           <CardContent>
-            {Object.entries(currentClass).map(([name, value]) => {
+            {/* {Object.entries(currentClass).map(([name, value]) => {
               if (name === "recruitment")
                 return (
                   <CardTitle className="truncate w-full">
@@ -23,17 +51,17 @@ export default function OverviewPage() {
                   </CardTitle>
                 );
               return (
-                <CardTitle className="truncate">
+                <CardTitle className="">
                   {name}: {value}
                 </CardTitle>
               );
-            })}
+            })} */}
           </CardContent>
         </Card>
       )}
       <br />
 
-      {account ? (
+      {/* {account ? (
         <div className="flex gap-4">
           <Link to="/non-member">
             <button className="border px-4 py-2 cursor-pointer active:bg-gray-700">
@@ -53,7 +81,7 @@ export default function OverviewPage() {
             <WalletButton />
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

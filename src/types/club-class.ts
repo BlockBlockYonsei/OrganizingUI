@@ -10,14 +10,10 @@ export interface CurrentClass {
   class: number;
   members: string[];
   recruitment: {
-    fields: {
-      blockblock_ys: string;
-      // class: number;
-      class: string;
-      class_id: string;
-      addresses: string[];
-    };
-    type: string;
+    blockblock_ys: string;
+    class: number;
+    class_id: string;
+    addresses: string[];
   } | null;
 }
 

@@ -97,19 +97,45 @@ export const useGetCurrentClass = () => {
               blockblock_ys: content.fields.blockblock_ys,
               class: Number(content.fields.class),
               members: content.fields.members as string[],
-              recruitment: content.fields.recruitment
-                ? {
-                    fields: {
+              recruitment:
+                content.fields.recruitment &&
+                typeof content.fields.recruitment === "object" &&
+                "type" in content.fields.recruitment &&
+                typeof content.fields.recruitment.type === "string" &&
+                "fields" in content.fields.recruitment &&
+                typeof content.fields.recruitment.fields === "object" &&
+                content.fields.recruitment.fields !== null &&
+                "blockblock_ys" in content.fields.recruitment.fields &&
+                typeof content.fields.recruitment.fields.blockblock_ys ===
+                  "string" &&
+                "class" in content.fields.recruitment.fields &&
+                typeof content.fields.recruitment.fields.class === "string" &&
+                "class_id" in content.fields.recruitment.fields &&
+                typeof content.fields.recruitment.fields.class_id ===
+                  "string" &&
+                "addresses" in content.fields.recruitment.fields &&
+                Array.isArray(content.fields.recruitment.fields.addresses)
+                  ? {
                       blockblock_ys:
                         content.fields.recruitment.fields.blockblock_ys,
-                      // class: number;
-                      class: content.fields.recruitment.fields.class,
+                      class: Number(content.fields.recruitment.fields.class),
                       class_id: content.fields.recruitment.fields.class_id,
-                      addresses: content.fields.recruitment.fields.addresses,
-                    },
-                    type: content.fields.recruitment.type,
-                  }
-                : null,
+                      addresses: content.fields.recruitment.fields
+                        .addresses as string[],
+                    }
+                  : null,
+              // ? {
+              //     fields: {
+              //       blockblock_ys:
+              //         content.fields.recruitment.fields.blockblock_ys,
+              //       // class: number;
+              //       class: content.fields.recruitment.fields.class,
+              //       class_id: content.fields.recruitment.fields.class_id,
+              //       addresses: content.fields.recruitment.fields.addresses,
+              //     },
+              //     type: content.fields.recruitment.type,
+              //   }
+              // : null,
             };
 
             setCurrentClass(newCurrentClass);

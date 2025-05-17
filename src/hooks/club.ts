@@ -361,7 +361,7 @@ export function usePastClub() {
 
       client
         .getObject({
-          id: sorted[0].past_class_id,
+          id: sorted.length > 0 ? sorted[0].past_class_id : "",
           options: { showContent: true, showType: true },
         })
         .then(async (data) => {

@@ -8,6 +8,7 @@ import {
   useSignAndExecuteTransaction,
 } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
+import { toast } from "sonner";
 
 export const useExecutiveMemberTicket = () => {
   const [tickets, setTickets] = useState<ExecutiveMemberTicket[]>([]);
@@ -85,11 +86,10 @@ export const useExecutiveMemberTicket = () => {
     ticket: ExecutiveMemberTicket;
   }) => {
     if (!account) return;
-    // setToastState({
-    //   type: "loading",
-    //   message: "Collection is being created...",
-    // });
     if (!currentClub) return;
+
+    toast.dismiss();
+    toast.loading("Loading...");
 
     const tx = new Transaction();
 
@@ -113,20 +113,12 @@ export const useExecutiveMemberTicket = () => {
       },
       {
         onSuccess: (data) => {
-          console.log("Success! data:", data);
-          // refetch();
-          // setToastState({
-          //   type: "success",
-          //   message: "Creating collection succeeded.",
-          // });
+          toast.dismiss();
+          toast.success(`Success! digest: ${data.digest}`);
         },
         onError: (err) => {
-          console.log("Error", err);
-          // setToastState({
-          //   type: "error",
-          //   message:
-          //     "Something went wrong while creating the collection. Please try again.",
-          // });
+          toast.dismiss();
+          toast.error(`Error: ${err}`);
         },
       }
     );
@@ -138,12 +130,11 @@ export const useExecutiveMemberTicket = () => {
     ticket: ExecutiveMemberTicket;
   }) => {
     if (!account) return;
-    // setToastState({
-    //   type: "loading",
-    //   message: "Collection is being created...",
-    // });
     if (!currentClub) return;
     if (!previousClub) return;
+
+    toast.dismiss();
+    toast.loading("Loading...");
 
     const tx = new Transaction();
 
@@ -165,20 +156,12 @@ export const useExecutiveMemberTicket = () => {
       },
       {
         onSuccess: (data) => {
-          console.log("Success! data:", data);
-          // refetch();
-          // setToastState({
-          //   type: "success",
-          //   message: "Creating collection succeeded.",
-          // });
+          toast.dismiss();
+          toast.success(`Success! digest: ${data.digest}`);
         },
         onError: (err) => {
-          console.log("Error", err);
-          // setToastState({
-          //   type: "error",
-          //   message:
-          //     "Something went wrong while creating the collection. Please try again.",
-          // });
+          toast.dismiss();
+          toast.error(`Error: ${err}`);
         },
       }
     );

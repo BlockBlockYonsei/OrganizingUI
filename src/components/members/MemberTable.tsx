@@ -2,6 +2,8 @@ import React from "react";
 // import { useClubContext } from "../../context/ClubContext";
 import RoleBadge from "./RoleBadge";
 import ActionDropdown from "./ActionDropdown";
+import { Button } from "../ui/button";
+import { Card, CardContent, CardHeader } from "../ui/card";
 
 const MemberTable = () => {
   // const { filteredUsers, promoteToMember, designateStaff, appointPresident } =
@@ -9,6 +11,13 @@ const MemberTable = () => {
 
   return (
     <div className="bg-[#1e293b] rounded-lg border border-[#334155] overflow-hidden">
+      <button></button>
+
+      <Button>sdfsdfsdfsd</Button>
+      <Card>
+        <CardHeader>sdfsdfsdfsdf</CardHeader>
+        <CardContent></CardContent>
+      </Card>
       <table className="min-w-full divide-y divide-[#334155]">
         <thead className="bg-[#1e293b]">
           <tr>

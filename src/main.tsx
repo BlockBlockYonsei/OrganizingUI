@@ -8,6 +8,7 @@ import {
 } from "@mysten/dapp-kit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Routers from "./Routers.tsx";
+import { Toaster } from "sonner";
 
 const { networkConfig } = createNetworkConfig({
   // localnet: { url: getFullnodeUrl("localnet") },
@@ -22,6 +23,7 @@ createRoot(document.getElementById("root")!).render(
       <SuiClientProvider networks={networkConfig} defaultNetwork="testnet">
         <WalletProvider autoConnect={true}>
           <Routers></Routers>
+          <Toaster expand={true} richColors />
         </WalletProvider>
       </SuiClientProvider>
     </QueryClientProvider>

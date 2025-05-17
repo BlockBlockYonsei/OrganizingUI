@@ -4,8 +4,10 @@ import {
   Route,
   Outlet,
 } from "react-router-dom";
-import App from "./App";
 import Layout from "./Layout";
+import ExecutiveMemberPage from "./pages/ExecutiveMemberPage";
+import ExecutiveMemberTicketPage from "./pages/ExecutiveMemberTicketPage";
+import OverviewPage from "./pages/OverviewPage";
 
 export default function Routers() {
   return (
@@ -18,7 +20,12 @@ export default function Routers() {
             </Layout>
           }
         >
-          <Route path="/" element={<App />}></Route>
+          <Route path="/" element={<OverviewPage />}></Route>
+          <Route path="/exe-member" element={<ExecutiveMemberPage />}></Route>
+          <Route
+            path="/exe-member-ticket"
+            element={<ExecutiveMemberTicketPage />}
+          ></Route>
         </Route>
       </Routes>
     </Router>

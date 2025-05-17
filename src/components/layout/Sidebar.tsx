@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { Code, Home, Menu, Settings, Ticket, Users } from "lucide-react";
+import { Code, Home, Menu, Ticket, Users } from "lucide-react";
 // import { useClubContext } from "../../context/ClubContext";
 import UserProfile from "./UserProfile";
+import { Link } from "react-router-dom";
 
 interface NavItem {
-  key: string;
   label: string;
+  path: string;
   icon: React.ReactNode;
-  onClick?: () => void;
 }
 
 const Sidebar = () => {
@@ -16,27 +16,30 @@ const Sidebar = () => {
 
   const navItems: NavItem[] = [
     {
-      key: "dashboard",
-      label: "Dashboard",
+      label: "Overview",
+      path: "/",
       icon: <Home className="h-5 w-5" />,
     },
     {
-      key: "members",
-      label: "Members",
+      label: "ExecutiveMembers",
+      path: "/exe-member",
       icon: <Users className="h-5 w-5" />,
-      // onClick: () => setActiveTab("members"),
     },
     {
-      key: "tickets",
-      label: "Tickets",
+      label: "ExecutiveMemberTicket",
+      path: "/exe-member-ticket",
       icon: <Ticket className="h-5 w-5" />,
-      // onClick: () => setActiveTab("tickets"),
     },
-    {
-      key: "settings",
-      label: "Settings",
-      icon: <Settings className="h-5 w-5" />,
-    },
+    // {
+    //   label: "ApplyToJoin",
+    //   path: "/apply",
+    //   icon: <Users className="h-5 w-5" />,
+    // },
+    // {
+    //   label: "Settings",
+    //   path: "/",
+    //   icon: <Settings className="h-5 w-5" />,
+    // },
   ];
 
   return (
@@ -59,29 +62,30 @@ const Sidebar = () => {
           } w-full flex items-center justify-center text-xl font-bold text-[#8b5cf6] cursor-pointer`}
         >
           <Code className="h-5 w-5 mr-2" />
-          ClubDAO
+          SuiCracy
         </div>
       </div>
 
       {/* Navigation */}
       <nav className="flex-1 p-4 space-y-2">
         {navItems.map((item) => (
-          <button
-            key={item.key}
-            className={`flex items-center w-full p-3 rounded-md cursor-pointer ${
-              // activeTab === item.key
-              // true
-              false
-                ? "bg-[#334155] text-white"
-                : "text-gray-400 hover:bg-[#334155] hover:text-white"
-            }`}
-            onClick={item.onClick}
-          >
-            {item.icon}
-            <span className={`${!isSidebarOpen && "hidden"} ml-3`}>
-              {item.label}
-            </span>
-          </button>
+          <Link to={item.path}>
+            <button
+              key={item.label}
+              className={`flex items-center w-full p-3 rounded-md cursor-pointer ${
+                // activeTab === item.key
+                // true
+                false
+                  ? "bg-[#334155] text-white"
+                  : "text-gray-400 hover:bg-[#334155] hover:text-white"
+              }`}
+            >
+              {item.icon}
+              <span className={`${!isSidebarOpen && "hidden"} ml-3`}>
+                {item.label}
+              </span>
+            </button>
+          </Link>
         ))}
       </nav>
 

@@ -8,6 +8,7 @@ import { PACKAGE_ID } from "@/Constant";
 import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
 import { useEffect, useState } from "react";
 import { ExecutiveMember, ExecutiveMemberType } from "@/types/members";
+import { ExecutiveMemberTicket } from "@/types/tickets";
 
 export function usePresident({ owner }: { owner: string }) {
   const [currentPresidentCap, setCurrentPresidentCap] =
@@ -136,9 +137,63 @@ export function usePresident({ owner }: { owner: string }) {
       }
     );
   };
+
+  const confirmExecutiveMemberTicket = ({
+    ticket,
+  }: {
+    ticket: ExecutiveMemberTicket;
+  }) => {
+    if (!account) return;
+    // setToastState({
+    //   type: "loading",
+    //   message: "Collection is being created...",
+    // });
+    if (!currentClass) return;
+    if (!currentPresidentCap) return;
+
+    const tx = new Transaction();
+
+    tx.moveCall({
+      package: PACKAGE_ID,
+      module: "blockblock",
+      function: "confirm_executive_member_ticket",
+      typeArguments: [`${PACKAGE_ID}::executive_member::${ticket.member_type}`],
+      arguments: [
+        tx.object(currentClass.blockblock_ys),
+        tx.object(currentClass.id),
+        tx.object(currentPresidentCap.id),
+        tx.object(ticket.id),
+      ],
+    });
+
+    signAndExecuteTransaction(
+      {
+        transaction: tx,
+      },
+      {
+        onSuccess: (data) => {
+          console.log("Success! data:", data);
+          // refetch();
+          // setToastState({
+          //   type: "success",
+          //   message: "Creating collection succeeded.",
+          // });
+        },
+        onError: (err) => {
+          console.log("Error", err);
+          // setToastState({
+          //   type: "error",
+          //   message:
+          //     "Something went wrong while creating the collection. Please try again.",
+          // });
+        },
+      }
+    );
+  };
   return {
     currentPresidentCap,
     inviteExecutiveMember,
+    confirmExecutiveMemberTicket,
     isPending,
     error,
   };

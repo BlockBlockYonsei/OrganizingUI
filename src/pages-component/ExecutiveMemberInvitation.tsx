@@ -12,10 +12,10 @@ export default function ExecutiveMemberInvitation() {
   );
   const accout = useCurrentAccount();
 
-  const { currentPresidentCap, inviteExecutiveMember } = usePresident({
+  const { inviteExecutiveMember, confirmExecutiveMemberTicket } = usePresident({
     owner: accout ? accout.address : "",
   });
-  const { tickets, confirmExecutiveMemberTicket } = useExecutiveMemberTicket();
+  const { tickets } = useExecutiveMemberTicket();
   return (
     <div>
       <h2 className="text-2xl font-bold">Executive Member Invitation</h2>
@@ -73,10 +73,8 @@ export default function ExecutiveMemberInvitation() {
                 .map((ticket) => (
                   <Button
                     onClick={() => {
-                      if (!currentPresidentCap) return;
                       confirmExecutiveMemberTicket({
                         ticket,
-                        presidentCap: currentPresidentCap,
                       });
                     }}
                     className="col-span-1 cursor-pointer border-2 rounded-md active:bg-gray-300 truncate "

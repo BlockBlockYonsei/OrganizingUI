@@ -1,10 +1,7 @@
 import { useEffect } from "react";
 import { Crown, User } from "lucide-react";
 import WalletButton from "./WalletButton";
-import {
-  useGetExecutiveMemberCap,
-  useGetMemberCap,
-} from "@/hooks/executive-member";
+import { useGetExecutiveMemberCap, useGetMemberCap } from "@/hooks/member-caps";
 import { useCurrentAccount } from "@mysten/dapp-kit";
 
 interface UserProfileProps {
@@ -14,9 +11,10 @@ interface UserProfileProps {
 const UserProfile = ({ isSidebarOpen }: UserProfileProps) => {
   const account = useCurrentAccount();
 
-  const { caps: eMemberCap } = useGetExecutiveMemberCap({
-    owner: account ? account.address : "",
-  });
+  const { currentClubExecutiveMemberCaps: eMemberCap } =
+    useGetExecutiveMemberCap({
+      owner: account ? account.address : "",
+    });
   const { caps: memberCap } = useGetMemberCap({
     owner: account ? account.address : "",
   });
@@ -44,7 +42,13 @@ const UserProfile = ({ isSidebarOpen }: UserProfileProps) => {
             </p>
             <div className="flex items-center text-xs text-[#a78bfa]">
               <Crown className="h-3 w-3 mr-1" />
-              <span>President</span>
+              <span>
+                {account
+                  ? eMemberCap[0]
+                    ? eMemberCap[0].member_type
+                    : "Loading..."
+                  : "Please Connect Wallet"}
+              </span>
             </div>
           </div>
         )}

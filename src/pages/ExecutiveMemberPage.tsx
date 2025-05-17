@@ -1,70 +1,68 @@
-import { usePresident } from "@/hooks/president";
-import NextRecuritingClass from "@/pages-component/NextRecuritingClass";
-import NextClubClass from "@/pages-component/NextClubClass";
-
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useState } from "react";
-
+import CurrentClubRecruiting from "@/pages-component/CurrentClubRecruiting";
+import NextClubVoting from "@/pages-component/NextClubVoting";
+import ExecutiveMemberInvitation from "@/pages-component/ExecutiveMemberInvitation";
+import { useGetExecutiveMemberCap } from "@/hooks/member-caps";
 import { useCurrentAccount } from "@mysten/dapp-kit";
+import PresidentInvitation from "@/pages-component/PresidentInvitation";
+import WalletButton from "@/components/layout/WalletButton";
+import { usePastClub } from "@/hooks/club";
 
 export default function ExecutiveMemberPage() {
   const account = useCurrentAccount();
-  const [vice, setVice] = useState("");
-  const [treasurer, setTreasurer] = useState("");
+  const { currentClubExecutiveMemberCaps, previousClubExecutiveMemberCaps } =
+    useGetExecutiveMemberCap({
+      owner: account ? account.address : "",
+    });
 
-  const accout = useCurrentAccount();
+  const { previousClub } = usePastClub();
 
-  const { sendExecutiveMemberTicket } = usePresident({
-    owner: accout ? accout.address : "",
-  });
-  return (
-    <section className="p-12">
-      <h2 className="text-3xl font-bold mb-10 text-white">President Page</h2>
-      <div>
-        <div>
-          <h2>VicePresident</h2>
-          <div className="grid grid-cols-6">
-            <Input
-              value={vice}
-              onChange={(e) => {
-                setVice(e.target.value);
-              }}
-              className="col-span-4"
-              placeholder="VicePresident"
-            />
-            <Button
-              onClick={() => {
-                sendExecutiveMemberTicket({
-                  recipient: vice,
-                  excutiveMemberType: "VicePresident",
-                });
-              }}
-              className="col-span-1 cursor-pointer"
-            >
-              Send
-            </Button>
-            <Button className="col-span-1 cursor-pointer">Confirm</Button>
-          </div>
-        </div>
-        <div>
-          <h2>Treasurer</h2>
-          <div className="grid grid-cols-6">
-            <Input
-              value={treasurer}
-              onChange={(e) => {
-                setTreasurer(e.target.value);
-              }}
-              className="col-span-4"
-              placeholder="Treasurer"
-            />
-            <Button className="col-span-1 cursor-pointer">Send</Button>
-            <Button className="col-span-1 cursor-pointer">Confirm</Button>
-          </div>
-        </div>
+  if (!account)
+    return (
+      <div className="w-45">
+        <p>Please Connect Wallet</p>
+        <WalletButton />
       </div>
+    );
 
-      <NextClubClass></NextClubClass>
+  return (
+    <section>
+      {currentClubExecutiveMemberCaps &&
+        currentClubExecutiveMemberCaps.map((cap) => (
+          <div>
+            <h1 className="text-3xl font-bold text-white">
+              운영진 페이지 {`(${cap ? cap.member_type : "Loading..."})`}
+            </h1>
+
+            <hr className="my-2" />
+            <br />
+
+            {cap && cap.member_type === "President" && (
+              <div>
+                <ExecutiveMemberInvitation />
+                <br />
+                <CurrentClubRecruiting />
+                <br />
+                <NextClubVoting memberCap={cap} />
+                <br />
+              </div>
+            )}
+
+            {cap &&
+              ["VicePresident", "Treasurer"].includes(cap.member_type) && (
+                <NextClubVoting memberCap={cap} />
+              )}
+            <br />
+          </div>
+        ))}
+
+      {previousClubExecutiveMemberCaps &&
+        previousClubExecutiveMemberCaps.map((cap) => (
+          <div>
+            {cap && cap.member_type === "President" && previousClub && (
+              <PresidentInvitation />
+            )}
+          </div>
+        ))}
     </section>
   );
 }

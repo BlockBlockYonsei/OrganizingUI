@@ -5,11 +5,11 @@ import {
 import { Transaction } from "@mysten/sui/transactions";
 import { useCurrentClub, usePastClub } from "./club";
 import { ORIGINAL_PACKAGE_ID, UPGRADED_PACKAGE_ID } from "@/Constant";
-import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
+import { SuiClient } from "@mysten/sui/client";
 import { useEffect, useState } from "react";
 import { ExecutiveMember, ExecutiveMemberType } from "@/types/members";
 import { ExecutiveMemberTicket } from "@/types/tickets";
-import { useToast } from "./UI/useToast";
+import { toast } from "sonner";
 
 export function usePresident() {
   const [currentPresidentCap, setCurrentPresidentCap] =
@@ -24,10 +24,9 @@ export function usePresident() {
   const { currentClub, refetch } = useCurrentClub();
   const { previousClub } = usePastClub();
 
-  const { setToastState } = useToast();
-
   const CAP_TYPE = `${ORIGINAL_PACKAGE_ID}::executive_member::ExecutiveMemberCap`;
-  const client = new SuiClient({ url: getFullnodeUrl("testnet") });
+  // const client = new SuiClient({ url: getFullnodeUrl("testnet") });
+  const client = new SuiClient({ url: "https://rpc-testnet.suiscan.xyz:443" });
 
   useEffect(() => {
     client
@@ -262,11 +261,6 @@ export function usePresident() {
     if (!currentClub) return;
     if (!currentPresidentCap) return;
 
-    setToastState({
-      type: "loading",
-      message: "Collection is being created...",
-    });
-
     const tx = new Transaction();
 
     tx.moveCall({
@@ -309,10 +303,8 @@ export function usePresident() {
     if (!account) return;
     if (!currentClub) return;
     if (!currentPresidentCap) return;
-    setToastState({
-      type: "loading",
-      message: "Collection is being created...",
-    });
+
+    toast.loading("Loading.........");
 
     const tx = new Transaction();
 
@@ -333,20 +325,15 @@ export function usePresident() {
       },
       {
         onSuccess: (data) => {
+          toast.dismiss();
           console.log("Success! data:", data);
           refetch();
-          // setToastState({
-          //   type: "success",
-          //   message: "Creating collection succeeded.",
-          // });
+          toast.success("Success!");
         },
         onError: (err) => {
           console.log("Error", err);
-          // setToastState({
-          //   type: "error",
-          //   message:
-          //     "Something went wrong while creating the collection. Please try again.",
-          // });
+          toast.dismiss();
+          toast.error("Error");
         },
       }
     );

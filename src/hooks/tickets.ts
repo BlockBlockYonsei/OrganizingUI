@@ -21,7 +21,7 @@ export const useExecutiveMemberTicket = () => {
   const { previousClub } = usePastClub();
   const { mutate: signAndExecuteTransaction } = useSignAndExecuteTransaction();
 
-  const client = new SuiClient({ url: "https://rpc-testnet.suiscan.xyz:443" });
+  const client = new SuiClient({ url: getFullnodeUrl("testnet") });
   useEffect(() => {
     if (!account) return;
     if (!currentClub) return;

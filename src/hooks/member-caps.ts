@@ -19,7 +19,7 @@ export const useGetExecutiveMemberCap = ({ owner }: { owner: string }) => {
   const { currentClub } = useCurrentClub();
   const { previousClub } = usePastClub();
 
-  const client = new SuiClient({ url: "https://rpc-testnet.suiscan.xyz:443" });
+  const client = new SuiClient({ url: getFullnodeUrl("testnet") });
   useEffect(() => {
     if (!owner) return;
     if (!currentClub) return;
@@ -133,7 +133,7 @@ export const useGetMemberCap = ({ owner }: { owner: string }) => {
   const CAP_TYPE = `${ORIGINAL_PACKAGE_ID}::blockblock_member::BlockblockMemberCap`;
 
   const { currentClub } = useCurrentClub();
-  const client = new SuiClient({ url: "https://rpc-testnet.suiscan.xyz:443" });
+  const client = new SuiClient({ url: getFullnodeUrl("testnet") });
 
   useEffect(() => {
     if (!owner) return;
